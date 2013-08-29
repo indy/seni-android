@@ -3,6 +3,7 @@ package io.indy.seni.lang;
 public class Token {
 
     public enum Type {
+        UNKNOWN,
         LIST_START,
         LIST_END,
         // COMMENT, // remove comments

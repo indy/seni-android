@@ -7,35 +7,54 @@ import java.util.Set;
 
 public class Lexer {
 
-    public class Pair {
+    private static class Pair {
         public Token mToken;
         public String mRemaining;
     }
 
-    private Set<Character> mWhitespaceSet;
-    private Set<Character> mDigitSet;
-    private Set<Character> mAlphaSet;
-    private Set<Character> mSymbolSet;
+    private static final Set<Character> sWhitespaceSet;
+    private static final Set<Character> sDigitSet;
+    private static final Set<Character> sAlphaSet;
+    private static final Set<Character> sSymbolSet;
 
-    private char MINUS = '-';
-    private char PERIOD = '.';
+    static {
+        String whitespaces = " \t\n";
+        sWhitespaceSet = new HashSet<Character>();
+        for(char c :  whitespaces.toCharArray()) {
+            sWhitespaceSet.add(c);
+        }
 
-    public Lexer() {
-        setupSets();
+        String digits = "0123456789";
+        sDigitSet = new HashSet<Character>();
+        for(char c :  digits.toCharArray()) {
+            sDigitSet.add(c);
+        }
+
+        String alpha = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        sAlphaSet = new HashSet<Character>();
+        for(char c :  alpha.toCharArray()) {
+            sAlphaSet.add(c);
+        }
+
+        String sym = "-!@#$%^&*<>?";
+        sSymbolSet = new HashSet<Character>();
+        for(char c :  sym.toCharArray()) {
+            sSymbolSet.add(c);
+        }
     }
 
-    public List<Token> tokenise(String input) {
+    private static final char MINUS = '-';
+    private static final char PERIOD = '.';
+
+    public static List<Token> tokenise(String input) {
 
         List<Token> l = new ArrayList<Token>();
-
-        Token.Type tt;
         Pair p = null;
 
         String s = skipWhitespace(input);
 
         while(s.length() > 0) {
-            tt = nextTokenType(s);
-            switch(tt) {
+            switch(nextTokenType(s)) {
             case LIST_START :
                 p = consumeListStart(s);
                 break;
@@ -66,7 +85,7 @@ public class Lexer {
         return l;
     }
 
-    public String skipWhitespace(String s) {
+    private static String skipWhitespace(String s) {
         int len = s.length();
         for(int i = 0; i < len; i++) {
             if(!isWhitespace(s.charAt(i))) {
@@ -76,7 +95,7 @@ public class Lexer {
         return "";
     }
 
-    public Pair consumeInt(String s) {
+    private static Pair consumeInt(String s) {
 
         int i = 0;
         for(i=0;i<s.length();i++) {
@@ -103,7 +122,7 @@ public class Lexer {
 
     }
 
-    public Pair consumeFloat(String s) {
+    private static Pair consumeFloat(String s) {
         int i = 0;
         for(i=0;i<s.length();i++) {
             char c = s.charAt(i);
@@ -123,21 +142,21 @@ public class Lexer {
         return p;
     }
 
-    public Pair consumeListStart(String s) {
+    private static Pair consumeListStart(String s) {
         Pair p = new Pair();
         p.mToken = new Token(Token.Type.LIST_START);
         p.mRemaining = s.substring(1);
         return p;
     }
 
-    public Pair consumeListEnd(String s) {
+    private static Pair consumeListEnd(String s) {
         Pair p = new Pair();
         p.mToken = new Token(Token.Type.LIST_END);
         p.mRemaining = s.substring(1);
         return p;
     }
 
-    public Pair consumeString(String s) {
+    private static Pair consumeString(String s) {
 
         String val = s.substring(1); // skip first \"
         int nextQuote = indexOfNext(val, '\"');
@@ -149,7 +168,7 @@ public class Lexer {
         return p;
     }
 
-    public Pair consumeName(String s) {
+    private static Pair consumeName(String s) {
         int i = 0;
         for(i=0;i<s.length();i++) {
             char c = s.charAt(i);
@@ -164,7 +183,7 @@ public class Lexer {
         return p;
     }
 
-    private int indexOfNext(String s, Character c) {
+    private static int indexOfNext(String s, Character c) {
         for(int i=0;i<s.length();i++) {
             if(s.charAt(i) == c) {
                 return i;
@@ -173,7 +192,7 @@ public class Lexer {
         return -1; // TODO: raise exception
     }
 
-    public Token.Type nextTokenType(String s) {
+    private static Token.Type nextTokenType(String s) {
         char c = s.charAt(0);
 
         if(isListStart(c)) {
@@ -200,7 +219,7 @@ public class Lexer {
     }
 
     // is there a period in the stream of characters before we get to whitespace
-    public boolean hasPeriod(String s) {
+    private static boolean hasPeriod(String s) {
         for(int i=0;i<s.length();i++) {
             char c = s.charAt(i);
             if(c == PERIOD) {
@@ -213,61 +232,35 @@ public class Lexer {
         return false;
     }
 
-    public boolean isWhitespace(Character c) {
-        return mWhitespaceSet.contains(c);
+    private static boolean isWhitespace(Character c) {
+        return sWhitespaceSet.contains(c);
     }
 
-    public boolean isDigit(Character c) {
-        return mDigitSet.contains(c);
+    private static boolean isDigit(Character c) {
+        return sDigitSet.contains(c);
     }
 
-    public boolean isAlpha(Character c) {
-        return mAlphaSet.contains(c);
+    private static boolean isAlpha(Character c) {
+        return sAlphaSet.contains(c);
     }
 
-    public boolean isSymbol(Character c) {
-        return mSymbolSet.contains(c);
+    private static boolean isSymbol(Character c) {
+        return sSymbolSet.contains(c);
     }
 
-    public boolean isListStart(Character c) {
+    private static boolean isListStart(Character c) {
         return c == '(';
     }
 
-    public boolean isListEnd(Character c) {
+    private static boolean isListEnd(Character c) {
         return c == ')';
     }
 
-    public boolean isQuotedString(Character c) {
+    private static boolean isQuotedString(Character c) {
         return c == '"';
     }
 
-    public boolean isName(Character c) {
+    private static boolean isName(Character c) {
         return isAlpha(c);
-    }
-
-    private void setupSets() {
-        String whitespaces = " \t\n";
-        mWhitespaceSet = new HashSet<Character>();
-        for(char c :  whitespaces.toCharArray()) {
-            mWhitespaceSet.add(c);
-        }
-
-        String digits = "0123456789";
-        mDigitSet = new HashSet<Character>();
-        for(char c :  digits.toCharArray()) {
-            mDigitSet.add(c);
-        }
-
-        String alpha = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
-        mAlphaSet = new HashSet<Character>();
-        for(char c :  alpha.toCharArray()) {
-            mAlphaSet.add(c);
-        }
-
-        String sym = "-!@#$%^&*<>?";
-        mSymbolSet = new HashSet<Character>();
-        for(char c :  sym.toCharArray()) {
-            mSymbolSet.add(c);
-        }
     }
 }

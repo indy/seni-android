@@ -6,7 +6,10 @@ import org.junit.Test;
 import static org.fest.assertions.api.Assertions.assertThat;
 
 public class ParserTest {
-
+    @Test
+    public void testTokenise() {
+        assertThat(1 + 1).isEqualTo(2);
+    }
 }
 
 /*

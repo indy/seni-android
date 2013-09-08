@@ -6,6 +6,11 @@ import java.util.List;
 import java.util.Set;
 
 public class Parser {
+
+    public class ParserReturn {
+        List<Token> mTokens;    // the remaining tokens
+        Node mRoot;
+    }
 }
 
 /*

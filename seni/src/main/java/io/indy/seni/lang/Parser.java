@@ -8,8 +8,75 @@ import java.util.Set;
 public class Parser {
 
     public class ParserReturn {
-        List<Token> mTokens;    // the remaining tokens
-        Node mRoot;
+        public List<Token> mTokens;    // the remaining tokens
+        public Node mNode;
+
+    }
+
+    // TODO: replace List<Tokens> with Queue<Tokens>
+
+    public ParserReturn consumeItem(List<Token> tokens) {
+        if(tokens.size() == 0) {
+            // raise error?
+        }
+
+        Token token = tokens.remove(0);
+
+        Token.Type type = token.getType();
+        if(type == Token.Type.LIST_START) {
+            return consumeList(tokens);
+        } else if(type == Token.Type.INT) {
+            return consumeInt(token, tokens);
+        } else if(type == Token.Type.FLOAT) {
+            return consumeFloat(token, tokens);
+        } else if(type == Token.Type.NAME) {
+        } else if(type == Token.Type.STRING) {
+        } else {
+            // throw an error
+        }
+        return null;
+    }
+
+    public ParserReturn consumeList(List<Token> tokens) {
+
+        // consume everything upto and including the LIST_END
+        NodeList node = new NodeList();
+
+        Token token;
+        ParserReturn pr;
+
+        while(true) {
+            if(tokens.size() == 0) {
+                // raise error?
+            }
+            token = tokens.get(0);
+            if(token.getType() == Token.Type.LIST_END) {
+                tokens.remove(0);
+                pr = new ParserReturn();
+                pr.mTokens = tokens;
+                pr.mNode = node;
+                return pr;
+            } else {
+                pr = consumeItem(tokens);
+                tokens = pr.mTokens;
+                node.addChild(pr.mNode);
+            }
+        }
+    }
+
+
+    private ParserReturn consumeInt(Token firstToken, List<Token> restTokens) {
+        ParserReturn pr = new ParserReturn();
+        pr.mNode = new NodeInt(firstToken.getIntValue());
+        pr.mTokens = restTokens;
+        return pr;
+    }
+
+    private ParserReturn consumeFloat(Token firstToken, List<Token> restTokens) {
+        ParserReturn pr = new ParserReturn();
+        pr.mNode = new NodeFloat(firstToken.getFloatValue());
+        pr.mTokens = restTokens;
+        return pr;
     }
 }
 

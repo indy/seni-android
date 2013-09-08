@@ -9,8 +9,8 @@ public class NodeListTest {
 
     @Test
     public void testNodeList() {
-        NodeList n = new NodeList(null);
-        NodeInt nodeInt = new NodeInt(null, 42);
+        NodeList n = new NodeList();
+        NodeInt nodeInt = new NodeInt(42);
         n.addChild(nodeInt);
 
         assertThat(n.getType()).isEqualTo(Node.Type.LIST);

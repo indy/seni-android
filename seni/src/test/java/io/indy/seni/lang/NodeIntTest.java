@@ -9,7 +9,7 @@ public class NodeIntTest {
 
     @Test
     public void testNodeInt() {
-        NodeInt n = new NodeInt(null, 42);
+        NodeInt n = new NodeInt(42);
 
         assertThat(n.getType()).isEqualTo(Node.Type.INT);
         assertThat(n.getInt()).isEqualTo(42);

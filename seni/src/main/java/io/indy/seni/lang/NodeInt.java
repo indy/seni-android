@@ -4,8 +4,8 @@ public class NodeInt extends Node {
 
     private int mInteger;
 
-    public NodeInt(Node parent, int value) {
-        super(parent);
+    public NodeInt(int value) {
+        super();
 
         mType = Node.Type.INT;
         mInteger = value;

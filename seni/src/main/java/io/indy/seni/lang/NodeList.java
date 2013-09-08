@@ -7,8 +7,8 @@ public class NodeList extends Node {
 
     private List<Node> mChildren;
 
-    public NodeList(Node parent) {
-        super(parent);
+    public NodeList() {
+        super();
 
         mType = Node.Type.LIST;
         mChildren = new ArrayList<Node>();

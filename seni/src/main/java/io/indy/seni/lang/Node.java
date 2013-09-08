@@ -10,11 +10,9 @@ abstract public class Node {
         STRING
     }
 
-    protected Node mParent;
     protected Type mType;
 
-    public Node(Node parent) {
-        mParent = parent;
+    public Node() {
     }
 
     public Type getType() {

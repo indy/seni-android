@@ -12,6 +12,19 @@ public class Parser {
         public Node mNode;
     }
 
+    public List<Node> parse(List<Token> tokens) {
+        List<Node> nodes = new ArrayList<Node>();
+        ParserReturn pr;
+
+        do {
+            pr = consumeItem(tokens);
+            nodes.add(pr.mNode);
+            tokens = pr.mTokens;
+        } while(tokens.size() > 0);
+        
+        return nodes;
+    }
+
     // TODO: replace List<Tokens> with Queue<Tokens>
 
     public ParserReturn consumeItem(List<Token> tokens) {

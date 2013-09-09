@@ -8,18 +8,19 @@ import static org.fest.assertions.api.Assertions.assertThat;
 
 public class ParserTest {
     @Test
-    public void testConsumeItemWithInt() {
+    public void parseInt() {
         List<Token> tokens = new ArrayList<Token>();
         tokens.add(makeToken(42));
 
         assertThat(tokens.size()).isEqualTo(1);
 
         Parser parser = new Parser();
-        Parser.ParserReturn pr = parser.consumeItem(tokens);
-
-        assertThat(pr.mTokens.size()).isEqualTo(0);
-        assertThat(pr.mNode.getType()).isEqualTo(Node.Type.INT);
-        NodeInt ni = (NodeInt)(pr.mNode);
+        List<Node> nodes = parser.parse(tokens);
+        assertThat(nodes.size()).isEqualTo(1);
+        
+        Node n = nodes.get(0);
+        assertThat(n.getType()).isEqualTo(Node.Type.INT);
+        NodeInt ni = (NodeInt)n;
         assertThat(ni.getInt()).isEqualTo(42);
     }
 
@@ -32,11 +33,12 @@ public class ParserTest {
         assertThat(tokens.size()).isEqualTo(1);
 
         Parser parser = new Parser();
-        Parser.ParserReturn pr = parser.consumeItem(tokens);
+        List<Node> nodes = parser.parse(tokens);
+        assertThat(nodes.size()).isEqualTo(1);
 
-        assertThat(pr.mTokens.size()).isEqualTo(0);
-        assertThat(pr.mNode.getType()).isEqualTo(Node.Type.FLOAT);
-        NodeFloat node = (NodeFloat)(pr.mNode);
+        Node n = nodes.get(0);
+        assertThat(n.getType()).isEqualTo(Node.Type.FLOAT);
+        NodeFloat node = (NodeFloat)n;
         assertThat(node.getFloat()).isEqualTo(val);
     }
 
@@ -49,11 +51,12 @@ public class ParserTest {
         assertThat(tokens.size()).isEqualTo(1);
 
         Parser parser = new Parser();
-        Parser.ParserReturn pr = parser.consumeItem(tokens);
+        List<Node> nodes = parser.parse(tokens);
+        assertThat(nodes.size()).isEqualTo(1);
 
-        assertThat(pr.mTokens.size()).isEqualTo(0);
-        assertThat(pr.mNode.getType()).isEqualTo(Node.Type.STRING);
-        NodeString node = (NodeString)(pr.mNode);
+        Node n = nodes.get(0);
+        assertThat(n.getType()).isEqualTo(Node.Type.STRING);
+        NodeString node = (NodeString)n;
         assertThat(node.getString()).isEqualTo(val);
     }
 
@@ -66,16 +69,17 @@ public class ParserTest {
         assertThat(tokens.size()).isEqualTo(1);
 
         Parser parser = new Parser();
-        Parser.ParserReturn pr = parser.consumeItem(tokens);
+        List<Node> nodes = parser.parse(tokens);
+        assertThat(nodes.size()).isEqualTo(1);
 
-        assertThat(pr.mTokens.size()).isEqualTo(0);
-        assertThat(pr.mNode.getType()).isEqualTo(Node.Type.NAME);
-        NodeName node = (NodeName)(pr.mNode);
+        Node n = nodes.get(0);
+        assertThat(n.getType()).isEqualTo(Node.Type.NAME);
+        NodeName node = (NodeName)n;
         assertThat(node.getName()).isEqualTo(val);
     }
 
     @Test
-    public void testConsumeItemWithList() {
+    public void testConsumeItemWithListAndInt() {
         List<Token> tokens = new ArrayList<Token>();
         tokens.add(makeToken(Token.Type.LIST_START));
         tokens.add(makeToken(16));
@@ -86,14 +90,16 @@ public class ParserTest {
         assertThat(tokens.size()).isEqualTo(5);
 
         Parser parser = new Parser();
-        Parser.ParserReturn pr = parser.consumeItem(tokens);
+        List<Node> nodes = parser.parse(tokens);
+        assertThat(nodes.size()).isEqualTo(2);
 
-        // consume list, just the '99' left
-        assertThat(pr.mTokens.size()).isEqualTo(1);
-
-        assertThat(pr.mNode.getType()).isEqualTo(Node.Type.LIST);
-        NodeList nl = (NodeList)(pr.mNode);
+        Node n = nodes.get(0);
+        assertThat(n.getType()).isEqualTo(Node.Type.LIST);
+        NodeList nl = (NodeList)n;
         assertThat(nl.getChildren().size()).isEqualTo(2);
+
+        n = nodes.get(1);
+        assertThat(n.getType()).isEqualTo(Node.Type.INT);
     }
 
     @Test
@@ -114,10 +120,12 @@ public class ParserTest {
         assertThat(tokens.size()).isEqualTo(11);
 
         Parser parser = new Parser();
-        Parser.ParserReturn pr = parser.consumeItem(tokens);
+        List<Node> nodes = parser.parse(tokens);
+        assertThat(nodes.size()).isEqualTo(1);
 
-        assertThat(pr.mNode.getType()).isEqualTo(Node.Type.LIST);
-        NodeList nl = (NodeList)(pr.mNode);
+        Node n = nodes.get(0);
+        assertThat(n.getType()).isEqualTo(Node.Type.LIST);
+        NodeList nl = (NodeList)n;
         assertThat(nl.getChildren().size()).isEqualTo(3);
     }
 

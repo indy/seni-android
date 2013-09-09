@@ -25,7 +25,7 @@ public class ParserTest {
     }
 
     @Test
-    public void testConsumeItemWithFloat() {
+    public void parseFloat() {
         float val = 42.5f;
         List<Token> tokens = new ArrayList<Token>();
         tokens.add(makeToken(val));
@@ -43,7 +43,7 @@ public class ParserTest {
     }
 
     @Test
-    public void testConsumeItemWithString() {
+    public void parseString() {
         String val = "foo";
         List<Token> tokens = new ArrayList<Token>();
         tokens.add(makeToken(Token.Type.STRING, val));
@@ -61,7 +61,7 @@ public class ParserTest {
     }
 
     @Test
-    public void testConsumeItemWithName() {
+    public void parseName() {
         String val = "foo";
         List<Token> tokens = new ArrayList<Token>();
         tokens.add(makeToken(Token.Type.NAME, val));
@@ -79,7 +79,7 @@ public class ParserTest {
     }
 
     @Test
-    public void testConsumeItemWithListAndInt() {
+    public void parseListAndInt() {
         List<Token> tokens = new ArrayList<Token>();
         tokens.add(makeToken(Token.Type.LIST_START));
         tokens.add(makeToken(16));
@@ -103,7 +103,7 @@ public class ParserTest {
     }
 
     @Test
-    public void testConsumeItemWithNestedList() {
+    public void parseNestedList() {
         List<Token> tokens = new ArrayList<Token>();
         tokens.add(makeToken(Token.Type.LIST_START));
         tokens.add(makeToken(Token.Type.LIST_START));

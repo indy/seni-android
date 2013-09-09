@@ -10,7 +10,6 @@ public class Parser {
     public class ParserReturn {
         public List<Token> mTokens;    // the remaining tokens
         public Node mNode;
-
     }
 
     // TODO: replace List<Tokens> with Queue<Tokens>
@@ -30,7 +29,9 @@ public class Parser {
         } else if(type == Token.Type.FLOAT) {
             return consumeFloat(token, tokens);
         } else if(type == Token.Type.NAME) {
+            return consumeName(token, tokens);
         } else if(type == Token.Type.STRING) {
+            return consumeString(token, tokens);
         } else {
             // throw an error
         }
@@ -64,7 +65,6 @@ public class Parser {
         }
     }
 
-
     private ParserReturn consumeInt(Token firstToken, List<Token> restTokens) {
         ParserReturn pr = new ParserReturn();
         pr.mNode = new NodeInt(firstToken.getIntValue());
@@ -75,6 +75,20 @@ public class Parser {
     private ParserReturn consumeFloat(Token firstToken, List<Token> restTokens) {
         ParserReturn pr = new ParserReturn();
         pr.mNode = new NodeFloat(firstToken.getFloatValue());
+        pr.mTokens = restTokens;
+        return pr;
+    }
+
+    private ParserReturn consumeName(Token firstToken, List<Token> restTokens) {
+        ParserReturn pr = new ParserReturn();
+        pr.mNode = new NodeName(firstToken.getStringValue());
+        pr.mTokens = restTokens;
+        return pr;
+    }
+
+    private ParserReturn consumeString(Token firstToken, List<Token> restTokens) {
+        ParserReturn pr = new ParserReturn();
+        pr.mNode = new NodeString(firstToken.getStringValue());
         pr.mTokens = restTokens;
         return pr;
     }

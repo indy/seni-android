@@ -24,6 +24,57 @@ public class ParserTest {
     }
 
     @Test
+    public void testConsumeItemWithFloat() {
+        float val = 42.5f;
+        List<Token> tokens = new ArrayList<Token>();
+        tokens.add(makeToken(val));
+
+        assertThat(tokens.size()).isEqualTo(1);
+
+        Parser parser = new Parser();
+        Parser.ParserReturn pr = parser.consumeItem(tokens);
+
+        assertThat(pr.mTokens.size()).isEqualTo(0);
+        assertThat(pr.mNode.getType()).isEqualTo(Node.Type.FLOAT);
+        NodeFloat node = (NodeFloat)(pr.mNode);
+        assertThat(node.getFloat()).isEqualTo(val);
+    }
+
+    @Test
+    public void testConsumeItemWithString() {
+        String val = "foo";
+        List<Token> tokens = new ArrayList<Token>();
+        tokens.add(makeToken(Token.Type.STRING, val));
+
+        assertThat(tokens.size()).isEqualTo(1);
+
+        Parser parser = new Parser();
+        Parser.ParserReturn pr = parser.consumeItem(tokens);
+
+        assertThat(pr.mTokens.size()).isEqualTo(0);
+        assertThat(pr.mNode.getType()).isEqualTo(Node.Type.STRING);
+        NodeString node = (NodeString)(pr.mNode);
+        assertThat(node.getString()).isEqualTo(val);
+    }
+
+    @Test
+    public void testConsumeItemWithName() {
+        String val = "foo";
+        List<Token> tokens = new ArrayList<Token>();
+        tokens.add(makeToken(Token.Type.NAME, val));
+
+        assertThat(tokens.size()).isEqualTo(1);
+
+        Parser parser = new Parser();
+        Parser.ParserReturn pr = parser.consumeItem(tokens);
+
+        assertThat(pr.mTokens.size()).isEqualTo(0);
+        assertThat(pr.mNode.getType()).isEqualTo(Node.Type.NAME);
+        NodeName node = (NodeName)(pr.mNode);
+        assertThat(node.getName()).isEqualTo(val);
+    }
+
+    @Test
     public void testConsumeItemWithList() {
         List<Token> tokens = new ArrayList<Token>();
         tokens.add(makeToken(Token.Type.LIST_START));
@@ -45,6 +96,32 @@ public class ParserTest {
         assertThat(nl.getChildren().size()).isEqualTo(2);
     }
 
+    @Test
+    public void testConsumeItemWithNestedList() {
+        List<Token> tokens = new ArrayList<Token>();
+        tokens.add(makeToken(Token.Type.LIST_START));
+        tokens.add(makeToken(Token.Type.LIST_START));
+        tokens.add(makeToken(2));
+        tokens.add(makeToken(Token.Type.LIST_END));
+        tokens.add(makeToken(Token.Type.LIST_START));
+        tokens.add(makeToken(4));
+        tokens.add(makeToken(Token.Type.LIST_END));
+        tokens.add(makeToken(Token.Type.LIST_START));
+        tokens.add(makeToken(8));
+        tokens.add(makeToken(Token.Type.LIST_END));
+        tokens.add(makeToken(Token.Type.LIST_END));
+
+        assertThat(tokens.size()).isEqualTo(11);
+
+        Parser parser = new Parser();
+        Parser.ParserReturn pr = parser.consumeItem(tokens);
+
+        assertThat(pr.mNode.getType()).isEqualTo(Node.Type.LIST);
+        NodeList nl = (NodeList)(pr.mNode);
+        assertThat(nl.getChildren().size()).isEqualTo(3);
+    }
+
+
     private Token makeToken(int val) {
         try {
             return new Token(Token.Type.INT, val);
@@ -54,8 +131,21 @@ public class ParserTest {
         return null;
     }
 
+    private Token makeToken(float val) {
+        try {
+            return new Token(Token.Type.FLOAT, val);
+        } catch(Token.TokenException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     private Token makeToken(Token.Type t) {
         return new Token(t);
+    }
+
+    private Token makeToken(Token.Type t, String val) {
+        return new Token(t, val);
     }
 }
 

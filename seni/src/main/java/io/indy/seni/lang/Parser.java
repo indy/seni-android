@@ -2,31 +2,30 @@ package io.indy.seni.lang;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Queue;
 
 public class Parser {
 
-    private List<Token> mTokens;
+    private Queue<Token> mTokens;
 
-    public List<Node> parse(List<Token> tokens) {
+    public List<Node> parse(Queue<Token> tokens) {
+
         List<Node> nodes = new ArrayList<Node>();
         mTokens = tokens;
 
         do {
             nodes.add(consumeItem());
-        } while(mTokens.size() > 0);
+        } while(mTokens.peek() != null);
         
         return nodes;
     }
 
     // TODO: replace List<Tokens> with Queue<Tokens>
     private Node consumeItem() {
-        if(mTokens.size() == 0) {
-            // raise error?
-        }
 
-        Token token = mTokens.remove(0);
-
+        Token token = mTokens.remove();
         Token.Type type = token.getType();
+
         if(type == Token.Type.LIST_START) {
             return consumeList();
         } else if(type == Token.Type.INT) {
@@ -40,23 +39,25 @@ public class Parser {
         } else {
             // throw an error
         }
+
         return null;
     }
 
     private Node consumeList() {
+        // LIST_START has already been consumed
+
         NodeList node = new NodeList();
         Token token;
+
         while(true) {
-            if(mTokens.size() == 0) {
-                // raise error?
-            }
-            token = mTokens.get(0);
+            token = mTokens.element();
             if(token.getType() == Token.Type.LIST_END) {
-                mTokens.remove(0);
+                mTokens.remove();
                 return node;
             } else {
                 node.addChild(consumeItem());
             }
         }
+
     }
 }

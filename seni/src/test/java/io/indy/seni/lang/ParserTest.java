@@ -2,6 +2,8 @@ package io.indy.seni.lang;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Queue;
+import java.util.ArrayDeque;
 
 import org.junit.Test;
 import static org.fest.assertions.api.Assertions.assertThat;
@@ -9,10 +11,8 @@ import static org.fest.assertions.api.Assertions.assertThat;
 public class ParserTest {
     @Test
     public void parseInt() {
-        List<Token> tokens = new ArrayList<Token>();
+        Queue<Token> tokens = new ArrayDeque<Token>();
         tokens.add(makeToken(42));
-
-        assertThat(tokens.size()).isEqualTo(1);
 
         Parser parser = new Parser();
         List<Node> nodes = parser.parse(tokens);
@@ -27,10 +27,8 @@ public class ParserTest {
     @Test
     public void parseFloat() {
         float val = 42.5f;
-        List<Token> tokens = new ArrayList<Token>();
+        Queue<Token> tokens = new ArrayDeque<Token>();
         tokens.add(makeToken(val));
-
-        assertThat(tokens.size()).isEqualTo(1);
 
         Parser parser = new Parser();
         List<Node> nodes = parser.parse(tokens);
@@ -45,10 +43,8 @@ public class ParserTest {
     @Test
     public void parseString() {
         String val = "foo";
-        List<Token> tokens = new ArrayList<Token>();
+        Queue<Token> tokens = new ArrayDeque<Token>();
         tokens.add(makeToken(Token.Type.STRING, val));
-
-        assertThat(tokens.size()).isEqualTo(1);
 
         Parser parser = new Parser();
         List<Node> nodes = parser.parse(tokens);
@@ -63,10 +59,8 @@ public class ParserTest {
     @Test
     public void parseName() {
         String val = "foo";
-        List<Token> tokens = new ArrayList<Token>();
+        Queue<Token> tokens = new ArrayDeque<Token>();
         tokens.add(makeToken(Token.Type.NAME, val));
-
-        assertThat(tokens.size()).isEqualTo(1);
 
         Parser parser = new Parser();
         List<Node> nodes = parser.parse(tokens);
@@ -80,14 +74,12 @@ public class ParserTest {
 
     @Test
     public void parseListAndInt() {
-        List<Token> tokens = new ArrayList<Token>();
+        Queue<Token> tokens = new ArrayDeque<Token>();
         tokens.add(makeToken(Token.Type.LIST_START));
         tokens.add(makeToken(16));
         tokens.add(makeToken(61));
         tokens.add(makeToken(Token.Type.LIST_END));
         tokens.add(makeToken(99));
-
-        assertThat(tokens.size()).isEqualTo(5);
 
         Parser parser = new Parser();
         List<Node> nodes = parser.parse(tokens);
@@ -104,7 +96,7 @@ public class ParserTest {
 
     @Test
     public void parseNestedList() {
-        List<Token> tokens = new ArrayList<Token>();
+        Queue<Token> tokens = new ArrayDeque<Token>();
         tokens.add(makeToken(Token.Type.LIST_START));
         tokens.add(makeToken(Token.Type.LIST_START));
         tokens.add(makeToken(2));
@@ -116,8 +108,6 @@ public class ParserTest {
         tokens.add(makeToken(8));
         tokens.add(makeToken(Token.Type.LIST_END));
         tokens.add(makeToken(Token.Type.LIST_END));
-
-        assertThat(tokens.size()).isEqualTo(11);
 
         Parser parser = new Parser();
         List<Node> nodes = parser.parse(tokens);

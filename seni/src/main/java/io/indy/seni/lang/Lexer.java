@@ -1,9 +1,9 @@
 package io.indy.seni.lang;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
+import java.util.Queue;
+import java.util.ArrayDeque;
 
 public class Lexer {
 
@@ -46,9 +46,9 @@ public class Lexer {
     private static final char MINUS = '-';
     private static final char PERIOD = '.';
 
-    public static List<Token> tokenise(String input) {
+    public static Queue<Token> tokenise(String input) {
 
-        List<Token> l = new ArrayList<Token>();
+        Queue<Token> q = new ArrayDeque<Token>();
         Pair p = null;
 
         String s = skipWhitespace(input);
@@ -78,11 +78,11 @@ public class Lexer {
                 break;
             }
 
-            l.add(p.mToken);
+            q.add(p.mToken);
             s = skipWhitespace(p.mRemaining);
         }
 
-        return l;
+        return q;
     }
 
     private static String skipWhitespace(String s) {

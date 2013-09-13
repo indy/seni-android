@@ -14,8 +14,7 @@ public class ParserTest {
         Queue<Token> tokens = new ArrayDeque<Token>();
         tokens.add(makeToken(42));
 
-        Parser parser = new Parser();
-        List<Node> nodes = parser.parse(tokens);
+        List<Node> nodes = Parser.parse(tokens);
         assertThat(nodes.size()).isEqualTo(1);
         
         Node n = nodes.get(0);
@@ -30,8 +29,7 @@ public class ParserTest {
         Queue<Token> tokens = new ArrayDeque<Token>();
         tokens.add(makeToken(val));
 
-        Parser parser = new Parser();
-        List<Node> nodes = parser.parse(tokens);
+        List<Node> nodes = Parser.parse(tokens);
         assertThat(nodes.size()).isEqualTo(1);
 
         Node n = nodes.get(0);
@@ -46,8 +44,7 @@ public class ParserTest {
         Queue<Token> tokens = new ArrayDeque<Token>();
         tokens.add(makeToken(Token.Type.STRING, val));
 
-        Parser parser = new Parser();
-        List<Node> nodes = parser.parse(tokens);
+        List<Node> nodes = Parser.parse(tokens);
         assertThat(nodes.size()).isEqualTo(1);
 
         Node n = nodes.get(0);
@@ -62,8 +59,7 @@ public class ParserTest {
         Queue<Token> tokens = new ArrayDeque<Token>();
         tokens.add(makeToken(Token.Type.NAME, val));
 
-        Parser parser = new Parser();
-        List<Node> nodes = parser.parse(tokens);
+        List<Node> nodes = Parser.parse(tokens);
         assertThat(nodes.size()).isEqualTo(1);
 
         Node n = nodes.get(0);
@@ -81,8 +77,7 @@ public class ParserTest {
         tokens.add(makeToken(Token.Type.LIST_END));
         tokens.add(makeToken(99));
 
-        Parser parser = new Parser();
-        List<Node> nodes = parser.parse(tokens);
+        List<Node> nodes = Parser.parse(tokens);
         assertThat(nodes.size()).isEqualTo(2);
 
         Node n = nodes.get(0);
@@ -109,8 +104,7 @@ public class ParserTest {
         tokens.add(makeToken(Token.Type.LIST_END));
         tokens.add(makeToken(Token.Type.LIST_END));
 
-        Parser parser = new Parser();
-        List<Node> nodes = parser.parse(tokens);
+        List<Node> nodes = Parser.parse(tokens);
         assertThat(nodes.size()).isEqualTo(1);
 
         Node n = nodes.get(0);
@@ -118,7 +112,6 @@ public class ParserTest {
         NodeList nl = (NodeList)n;
         assertThat(nl.getChildren().size()).isEqualTo(3);
     }
-
 
     private Token makeToken(int val) {
         try {

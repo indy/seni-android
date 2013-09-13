@@ -6,22 +6,21 @@ import java.util.Queue;
 
 public class Parser {
 
-    private Queue<Token> mTokens;
+    private static Queue<Token> mTokens;
 
-    public List<Node> parse(Queue<Token> tokens) {
+    public static List<Node> parse(Queue<Token> tokens) {
 
         List<Node> nodes = new ArrayList<Node>();
         mTokens = tokens;
 
-        do {
+        while(mTokens.peek() != null) {
             nodes.add(consumeItem());
-        } while(mTokens.peek() != null);
+        }
         
         return nodes;
     }
 
-    // TODO: replace List<Tokens> with Queue<Tokens>
-    private Node consumeItem() {
+    private static Node consumeItem() {
 
         Token token = mTokens.remove();
         Token.Type type = token.getType();
@@ -43,7 +42,7 @@ public class Parser {
         return null;
     }
 
-    private Node consumeList() {
+    private static Node consumeList() {
         // LIST_START has already been consumed
 
         NodeList node = new NodeList();

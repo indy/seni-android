@@ -11,6 +11,10 @@ dependencies {
     testCompile 'com.squareup:fest-android:1.0.+'
 }
 
+tasks.withType(Compile) {
+  options.compilerArgs << "-Xlint:unchecked"
+}
+
 android {
     compileSdkVersion 18
     buildToolsVersion "18.0.1"

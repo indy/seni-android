@@ -7,7 +7,9 @@ abstract public class Node {
         INT,
         FLOAT,
         NAME,
-        STRING
+        STRING,
+        BOOLEAN,
+        NULL
     }
 
     protected Type mType;

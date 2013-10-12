@@ -7,6 +7,11 @@ public class Env {
     private Env mOuter;
     private HashMap<String, Node> mBindings;
 
+    public Env() {
+        mOuter = null;
+        mBindings = new HashMap<String, Node>();
+    }
+
     public Env(Env outer) {
         mOuter = outer;
         mBindings = new HashMap<String, Node>();

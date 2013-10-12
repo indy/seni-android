@@ -157,7 +157,7 @@ public class InterpreterTest {
     }
 
     @Test
-    public void testCoreFunPlus() {
+    public void testCoreFunPlusInt() {
 
         Env e = Env.bindCoreFuns(mEnv);
 
@@ -180,4 +180,78 @@ public class InterpreterTest {
         assertThat(n.getType()).isEqualTo(Node.Type.INT);
         assertThat(((NodeInt)n).getInt()).isEqualTo(18);
     }
+
+    @Test
+    public void testCoreFunPlusFloat() {
+
+        Env e = Env.bindCoreFuns(mEnv);
+
+        // (+ 3.0 4.0)
+        NodeList nList = new NodeList();
+        nList.addChild(new NodeName("+"));
+        nList.addChild(new NodeFloat(3.0f));
+        nList.addChild(new NodeFloat(4.0f));
+
+        Node n = Interpreter.eval(e, nList);
+        assertThat(n.getType()).isEqualTo(Node.Type.FLOAT);
+        assertThat(((NodeFloat)n).getFloat()).isEqualTo(7.0f);
+
+
+        // (+ 3.0 4.0 5.0 6.0)
+        nList.addChild(new NodeFloat(5.0f));
+        nList.addChild(new NodeFloat(6.0f));
+
+        n = Interpreter.eval(e, nList);
+        assertThat(n.getType()).isEqualTo(Node.Type.FLOAT);
+        assertThat(((NodeFloat)n).getFloat()).isEqualTo(18.0f);
+    }
+
+    @Test
+    public void testCoreFunMinusInt() {
+
+        Env e = Env.bindCoreFuns(mEnv);
+
+        // (- 3 4)
+        NodeList nList = new NodeList();
+        nList.addChild(new NodeName("-"));
+        nList.addChild(new NodeInt(3));
+        nList.addChild(new NodeInt(4));
+
+        Node n = Interpreter.eval(e, nList);
+        assertThat(n.getType()).isEqualTo(Node.Type.INT);
+        assertThat(((NodeInt)n).getInt()).isEqualTo(-1);
+
+        // (- 3 4 5 6)
+        nList.addChild(new NodeInt(5));
+        nList.addChild(new NodeInt(6));
+
+        n = Interpreter.eval(e, nList);
+        assertThat(n.getType()).isEqualTo(Node.Type.INT);
+        assertThat(((NodeInt)n).getInt()).isEqualTo(-12);
+    }
+
+    @Test
+    public void testCoreFunMinusFloat() {
+
+        Env e = Env.bindCoreFuns(mEnv);
+
+        // (- 3.0 4.0)
+        NodeList nList = new NodeList();
+        nList.addChild(new NodeName("-"));
+        nList.addChild(new NodeFloat(3.0f));
+        nList.addChild(new NodeFloat(4.0f));
+
+        Node n = Interpreter.eval(e, nList);
+        assertThat(n.getType()).isEqualTo(Node.Type.FLOAT);
+        assertThat(((NodeFloat)n).getFloat()).isEqualTo(-1.0f);
+
+        // (- 3.0 4.0 5.0 6.0)
+        nList.addChild(new NodeFloat(5.0f));
+        nList.addChild(new NodeFloat(6.0f));
+
+        n = Interpreter.eval(e, nList);
+        assertThat(n.getType()).isEqualTo(Node.Type.FLOAT);
+        assertThat(((NodeFloat)n).getFloat()).isEqualTo(-12.0f);
+    }
+
 }

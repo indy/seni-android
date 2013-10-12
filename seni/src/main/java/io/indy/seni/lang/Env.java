@@ -12,6 +12,7 @@ public class Env {
         Env e = env.newScope();
 
         e.addBinding("+", new NodeLambdaPlus());
+        e.addBinding("-", new NodeLambdaMinus());
 
         return e;
     }

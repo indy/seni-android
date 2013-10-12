@@ -3,9 +3,9 @@ package io.indy.seni.lang;
 import java.util.Iterator;
 import java.util.List;
 
-public class NodeLambdaPlus extends NodeLambda {
+public class NodeLambdaMinus extends NodeLambda {
 
-    public NodeLambdaPlus() {
+    public NodeLambdaMinus() {
         super(null, null);
     }
 
@@ -47,7 +47,7 @@ public class NodeLambdaPlus extends NodeLambda {
             if(n.getType() != Node.Type.INT) {
                 // throw exception
             }
-            total += ((NodeInt)n).getInt();
+            total -= ((NodeInt)n).getInt();
         }
         
         return new NodeInt(total);
@@ -65,7 +65,7 @@ public class NodeLambdaPlus extends NodeLambda {
             if(n.getType() != Node.Type.FLOAT) {
                 // throw exception
             }
-            total += ((NodeFloat)n).getFloat();
+            total -= ((NodeFloat)n).getFloat();
         }
         
         return new NodeFloat(total);

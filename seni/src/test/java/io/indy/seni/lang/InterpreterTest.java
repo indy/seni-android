@@ -293,11 +293,57 @@ public class InterpreterTest {
         assertThat(((NodeFloat)n).getFloat()).isEqualTo(12.0f);
 
         // (/ 24 2 2)
-        nList.addChild(new NodeFloat(2));
+        nList.addChild(new NodeFloat(2.0f));
 
         n = Interpreter.eval(e, nList);
         assertThat(n.getType()).isEqualTo(Node.Type.FLOAT);
         assertThat(((NodeFloat)n).getFloat()).isEqualTo(6.0f);
+    }
+
+    @Test
+    public void testCoreFunMultiplyInt() {
+
+        Env e = Env.bindCoreFuns(mEnv);
+
+        // (* 24 2)
+        NodeList nList = new NodeList();
+        nList.addChild(new NodeName("*"));
+        nList.addChild(new NodeInt(24));
+        nList.addChild(new NodeInt(2));
+
+        Node n = Interpreter.eval(e, nList);
+        assertThat(n.getType()).isEqualTo(Node.Type.INT);
+        assertThat(((NodeInt)n).getInt()).isEqualTo(48);
+
+        // (* 24 2 2)
+        nList.addChild(new NodeInt(2));
+
+        n = Interpreter.eval(e, nList);
+        assertThat(n.getType()).isEqualTo(Node.Type.INT);
+        assertThat(((NodeInt)n).getInt()).isEqualTo(96);
+    }
+
+    @Test
+    public void testCoreFunMultiplyFloat() {
+
+        Env e = Env.bindCoreFuns(mEnv);
+
+        // (* 24.0 2.0)
+        NodeList nList = new NodeList();
+        nList.addChild(new NodeName("*"));
+        nList.addChild(new NodeFloat(24.0f));
+        nList.addChild(new NodeFloat(2.0f));
+
+        Node n = Interpreter.eval(e, nList);
+        assertThat(n.getType()).isEqualTo(Node.Type.FLOAT);
+        assertThat(((NodeFloat)n).getFloat()).isEqualTo(48.0f);
+
+        // (* 24 2 2)
+        nList.addChild(new NodeFloat(2.0f));
+
+        n = Interpreter.eval(e, nList);
+        assertThat(n.getType()).isEqualTo(Node.Type.FLOAT);
+        assertThat(((NodeFloat)n).getFloat()).isEqualTo(96.0f);
     }
 
 }

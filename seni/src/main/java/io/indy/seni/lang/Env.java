@@ -42,7 +42,7 @@ public class Env {
         return mBindings.containsKey(key);
     }
 
-    public Node lookup(String key) {
+    public Node lookup(String key) throws LangException {
 
         Env e = this;
         do {
@@ -52,6 +52,6 @@ public class Env {
             e = e.mOuter;
         } while(e != null);
         
-        throw new NullPointerException("unable to find value of key: " + key + " in env");
+        throw new LangException("unable to find value of key: " + key + " in env");
     }
 }

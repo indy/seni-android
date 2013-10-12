@@ -36,10 +36,15 @@ public class EnvTest {
         intLookup(envChild, "bar", 99);
     }    
 
-    private void intLookup(Env e, String key, int expected) {
-        Node n = e.lookup(key);
-        assertThat(n.getType()).isEqualTo(Node.Type.INT);
-        NodeInt ni = (NodeInt)n;
-        assertThat(ni.getInt()).isEqualTo(expected);
+    private void intLookup(Env env, String key, int expected) {
+
+        try {
+            Node n = env.lookup(key);
+            assertThat(n.getType()).isEqualTo(Node.Type.INT);
+            NodeInt ni = (NodeInt)n;
+            assertThat(ni.getInt()).isEqualTo(expected);
+        } catch (LangException e) {
+            assertThat(true).isEqualTo(false);
+        }
     }
 }

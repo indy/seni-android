@@ -31,7 +31,7 @@ public class Interpreter {
         sSpecialFormNames.add(SET);
     }
     
-    public static Node eval(Env env, Node expr) {
+    public static Node eval(Env env, Node expr) throws LangException {
         
         Node.Type type = expr.getType();
 
@@ -65,7 +65,7 @@ public class Interpreter {
         return null;
     }
 
-    private static Node funApplication(Env env, NodeList listExpr) {
+    private static Node funApplication(Env env, NodeList listExpr) throws LangException {
 
         if (isSpecialForm(listExpr)) {
             // deal with special forms
@@ -130,7 +130,7 @@ public class Interpreter {
         return listExpr.getChildren().get(1);
     }
 
-    private static Node specialFormIf(Env env, NodeList listExpr) {
+    private static Node specialFormIf(Env env, NodeList listExpr) throws LangException {
 
         // TODO: check that there are only 3 or 4 forms in expr
 
@@ -155,7 +155,7 @@ public class Interpreter {
         return NODE_NULL;
     }
 
-    private static Node specialFormSet(Env env, NodeList listExpr) {
+    private static Node specialFormSet(Env env, NodeList listExpr) throws LangException {
         // (set! foo 42)
 
         List<Node> children = listExpr.getChildren();
@@ -173,7 +173,7 @@ public class Interpreter {
         return value;
     }
 
-    private static Node specialFormDefine(Env env, NodeList listExpr) {
+    private static Node specialFormDefine(Env env, NodeList listExpr) throws LangException {
         // (define bar 99)
 
         List<Node> children = listExpr.getChildren();
@@ -193,7 +193,7 @@ public class Interpreter {
         return value;
     }
 
-    private static Node specialFormBegin(Env env, NodeList listExpr) {
+    private static Node specialFormBegin(Env env, NodeList listExpr) throws LangException {
         // (begin (set! bar 99) (define foo 11) (set! bar 42))
 
         List<Node> children = listExpr.getChildren();

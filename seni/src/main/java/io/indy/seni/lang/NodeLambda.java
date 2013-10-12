@@ -24,7 +24,7 @@ public class NodeLambda extends Node {
         return mBody;
     }
 
-    public Node execute(Env env, List<Node> params) {
+    public Node execute(Env env, List<Node> params) throws LangException {
 
         // the params have already been eval'd
 

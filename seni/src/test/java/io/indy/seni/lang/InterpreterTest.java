@@ -19,331 +19,378 @@ public class InterpreterTest {
     @Test
     public void testBasicEval() {
 
-        NodeInt nInt = new NodeInt(42);
-        assertThat(Interpreter.eval(null, nInt)).isEqualTo(nInt);        
+        try {
+            NodeInt nInt = new NodeInt(42);
+            assertThat(Interpreter.eval(null, nInt)).isEqualTo(nInt);        
 
-        NodeFloat nFloat = new NodeFloat(3.14f);
-        assertThat(Interpreter.eval(null, nFloat)).isEqualTo(nFloat);        
+            NodeFloat nFloat = new NodeFloat(3.14f);
+            assertThat(Interpreter.eval(null, nFloat)).isEqualTo(nFloat);        
 
-        NodeString nString = new NodeString("pish");
-        assertThat(Interpreter.eval(null, nString)).isEqualTo(nString);        
+            NodeString nString = new NodeString("pish");
+            assertThat(Interpreter.eval(null, nString)).isEqualTo(nString);        
 
-        NodeBoolean nBoolean = new NodeBoolean(true);
-        assertThat(Interpreter.eval(null, nBoolean)).isEqualTo(nBoolean);
+            NodeBoolean nBoolean = new NodeBoolean(true);
+            assertThat(Interpreter.eval(null, nBoolean)).isEqualTo(nBoolean);
+        } catch(LangException e) {
+            assertThat(true).isEqualTo(false);
+        }
     }
 
     @Test
     public void testLookupEval() {
+        try {
+            String var = "foo";
+            NodeInt nInt = new NodeInt(42);
 
-        String var = "foo";
-        NodeInt nInt = new NodeInt(42);
-
-        mEnv.addBinding(var, nInt);
-        assertThat(Interpreter.eval(mEnv, new NodeName(var))).isEqualTo(nInt);
+            mEnv.addBinding(var, nInt);
+            assertThat(Interpreter.eval(mEnv, new NodeName(var))).isEqualTo(nInt);
+        } catch(LangException e) {
+            assertThat(true).isEqualTo(false);
+        }
     }
 
     @Test
     public void testSpecialFormQuote() {
-        
-        // (quote foo) => foo
-        NodeList nList = new NodeList();
+        try {        
+            // (quote foo) => foo
+            NodeList nList = new NodeList();
 
-        nList.addChild(new NodeName("quote"));
+            nList.addChild(new NodeName("quote"));
 
-        NodeName nName = new NodeName("foo");
-        nList.addChild(nName);
+            NodeName nName = new NodeName("foo");
+            nList.addChild(nName);
 
-        assertThat(Interpreter.eval(null, nList)).isEqualTo(nName);
+            assertThat(Interpreter.eval(null, nList)).isEqualTo(nName);
+        } catch(LangException e) {
+            assertThat(true).isEqualTo(false);
+        }
     }
 
 
     @Test
     public void testSpecialFormIf() {
+        try {
+            NodeInt two = new NodeInt(2);
+            NodeInt four = new NodeInt(4);
 
-        NodeInt two = new NodeInt(2);
-        NodeInt four = new NodeInt(4);
+            // (if true 2 4) => 2
+            NodeList nList = new NodeList();
+            nList.addChild(new NodeName("if"));
+            nList.addChild(new NodeBoolean(true));
+            nList.addChild(two);
+            nList.addChild(four);
 
-        // (if true 2 4) => 2
-        NodeList nList = new NodeList();
-        nList.addChild(new NodeName("if"));
-        nList.addChild(new NodeBoolean(true));
-        nList.addChild(two);
-        nList.addChild(four);
-
-        assertThat(Interpreter.eval(null, nList)).isEqualTo(two);
+            assertThat(Interpreter.eval(null, nList)).isEqualTo(two);
 
 
-        // (if false 2 4) => 4
-        nList = new NodeList();
-        nList.addChild(new NodeName("if"));
-        nList.addChild(new NodeBoolean(false));
-        nList.addChild(two);
-        nList.addChild(four);
+            // (if false 2 4) => 4
+            nList = new NodeList();
+            nList.addChild(new NodeName("if"));
+            nList.addChild(new NodeBoolean(false));
+            nList.addChild(two);
+            nList.addChild(four);
 
-        assertThat(Interpreter.eval(null, nList)).isEqualTo(four);
+            assertThat(Interpreter.eval(null, nList)).isEqualTo(four);
+        } catch(LangException e) {
+            assertThat(true).isEqualTo(false);
+        }
     }
 
     @Test
     public void testSpecialFormSet() {
+        try {
+            // set! requires an existing binding
+            mEnv.addBinding("foo", new NodeString("an old value"));
 
-        // set! requires an existing binding
-        mEnv.addBinding("foo", new NodeString("an old value"));
+            // (set! foo 45)
+            NodeList nList = new NodeList();
+            nList.addChild(new NodeName("set!"));
+            nList.addChild(new NodeName("foo"));
+            nList.addChild(new NodeInt(45));
 
-        // (set! foo 45)
-        NodeList nList = new NodeList();
-        nList.addChild(new NodeName("set!"));
-        nList.addChild(new NodeName("foo"));
-        nList.addChild(new NodeInt(45));
+            Interpreter.eval(mEnv, nList);
 
-        Interpreter.eval(mEnv, nList);
-
-        Node n = mEnv.lookup("foo");
-        assertThat(n.getType()).isEqualTo(Node.Type.INT);
-        assertThat(((NodeInt)n).getInt()).isEqualTo(45);
+            Node n = mEnv.lookup("foo");
+            assertThat(n.getType()).isEqualTo(Node.Type.INT);
+            assertThat(((NodeInt)n).getInt()).isEqualTo(45);
+        } catch(LangException e) {
+            assertThat(true).isEqualTo(false);
+        }
     }
 
     @Test
     public void testSpecialFormDefine() {
+        try {
+            // (define bar 99)
+            NodeList nList = new NodeList();
+            nList.addChild(new NodeName("define"));
+            nList.addChild(new NodeName("bar"));
+            nList.addChild(new NodeInt(99));
 
-        // (define bar 99)
-        NodeList nList = new NodeList();
-        nList.addChild(new NodeName("define"));
-        nList.addChild(new NodeName("bar"));
-        nList.addChild(new NodeInt(99));
+            Interpreter.eval(mEnv, nList);
 
-        Interpreter.eval(mEnv, nList);
-
-        Node n = mEnv.lookup("bar");
-        assertThat(n.getType()).isEqualTo(Node.Type.INT);
-        assertThat(((NodeInt)n).getInt()).isEqualTo(99);
+            Node n = mEnv.lookup("bar");
+            assertThat(n.getType()).isEqualTo(Node.Type.INT);
+            assertThat(((NodeInt)n).getInt()).isEqualTo(99);
+        } catch(LangException e) {
+            assertThat(true).isEqualTo(false);
+        }
     }
 
     @Test
     public void testSpecialFormBegin() {
-        // (begin (set! bar 99) (define foo 11) (set! bar 42))
+        try {
+            // (begin (set! bar 99) (define foo 11) (set! bar 42))
 
-        mEnv.addBinding("bar", new NodeString("previous"));
+            mEnv.addBinding("bar", new NodeString("previous"));
 
-        NodeList nListA = new NodeList();
-        nListA.addChild(new NodeName("set!"));
-        nListA.addChild(new NodeName("bar"));
-        nListA.addChild(new NodeInt(99));
+            NodeList nListA = new NodeList();
+            nListA.addChild(new NodeName("set!"));
+            nListA.addChild(new NodeName("bar"));
+            nListA.addChild(new NodeInt(99));
 
-        NodeList nListB = new NodeList();
-        nListB.addChild(new NodeName("define"));
-        nListB.addChild(new NodeName("foo"));
-        nListB.addChild(new NodeInt(11));
+            NodeList nListB = new NodeList();
+            nListB.addChild(new NodeName("define"));
+            nListB.addChild(new NodeName("foo"));
+            nListB.addChild(new NodeInt(11));
 
-        NodeList nListC = new NodeList();
-        nListC.addChild(new NodeName("set!"));
-        nListC.addChild(new NodeName("bar"));
-        nListC.addChild(new NodeInt(42));
+            NodeList nListC = new NodeList();
+            nListC.addChild(new NodeName("set!"));
+            nListC.addChild(new NodeName("bar"));
+            nListC.addChild(new NodeInt(42));
 
-        NodeList nList = new NodeList();
-        nList.addChild(new NodeName("begin"));
-        nList.addChild(nListA);
-        nList.addChild(nListB);
-        nList.addChild(nListC);
+            NodeList nList = new NodeList();
+            nList.addChild(new NodeName("begin"));
+            nList.addChild(nListA);
+            nList.addChild(nListB);
+            nList.addChild(nListC);
 
-        Interpreter.eval(mEnv, nList);
+            Interpreter.eval(mEnv, nList);
 
-        Node n = mEnv.lookup("bar");
-        assertThat(n.getType()).isEqualTo(Node.Type.INT);
-        assertThat(((NodeInt)n).getInt()).isEqualTo(42);
+            Node n = mEnv.lookup("bar");
+            assertThat(n.getType()).isEqualTo(Node.Type.INT);
+            assertThat(((NodeInt)n).getInt()).isEqualTo(42);
 
-        n = mEnv.lookup("foo");
-        assertThat(n.getType()).isEqualTo(Node.Type.INT);
-        assertThat(((NodeInt)n).getInt()).isEqualTo(11);
+            n = mEnv.lookup("foo");
+            assertThat(n.getType()).isEqualTo(Node.Type.INT);
+            assertThat(((NodeInt)n).getInt()).isEqualTo(11);
+        } catch(LangException e) {
+            assertThat(true).isEqualTo(false);
+        }
     }
 
     @Test
     public void testCoreFunPlusInt() {
+        try {
+            Env e = Env.bindCoreFuns(mEnv);
 
-        Env e = Env.bindCoreFuns(mEnv);
+            // (+ 3 4)
+            NodeList nList = new NodeList();
+            nList.addChild(new NodeName("+"));
+            nList.addChild(new NodeInt(3));
+            nList.addChild(new NodeInt(4));
 
-        // (+ 3 4)
-        NodeList nList = new NodeList();
-        nList.addChild(new NodeName("+"));
-        nList.addChild(new NodeInt(3));
-        nList.addChild(new NodeInt(4));
-
-        Node n = Interpreter.eval(e, nList);
-        assertThat(n.getType()).isEqualTo(Node.Type.INT);
-        assertThat(((NodeInt)n).getInt()).isEqualTo(7);
+            Node n = Interpreter.eval(e, nList);
+            assertThat(n.getType()).isEqualTo(Node.Type.INT);
+            assertThat(((NodeInt)n).getInt()).isEqualTo(7);
 
 
-        // (+ 3 4 5 6)
-        nList.addChild(new NodeInt(5));
-        nList.addChild(new NodeInt(6));
+            // (+ 3 4 5 6)
+            nList.addChild(new NodeInt(5));
+            nList.addChild(new NodeInt(6));
 
-        n = Interpreter.eval(e, nList);
-        assertThat(n.getType()).isEqualTo(Node.Type.INT);
-        assertThat(((NodeInt)n).getInt()).isEqualTo(18);
+            n = Interpreter.eval(e, nList);
+            assertThat(n.getType()).isEqualTo(Node.Type.INT);
+            assertThat(((NodeInt)n).getInt()).isEqualTo(18);
+        } catch(LangException e) {
+            assertThat(true).isEqualTo(false);
+        }
     }
 
     @Test
     public void testCoreFunPlusFloat() {
+        try {
+            Env e = Env.bindCoreFuns(mEnv);
 
-        Env e = Env.bindCoreFuns(mEnv);
+            // (+ 3.0 4.0)
+            NodeList nList = new NodeList();
+            nList.addChild(new NodeName("+"));
+            nList.addChild(new NodeFloat(3.0f));
+            nList.addChild(new NodeFloat(4.0f));
 
-        // (+ 3.0 4.0)
-        NodeList nList = new NodeList();
-        nList.addChild(new NodeName("+"));
-        nList.addChild(new NodeFloat(3.0f));
-        nList.addChild(new NodeFloat(4.0f));
-
-        Node n = Interpreter.eval(e, nList);
-        assertThat(n.getType()).isEqualTo(Node.Type.FLOAT);
-        assertThat(((NodeFloat)n).getFloat()).isEqualTo(7.0f);
+            Node n = Interpreter.eval(e, nList);
+            assertThat(n.getType()).isEqualTo(Node.Type.FLOAT);
+            assertThat(((NodeFloat)n).getFloat()).isEqualTo(7.0f);
 
 
-        // (+ 3.0 4.0 5.0 6.0)
-        nList.addChild(new NodeFloat(5.0f));
-        nList.addChild(new NodeFloat(6.0f));
+            // (+ 3.0 4.0 5.0 6.0)
+            nList.addChild(new NodeFloat(5.0f));
+            nList.addChild(new NodeFloat(6.0f));
 
-        n = Interpreter.eval(e, nList);
-        assertThat(n.getType()).isEqualTo(Node.Type.FLOAT);
-        assertThat(((NodeFloat)n).getFloat()).isEqualTo(18.0f);
+            n = Interpreter.eval(e, nList);
+            assertThat(n.getType()).isEqualTo(Node.Type.FLOAT);
+            assertThat(((NodeFloat)n).getFloat()).isEqualTo(18.0f);
+        } catch(LangException e) {
+            assertThat(true).isEqualTo(false);
+        }
     }
 
     @Test
     public void testCoreFunMinusInt() {
+        try {
+            Env e = Env.bindCoreFuns(mEnv);
 
-        Env e = Env.bindCoreFuns(mEnv);
+            // (- 3 4)
+            NodeList nList = new NodeList();
+            nList.addChild(new NodeName("-"));
+            nList.addChild(new NodeInt(3));
+            nList.addChild(new NodeInt(4));
 
-        // (- 3 4)
-        NodeList nList = new NodeList();
-        nList.addChild(new NodeName("-"));
-        nList.addChild(new NodeInt(3));
-        nList.addChild(new NodeInt(4));
+            Node n = Interpreter.eval(e, nList);
+            assertThat(n.getType()).isEqualTo(Node.Type.INT);
+            assertThat(((NodeInt)n).getInt()).isEqualTo(-1);
 
-        Node n = Interpreter.eval(e, nList);
-        assertThat(n.getType()).isEqualTo(Node.Type.INT);
-        assertThat(((NodeInt)n).getInt()).isEqualTo(-1);
+            // (- 3 4 5 6)
+            nList.addChild(new NodeInt(5));
+            nList.addChild(new NodeInt(6));
 
-        // (- 3 4 5 6)
-        nList.addChild(new NodeInt(5));
-        nList.addChild(new NodeInt(6));
-
-        n = Interpreter.eval(e, nList);
-        assertThat(n.getType()).isEqualTo(Node.Type.INT);
-        assertThat(((NodeInt)n).getInt()).isEqualTo(-12);
+            n = Interpreter.eval(e, nList);
+            assertThat(n.getType()).isEqualTo(Node.Type.INT);
+            assertThat(((NodeInt)n).getInt()).isEqualTo(-12);
+        } catch(LangException e) {
+            assertThat(true).isEqualTo(false);
+        }
     }
 
     @Test
     public void testCoreFunMinusFloat() {
+        try {
+            Env e = Env.bindCoreFuns(mEnv);
 
-        Env e = Env.bindCoreFuns(mEnv);
+            // (- 3.0 4.0)
+            NodeList nList = new NodeList();
+            nList.addChild(new NodeName("-"));
+            nList.addChild(new NodeFloat(3.0f));
+            nList.addChild(new NodeFloat(4.0f));
 
-        // (- 3.0 4.0)
-        NodeList nList = new NodeList();
-        nList.addChild(new NodeName("-"));
-        nList.addChild(new NodeFloat(3.0f));
-        nList.addChild(new NodeFloat(4.0f));
+            Node n = Interpreter.eval(e, nList);
+            assertThat(n.getType()).isEqualTo(Node.Type.FLOAT);
+            assertThat(((NodeFloat)n).getFloat()).isEqualTo(-1.0f);
 
-        Node n = Interpreter.eval(e, nList);
-        assertThat(n.getType()).isEqualTo(Node.Type.FLOAT);
-        assertThat(((NodeFloat)n).getFloat()).isEqualTo(-1.0f);
+            // (- 3.0 4.0 5.0 6.0)
+            nList.addChild(new NodeFloat(5.0f));
+            nList.addChild(new NodeFloat(6.0f));
 
-        // (- 3.0 4.0 5.0 6.0)
-        nList.addChild(new NodeFloat(5.0f));
-        nList.addChild(new NodeFloat(6.0f));
-
-        n = Interpreter.eval(e, nList);
-        assertThat(n.getType()).isEqualTo(Node.Type.FLOAT);
-        assertThat(((NodeFloat)n).getFloat()).isEqualTo(-12.0f);
+            n = Interpreter.eval(e, nList);
+            assertThat(n.getType()).isEqualTo(Node.Type.FLOAT);
+            assertThat(((NodeFloat)n).getFloat()).isEqualTo(-12.0f);
+        } catch(LangException e) {
+            assertThat(true).isEqualTo(false);
+        }
     }
 
     @Test
     public void testCoreFunDivideInt() {
+        try {
+            Env e = Env.bindCoreFuns(mEnv);
 
-        Env e = Env.bindCoreFuns(mEnv);
+            // (/ 24 2)
+            NodeList nList = new NodeList();
+            nList.addChild(new NodeName("/"));
+            nList.addChild(new NodeInt(24));
+            nList.addChild(new NodeInt(2));
 
-        // (/ 24 2)
-        NodeList nList = new NodeList();
-        nList.addChild(new NodeName("/"));
-        nList.addChild(new NodeInt(24));
-        nList.addChild(new NodeInt(2));
+            Node n = Interpreter.eval(e, nList);
+            assertThat(n.getType()).isEqualTo(Node.Type.INT);
+            assertThat(((NodeInt)n).getInt()).isEqualTo(12);
 
-        Node n = Interpreter.eval(e, nList);
-        assertThat(n.getType()).isEqualTo(Node.Type.INT);
-        assertThat(((NodeInt)n).getInt()).isEqualTo(12);
+            // (/ 24 2 2)
+            nList.addChild(new NodeInt(2));
 
-        // (/ 24 2 2)
-        nList.addChild(new NodeInt(2));
-
-        n = Interpreter.eval(e, nList);
-        assertThat(n.getType()).isEqualTo(Node.Type.INT);
-        assertThat(((NodeInt)n).getInt()).isEqualTo(6);
+            n = Interpreter.eval(e, nList);
+            assertThat(n.getType()).isEqualTo(Node.Type.INT);
+            assertThat(((NodeInt)n).getInt()).isEqualTo(6);
+        } catch(LangException e) {
+            assertThat(true).isEqualTo(false);
+        }
     }
 
     @Test
     public void testCoreFunDivideFloat() {
+        try {
+            Env e = Env.bindCoreFuns(mEnv);
 
-        Env e = Env.bindCoreFuns(mEnv);
+            // (/ 24.0 2.0)
+            NodeList nList = new NodeList();
+            nList.addChild(new NodeName("/"));
+            nList.addChild(new NodeFloat(24.0f));
+            nList.addChild(new NodeFloat(2.0f));
 
-        // (/ 24.0 2.0)
-        NodeList nList = new NodeList();
-        nList.addChild(new NodeName("/"));
-        nList.addChild(new NodeFloat(24.0f));
-        nList.addChild(new NodeFloat(2.0f));
+            Node n = Interpreter.eval(e, nList);
+            assertThat(n.getType()).isEqualTo(Node.Type.FLOAT);
+            assertThat(((NodeFloat)n).getFloat()).isEqualTo(12.0f);
 
-        Node n = Interpreter.eval(e, nList);
-        assertThat(n.getType()).isEqualTo(Node.Type.FLOAT);
-        assertThat(((NodeFloat)n).getFloat()).isEqualTo(12.0f);
+            // (/ 24 2 2)
+            nList.addChild(new NodeFloat(2.0f));
 
-        // (/ 24 2 2)
-        nList.addChild(new NodeFloat(2.0f));
-
-        n = Interpreter.eval(e, nList);
-        assertThat(n.getType()).isEqualTo(Node.Type.FLOAT);
-        assertThat(((NodeFloat)n).getFloat()).isEqualTo(6.0f);
+            n = Interpreter.eval(e, nList);
+            assertThat(n.getType()).isEqualTo(Node.Type.FLOAT);
+            assertThat(((NodeFloat)n).getFloat()).isEqualTo(6.0f);
+        } catch(LangException e) {
+            assertThat(true).isEqualTo(false);
+        }
     }
 
     @Test
     public void testCoreFunMultiplyInt() {
+        try {
+            Env e = Env.bindCoreFuns(mEnv);
 
-        Env e = Env.bindCoreFuns(mEnv);
+            // (* 24 2)
+            NodeList nList = new NodeList();
+            nList.addChild(new NodeName("*"));
+            nList.addChild(new NodeInt(24));
+            nList.addChild(new NodeInt(2));
 
-        // (* 24 2)
-        NodeList nList = new NodeList();
-        nList.addChild(new NodeName("*"));
-        nList.addChild(new NodeInt(24));
-        nList.addChild(new NodeInt(2));
+            Node n = Interpreter.eval(e, nList);
+            assertThat(n.getType()).isEqualTo(Node.Type.INT);
+            assertThat(((NodeInt)n).getInt()).isEqualTo(48);
 
-        Node n = Interpreter.eval(e, nList);
-        assertThat(n.getType()).isEqualTo(Node.Type.INT);
-        assertThat(((NodeInt)n).getInt()).isEqualTo(48);
+            // (* 24 2 2)
+            nList.addChild(new NodeInt(2));
 
-        // (* 24 2 2)
-        nList.addChild(new NodeInt(2));
-
-        n = Interpreter.eval(e, nList);
-        assertThat(n.getType()).isEqualTo(Node.Type.INT);
-        assertThat(((NodeInt)n).getInt()).isEqualTo(96);
+            n = Interpreter.eval(e, nList);
+            assertThat(n.getType()).isEqualTo(Node.Type.INT);
+            assertThat(((NodeInt)n).getInt()).isEqualTo(96);
+        } catch(LangException e) {
+            assertThat(true).isEqualTo(false);
+        }
     }
 
     @Test
     public void testCoreFunMultiplyFloat() {
+        try {
+            Env e = Env.bindCoreFuns(mEnv);
 
-        Env e = Env.bindCoreFuns(mEnv);
+            // (* 24.0 2.0)
+            NodeList nList = new NodeList();
+            nList.addChild(new NodeName("*"));
+            nList.addChild(new NodeFloat(24.0f));
+            nList.addChild(new NodeFloat(2.0f));
 
-        // (* 24.0 2.0)
-        NodeList nList = new NodeList();
-        nList.addChild(new NodeName("*"));
-        nList.addChild(new NodeFloat(24.0f));
-        nList.addChild(new NodeFloat(2.0f));
+            Node n = Interpreter.eval(e, nList);
+            assertThat(n.getType()).isEqualTo(Node.Type.FLOAT);
+            assertThat(((NodeFloat)n).getFloat()).isEqualTo(48.0f);
 
-        Node n = Interpreter.eval(e, nList);
-        assertThat(n.getType()).isEqualTo(Node.Type.FLOAT);
-        assertThat(((NodeFloat)n).getFloat()).isEqualTo(48.0f);
+            // (* 24 2 2)
+            nList.addChild(new NodeFloat(2.0f));
 
-        // (* 24 2 2)
-        nList.addChild(new NodeFloat(2.0f));
-
-        n = Interpreter.eval(e, nList);
-        assertThat(n.getType()).isEqualTo(Node.Type.FLOAT);
-        assertThat(((NodeFloat)n).getFloat()).isEqualTo(96.0f);
+            n = Interpreter.eval(e, nList);
+            assertThat(n.getType()).isEqualTo(Node.Type.FLOAT);
+            assertThat(((NodeFloat)n).getFloat()).isEqualTo(96.0f);
+        } catch(LangException e) {
+            assertThat(true).isEqualTo(false);
+        }
     }
 
 }

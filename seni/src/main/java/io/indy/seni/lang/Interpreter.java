@@ -108,7 +108,7 @@ public class Interpreter {
 
         Iterator<Node> iter = children.iterator();
             
-        Node fun = iter.next();
+        Node fun = eval(env, iter.next());
 
         // fun is either a lambda or a name
         if(fun.getType() == Node.Type.NAME) {
@@ -249,6 +249,19 @@ public class Interpreter {
     }
 
     private static boolean isSpecialForm(NodeList listExpr) {
+        List<Node> children = listExpr.getChildren();
+        if (children.isEmpty()) {
+            // is it even possible to have an empty list?
+            //            throw new Exception();
+        }
+
+        Node first = children.get(0);
+
+        if(first.getType() == Node.Type.LIST) {
+            // e.g. ((lambda (x) (+ x x)) 3)
+            return false;
+        }
+
         return sSpecialFormNames.contains(getCarName(listExpr));
     }
 
@@ -264,12 +277,7 @@ public class Interpreter {
 
         Node first = children.get(0);
 
-        // first should be a name node
-        if(first.getType() != Node.Type.NAME) {
-            //            throw new Exception();
-        }
-
-        return ((NodeName) first).getName();
+        return asNodeName(first).getName();
     }
 
 

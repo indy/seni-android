@@ -30,7 +30,7 @@ public class Lexer {
             sDigitSet.add(c);
         }
 
-        String alpha = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        String alpha = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ+-*/";
         sAlphaSet = new HashSet<Character>();
         for(char c :  alpha.toCharArray()) {
             sAlphaSet.add(c);
@@ -46,7 +46,7 @@ public class Lexer {
     private static final char MINUS = '-';
     private static final char PERIOD = '.';
 
-    public static Queue<Token> tokenise(String input) {
+    public static Queue<Token> tokenise(String input) throws LangException {
 
         Queue<Token> q = new ArrayDeque<Token>();
         Pair p = null;
@@ -74,8 +74,7 @@ public class Lexer {
                 p = consumeFloat(s);
                 break;
             default :
-                // TODO: throw error
-                break;
+                throw new LangException("unknown token type: " + s.charAt(0));
             }
 
             q.add(p.mToken);
@@ -208,7 +207,11 @@ public class Lexer {
         }
 
         if(isName(c)) {
-            return Token.Type.NAME;
+            if (c == MINUS && s.length() > 1 && isDigit(s.charAt(1))) {
+                // don't treat negative numbers as NAMEs
+            } else {
+                return Token.Type.NAME;
+            }
         }
 
         if(isDigit(c) || c == MINUS || c == PERIOD) {

@@ -7,6 +7,15 @@ public class Env {
     private Env mOuter;
     private HashMap<String, Node> mBindings;
 
+    public static Env bindCoreFuns(Env env) {
+        // binds core functions in a new scope of env
+        Env e = env.newScope();
+
+        e.addBinding("+", new NodeLambdaPlus());
+
+        return e;
+    }
+
     public Env() {
         mOuter = null;
         mBindings = new HashMap<String, Node>();
@@ -24,6 +33,10 @@ public class Env {
     public Env addBinding(String key, Node val) {
         mBindings.put(key, val);
         return this;
+    }
+
+    public boolean hasBinding(String key) {
+        return mBindings.containsKey(key);
     }
 
     public Node lookup(String key) {

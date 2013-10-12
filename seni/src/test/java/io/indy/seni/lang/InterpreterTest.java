@@ -7,12 +7,12 @@ import static org.fest.assertions.api.Assertions.assertThat;
 
 public class InterpreterTest {
 
-    private Interpreter mInterpreter;
+    // private Interpreter mInterpreter;
     private Env mEnv;
 
     @Before
     public void initObjects() {
-        mInterpreter = new Interpreter();
+        // mInterpreter = new Interpreter();
         mEnv = new Env();
     }
 
@@ -20,16 +20,16 @@ public class InterpreterTest {
     public void testBasicEval() {
 
         NodeInt nInt = new NodeInt(42);
-        assertThat(mInterpreter.eval(null, nInt)).isEqualTo(nInt);        
+        assertThat(Interpreter.eval(null, nInt)).isEqualTo(nInt);        
 
         NodeFloat nFloat = new NodeFloat(3.14f);
-        assertThat(mInterpreter.eval(null, nFloat)).isEqualTo(nFloat);        
+        assertThat(Interpreter.eval(null, nFloat)).isEqualTo(nFloat);        
 
         NodeString nString = new NodeString("pish");
-        assertThat(mInterpreter.eval(null, nString)).isEqualTo(nString);        
+        assertThat(Interpreter.eval(null, nString)).isEqualTo(nString);        
 
         NodeBoolean nBoolean = new NodeBoolean(true);
-        assertThat(mInterpreter.eval(null, nBoolean)).isEqualTo(nBoolean);
+        assertThat(Interpreter.eval(null, nBoolean)).isEqualTo(nBoolean);
     }
 
     @Test
@@ -39,7 +39,7 @@ public class InterpreterTest {
         NodeInt nInt = new NodeInt(42);
 
         mEnv.addBinding(var, nInt);
-        assertThat(mInterpreter.eval(mEnv, new NodeName(var))).isEqualTo(nInt);
+        assertThat(Interpreter.eval(mEnv, new NodeName(var))).isEqualTo(nInt);
     }
 
     @Test
@@ -53,7 +53,7 @@ public class InterpreterTest {
         NodeName nName = new NodeName("foo");
         nList.addChild(nName);
 
-        assertThat(mInterpreter.eval(null, nList)).isEqualTo(nName);
+        assertThat(Interpreter.eval(null, nList)).isEqualTo(nName);
     }
 
 
@@ -70,7 +70,7 @@ public class InterpreterTest {
         nList.addChild(two);
         nList.addChild(four);
 
-        assertThat(mInterpreter.eval(null, nList)).isEqualTo(two);
+        assertThat(Interpreter.eval(null, nList)).isEqualTo(two);
 
 
         // (if false 2 4) => 4
@@ -80,7 +80,7 @@ public class InterpreterTest {
         nList.addChild(two);
         nList.addChild(four);
 
-        assertThat(mInterpreter.eval(null, nList)).isEqualTo(four);
+        assertThat(Interpreter.eval(null, nList)).isEqualTo(four);
     }
 
     @Test
@@ -95,10 +95,89 @@ public class InterpreterTest {
         nList.addChild(new NodeName("foo"));
         nList.addChild(new NodeInt(45));
 
-        mInterpreter.eval(mEnv, nList);
+        Interpreter.eval(mEnv, nList);
 
         Node n = mEnv.lookup("foo");
         assertThat(n.getType()).isEqualTo(Node.Type.INT);
         assertThat(((NodeInt)n).getInt()).isEqualTo(45);
+    }
+
+    @Test
+    public void testSpecialFormDefine() {
+
+        // (define bar 99)
+        NodeList nList = new NodeList();
+        nList.addChild(new NodeName("define"));
+        nList.addChild(new NodeName("bar"));
+        nList.addChild(new NodeInt(99));
+
+        Interpreter.eval(mEnv, nList);
+
+        Node n = mEnv.lookup("bar");
+        assertThat(n.getType()).isEqualTo(Node.Type.INT);
+        assertThat(((NodeInt)n).getInt()).isEqualTo(99);
+    }
+
+    @Test
+    public void testSpecialFormBegin() {
+        // (begin (set! bar 99) (define foo 11) (set! bar 42))
+
+        mEnv.addBinding("bar", new NodeString("previous"));
+
+        NodeList nListA = new NodeList();
+        nListA.addChild(new NodeName("set!"));
+        nListA.addChild(new NodeName("bar"));
+        nListA.addChild(new NodeInt(99));
+
+        NodeList nListB = new NodeList();
+        nListB.addChild(new NodeName("define"));
+        nListB.addChild(new NodeName("foo"));
+        nListB.addChild(new NodeInt(11));
+
+        NodeList nListC = new NodeList();
+        nListC.addChild(new NodeName("set!"));
+        nListC.addChild(new NodeName("bar"));
+        nListC.addChild(new NodeInt(42));
+
+        NodeList nList = new NodeList();
+        nList.addChild(new NodeName("begin"));
+        nList.addChild(nListA);
+        nList.addChild(nListB);
+        nList.addChild(nListC);
+
+        Interpreter.eval(mEnv, nList);
+
+        Node n = mEnv.lookup("bar");
+        assertThat(n.getType()).isEqualTo(Node.Type.INT);
+        assertThat(((NodeInt)n).getInt()).isEqualTo(42);
+
+        n = mEnv.lookup("foo");
+        assertThat(n.getType()).isEqualTo(Node.Type.INT);
+        assertThat(((NodeInt)n).getInt()).isEqualTo(11);
+    }
+
+    @Test
+    public void testCoreFunPlus() {
+
+        Env e = Env.bindCoreFuns(mEnv);
+
+        // (+ 3 4)
+        NodeList nList = new NodeList();
+        nList.addChild(new NodeName("+"));
+        nList.addChild(new NodeInt(3));
+        nList.addChild(new NodeInt(4));
+
+        Node n = Interpreter.eval(e, nList);
+        assertThat(n.getType()).isEqualTo(Node.Type.INT);
+        assertThat(((NodeInt)n).getInt()).isEqualTo(7);
+
+
+        // (+ 3 4 5 6)
+        nList.addChild(new NodeInt(5));
+        nList.addChild(new NodeInt(6));
+
+        n = Interpreter.eval(e, nList);
+        assertThat(n.getType()).isEqualTo(Node.Type.INT);
+        assertThat(((NodeInt)n).getInt()).isEqualTo(18);
     }
 }

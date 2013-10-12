@@ -9,6 +9,7 @@ abstract public class Node {
         NAME,
         STRING,
         BOOLEAN,
+        LAMBDA,
         NULL
     }
 

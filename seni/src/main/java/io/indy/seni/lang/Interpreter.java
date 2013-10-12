@@ -2,6 +2,8 @@ package io.indy.seni.lang;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Iterator;
+import java.util.ArrayList;
 
 public class Interpreter {
 
@@ -15,13 +17,21 @@ public class Interpreter {
 
     private static final NodeNull NODE_NULL = new NodeNull();
 
-    HashSet<String> mSpecialFormNames;
+    private static HashSet<String> sSpecialFormNames;
 
-    public Interpreter() {
-        setupSpecialFormNames();
+    static {
+        sSpecialFormNames = new HashSet<String>(8);
+
+        sSpecialFormNames.add(QUOTE);
+        sSpecialFormNames.add(IF);
+        sSpecialFormNames.add(LET);
+        sSpecialFormNames.add(LAMBDA);
+        sSpecialFormNames.add(BEGIN);
+        sSpecialFormNames.add(DEFINE);
+        sSpecialFormNames.add(SET);
     }
     
-    public Node eval(Env env, Node expr) {
+    public static Node eval(Env env, Node expr) {
         
         Node.Type type = expr.getType();
 
@@ -55,7 +65,7 @@ public class Interpreter {
         return null;
     }
 
-    private Node funApplication(Env env, NodeList listExpr) {
+    private static Node funApplication(Env env, NodeList listExpr) {
 
         if (isSpecialForm(listExpr)) {
             // deal with special forms
@@ -73,18 +83,54 @@ public class Interpreter {
                 return specialFormSet(env, listExpr);
             }
 
-        } else {
-            // general function application
+            if (name.equals(DEFINE)) {
+                return specialFormDefine(env, listExpr);
+            }
+
+            if (name.equals(BEGIN)) {
+                return specialFormBegin(env, listExpr);
+            }
+
+            if (name.equals(LAMBDA)) {
+                return specialFormLambda(env, listExpr);
+            }
+
+            // throw an error
+
+        } 
+
+        // general function application
+            
+        // (fun args...)
+        // ((lambda (x) (+ x x)) 4)
+
+        List<Node> children = asNodeList(listExpr).getChildren();
+
+        Iterator<Node> iter = children.iterator();
+            
+        Node fun = iter.next();
+
+        // fun is either a lambda or a name
+        if(fun.getType() == Node.Type.NAME) {
+            fun = env.lookup(asNodeName(fun).getName());
         }
 
-        return null;
+        NodeLambda lambda = asNodeLambda(fun);
+
+        List<Node> args = new ArrayList<Node>();
+        while(iter.hasNext()) {
+            args.add(eval(env, iter.next()));
+        }
+
+        // pass the eval'd args to lambda
+        return lambda.execute(env, args);
     }
 
-    private Node specialFormQuote(Env env, NodeList listExpr) {
+    private static  Node specialFormQuote(Env env, NodeList listExpr) {
         return listExpr.getChildren().get(1);
     }
 
-    private Node specialFormIf(Env env, NodeList listExpr) {
+    private static Node specialFormIf(Env env, NodeList listExpr) {
 
         // TODO: check that there are only 3 or 4 forms in expr
 
@@ -109,7 +155,7 @@ public class Interpreter {
         return NODE_NULL;
     }
 
-    private Node specialFormSet(Env env, NodeList listExpr) {
+    private static Node specialFormSet(Env env, NodeList listExpr) {
         // (set! foo 42)
 
         List<Node> children = listExpr.getChildren();
@@ -117,27 +163,98 @@ public class Interpreter {
             // throw an error : set! not in form: set! name value
         }
 
-        Node var = children.get(1);
-        if (var.getType() != Node.Type.NAME) {
-            // throw an error : expected a name node
-        }
+        NodeName var = asNodeName(children.get(1));
+        Node value = eval(env, children.get(2));
 
         // mutate the current env
         //
-        String name = ((NodeName)var).getName();
-        Node value = children.get(2);
-        env.addBinding(name, value);
+        env.addBinding(var.getName(), value);
 
         return value;
     }
 
-    private boolean isSpecialForm(NodeList listExpr) {
-        return mSpecialFormNames.contains(getCarName(listExpr));
+    private static Node specialFormDefine(Env env, NodeList listExpr) {
+        // (define bar 99)
+
+        List<Node> children = listExpr.getChildren();
+        if(children.size() != 3) {
+            // throw an error : define not in form: define name value
+        }
+
+        NodeName var = asNodeName(children.get(1));
+
+        if (env.hasBinding(var.getName())) {
+            // throw an error : var already defined
+        }
+
+        Node value = eval(env, children.get(2));
+        env.addBinding(var.getName(), value);
+
+        return value;
+    }
+
+    private static Node specialFormBegin(Env env, NodeList listExpr) {
+        // (begin (set! bar 99) (define foo 11) (set! bar 42))
+
+        List<Node> children = listExpr.getChildren();
+
+        Node res = NODE_NULL;
+        for (int i=1;i<children.size();i++) {
+            res = eval(env, children.get(i));
+        }
+
+        return res;
+    }
+
+    private static Node specialFormLambda(Env env, NodeList listExpr) {
+        // (lambda (x y) (+ x y))
+
+        // (lambda (x y) 5)
+
+        List<Node> children = listExpr.getChildren();
+
+        List<String> args = new ArrayList<String>();
+
+        Node argNodes = children.get(1);
+
+        for (Node child : asNodeList(argNodes).getChildren()) {
+            args.add(asNodeName(child).getName());
+        }
+
+        return new NodeLambda(args, children.get(2));
+    }
+
+    private static NodeName asNodeName(Node n) {
+        if (n.getType() != Node.Type.NAME) {
+            // throw an error
+        }
+
+        return (NodeName) n;
+    }
+
+    private static NodeList asNodeList(Node n) {
+        if (n.getType() != Node.Type.LIST) {
+            // throw an error
+        }
+
+        return (NodeList) n;
+    }
+
+    private static NodeLambda asNodeLambda(Node n) {
+        if (n.getType() != Node.Type.LAMBDA) {
+            // throw an error
+        }
+
+        return (NodeLambda) n;
+    }
+
+    private static boolean isSpecialForm(NodeList listExpr) {
+        return sSpecialFormNames.contains(getCarName(listExpr));
     }
 
     // assuming that expr is a list with a name at the beginning,
     //  get the string value of (car expr)
-    private String getCarName(NodeList listExpr) {
+    private static String getCarName(NodeList listExpr) {
 
         List<Node> children = listExpr.getChildren();
         if (children.isEmpty()) {
@@ -155,19 +272,5 @@ public class Interpreter {
         return ((NodeName) first).getName();
     }
 
-    private void setupSpecialFormNames() {
-        mSpecialFormNames = new HashSet<String>(8);
-
-        mSpecialFormNames.add(QUOTE);
-        mSpecialFormNames.add(IF);
-        mSpecialFormNames.add(LET);
-        mSpecialFormNames.add(LAMBDA);
-        mSpecialFormNames.add(BEGIN);
-        mSpecialFormNames.add(DEFINE);
-        mSpecialFormNames.add(SET);
-
-        //mSpecialFormNames.add("with-colour");
-        //mSpecialFormNames.add("--debug-hook");
-    }
 
 }

@@ -13,6 +13,7 @@ public class Env {
 
         e.addBinding("+", new NodeLambdaPlus());
         e.addBinding("-", new NodeLambdaMinus());
+        e.addBinding("/", new NodeLambdaDivide());
 
         return e;
     }

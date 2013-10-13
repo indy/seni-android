@@ -9,23 +9,32 @@ public class NodeLambdaEqual extends NodeLambdaMath {
         super();
     }
 
-    protected Node executeInt(int first, Iterator<Node> iter) {
+    protected Node executeInt(int first, Iterator<Node> iter) throws LangException {
 
-        while(iter.hasNext()) {
-            if (first != Node.asIntValue(iter.next())) {
-                return new NodeBoolean(false);
+        try {
+            while(iter.hasNext()) {
+                if (first != Node.asIntValue(iter.next())) {
+                    return new NodeBoolean(false);
+                }
             }
+        } catch (LangException e) {
+            // log equal
+            throw e;
         }
         
         return new NodeBoolean(true);
     }
 
-    protected Node executeFloat(float first, Iterator<Node> iter) {
+    protected Node executeFloat(float first, Iterator<Node> iter) throws LangException {
 
-        while(iter.hasNext()) {
-            if (first != Node.asFloatValue(iter.next())) {
-                return new NodeBoolean(false);
+        try {
+            while(iter.hasNext()) {
+                if (first != Node.asFloatValue(iter.next())) {
+                    return new NodeBoolean(false);
+                }
             }
+        } catch (LangException e) {
+            throw e;
         }
 
         return new NodeBoolean(true);

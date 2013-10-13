@@ -24,17 +24,23 @@ public abstract class NodeLambdaMath extends NodeLambda {
             return null;
         }
 
-        if(n.getType() == Node.Type.INT) {
-            return executeInt(Node.asIntValue(n), iter);
-        } else if(n.getType() == Node.Type.FLOAT) {
-            return executeFloat(Node.asFloatValue(n), iter);
-        } else {
-            // throw an error: + only works with int or float
+        try {
+
+            if(n.getType() == Node.Type.INT) {
+                return executeInt(Node.asIntValue(n), iter);
+            } else if(n.getType() == Node.Type.FLOAT) {
+                return executeFloat(Node.asFloatValue(n), iter);
+            } else {
+                // throw an error: + only works with int or float
+            }
+
+        } catch (LangException e) {
+            // log e
         }
 
         return null;
     }
 
-    abstract protected Node executeInt(int first, Iterator<Node> iter); 
-    abstract protected Node executeFloat(float first, Iterator<Node> iter);
+    abstract protected Node executeInt(int first, Iterator<Node> iter) throws LangException; 
+    abstract protected Node executeFloat(float first, Iterator<Node> iter) throws LangException;
 }

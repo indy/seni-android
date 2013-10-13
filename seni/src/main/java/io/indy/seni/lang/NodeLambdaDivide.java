@@ -9,23 +9,33 @@ public class NodeLambdaDivide extends NodeLambdaMath {
         super();
     }
 
-    protected Node executeInt(int first, Iterator<Node> iter) {
+    protected Node executeInt(int first, Iterator<Node> iter) throws LangException {
         
         int total = first;
-        while(iter.hasNext()) {
-            total /= Node.asIntValue(iter.next());
+        try {
+            while(iter.hasNext()) {
+                total /= Node.asIntValue(iter.next());
+            }
+        } catch(LangException e) {
+            // log divide
+            throw e;
         }
 
         return new NodeInt(total);
     }
 
-    protected Node executeFloat(float first, Iterator<Node> iter) {
+    protected Node executeFloat(float first, Iterator<Node> iter) throws LangException {
         
         float total = first;
-        while(iter.hasNext()) {
-            total /= Node.asFloatValue(iter.next());
+        try {
+            while(iter.hasNext()) {
+                total /= Node.asFloatValue(iter.next());
+            }
+        } catch (LangException e) {
+            // log divide
+            throw e;
         }
-        
+
         return new NodeFloat(total);
     }
 }

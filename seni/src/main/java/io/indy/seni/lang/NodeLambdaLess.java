@@ -9,35 +9,43 @@ public class NodeLambdaLess extends NodeLambdaMath {
         super();
     }
 
-    protected Node executeInt(int first, Iterator<Node> iter) {
+    protected Node executeInt(int first, Iterator<Node> iter) throws LangException {
         
         int less = first;
         int val;
 
-        while(iter.hasNext()) {
-
-            val = Node.asIntValue(iter.next());
-            if (less > val) {
-                return new NodeBoolean(false);
+        try {
+            while(iter.hasNext()) {
+                val = Node.asIntValue(iter.next());
+                if (less > val) {
+                    return new NodeBoolean(false);
+                }
+                less = val;
             }
-            less = val;
+
+        } catch (LangException e) {
+            // log less
+            throw e;
         }
         
         return new NodeBoolean(true);
     }
 
-    protected Node executeFloat(float first, Iterator<Node> iter) {
+    protected Node executeFloat(float first, Iterator<Node> iter) throws LangException {
         
         float less = first;
         float val;
 
-        while(iter.hasNext()) {
-
-            val = Node.asFloatValue(iter.next());
-            if (less > val) {
-                return new NodeBoolean(false);
+        try {
+            while(iter.hasNext()) {
+                val = Node.asFloatValue(iter.next());
+                if (less > val) {
+                    return new NodeBoolean(false);
+                }
+                less = val;
             }
-            less = val;
+        } catch (LangException e) {
+            throw e;
         }
 
         return new NodeBoolean(true);

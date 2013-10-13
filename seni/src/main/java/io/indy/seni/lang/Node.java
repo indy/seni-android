@@ -2,37 +2,37 @@ package io.indy.seni.lang;
 
 abstract public class Node {
 
-    public static NodeInt asInt(Node n) {
+    public static NodeInt asInt(Node n) throws LangException {
         if(n.getType() != Type.INT) {
-            // throw an error
+            throw new LangException("incompatible cast to INT");
         }
         return (NodeInt) n;
     }
 
-    public static int asIntValue(Node n) {
+    public static int asIntValue(Node n) throws LangException {
         return asInt(n).getInt();
     }
 
-    public static NodeFloat asFloat(Node n) {
+    public static NodeFloat asFloat(Node n) throws LangException {
         if(n.getType() != Type.FLOAT) {
-            // throw an error
+            throw new LangException("incompatible cast to FLOAT");
         }
         return (NodeFloat) n;
     }
 
-    public static float asFloatValue(Node n) {
+    public static float asFloatValue(Node n) throws LangException {
         return asFloat(n).getFloat();
     }
 
-    public static NodeName asName(Node n) {
+    public static NodeName asName(Node n) throws LangException {
         if (n.getType() != Node.Type.NAME) {
-            // throw an error
+            throw new LangException("incompatible cast to NAME");
         }
 
         return (NodeName) n;
     }
 
-    public static String asNameValue(Node n) {
+    public static String asNameValue(Node n) throws LangException {
         return asName(n).getName();
     }
 

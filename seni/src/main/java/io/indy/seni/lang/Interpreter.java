@@ -206,7 +206,7 @@ public class Interpreter {
         return res;
     }
 
-    private static Node specialFormLambda(Env env, NodeList listExpr) {
+    private static Node specialFormLambda(Env env, NodeList listExpr) throws LangException {
         // (lambda (x y) (+ x y))
 
         // (lambda (x y) 5)
@@ -224,7 +224,7 @@ public class Interpreter {
         return new NodeLambda(args, children.get(2));
     }
 
-    private static boolean isSpecialForm(NodeList listExpr) {
+    private static boolean isSpecialForm(NodeList listExpr) throws LangException {
         List<Node> children = listExpr.getChildren();
         if (children.isEmpty()) {
             // is it even possible to have an empty list?
@@ -243,7 +243,7 @@ public class Interpreter {
 
     // assuming that expr is a list with a name at the beginning,
     //  get the string value of (car expr)
-    private static String getCarName(NodeList listExpr) {
+    private static String getCarName(NodeList listExpr) throws LangException {
 
         List<Node> children = listExpr.getChildren();
         if (children.isEmpty()) {

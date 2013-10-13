@@ -9,37 +9,44 @@ public class NodeLambdaMore extends NodeLambdaMath {
         super();
     }
 
-    protected Node executeInt(int first, Iterator<Node> iter) {
+    protected Node executeInt(int first, Iterator<Node> iter) throws LangException {
         
         int more = first;
         int val;
         Node n;
 
-        while(iter.hasNext()) {
-
-            val = Node.asIntValue(iter.next());
-            if (more < val) {
-                return new NodeBoolean(false);
+        try {
+            while(iter.hasNext()) {
+                val = Node.asIntValue(iter.next());
+                if (more < val) {
+                    return new NodeBoolean(false);
+                }
+                more = val;
             }
-            more = val;
+        } catch (LangException e) {
+            // log more
+            throw e;
         }
         
         return new NodeBoolean(true);
     }
 
-    protected Node executeFloat(float first, Iterator<Node> iter) {
+    protected Node executeFloat(float first, Iterator<Node> iter) throws LangException {
         
         float more = first;
         float val;
         Node n;
 
-        while(iter.hasNext()) {
-
-            val = Node.asFloatValue(iter.next());
-            if (more < val) {
-                return new NodeBoolean(false);
+        try {
+            while(iter.hasNext()) {
+                val = Node.asFloatValue(iter.next());
+                if (more < val) {
+                    return new NodeBoolean(false);
+                }
+                more = val;
             }
-            more = val;
+        } catch (LangException e) {
+            throw e;
         }
 
         return new NodeBoolean(true);

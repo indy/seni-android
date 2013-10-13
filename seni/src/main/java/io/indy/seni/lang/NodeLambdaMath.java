@@ -25,9 +25,9 @@ public abstract class NodeLambdaMath extends NodeLambda {
         }
 
         if(n.getType() == Node.Type.INT) {
-            return executeInt(((NodeInt)n).getInt(), iter);
+            return executeInt(Node.asIntValue(n), iter);
         } else if(n.getType() == Node.Type.FLOAT) {
-            return executeFloat(((NodeFloat)n).getFloat(), iter);
+            return executeFloat(Node.asFloatValue(n), iter);
         } else {
             // throw an error: + only works with int or float
         }

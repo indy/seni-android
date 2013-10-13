@@ -13,19 +13,13 @@ public class NodeLambdaLess extends NodeLambdaMath {
         
         int less = first;
         int val;
-        Node n;
 
         while(iter.hasNext()) {
-            n = iter.next();
-            if(n.getType() != Node.Type.INT) {
-                // throw exception
-            }
-            val = ((NodeInt)n).getInt();
 
+            val = Node.asIntValue(iter.next());
             if (less > val) {
                 return new NodeBoolean(false);
             }
-
             less = val;
         }
         
@@ -36,22 +30,16 @@ public class NodeLambdaLess extends NodeLambdaMath {
         
         float less = first;
         float val;
-        Node n;
 
         while(iter.hasNext()) {
-            n = iter.next();
-            if(n.getType() != Node.Type.FLOAT) {
-                // throw exception
-            }
-            val = ((NodeFloat)n).getFloat();
 
+            val = Node.asFloatValue(iter.next());
             if (less > val) {
                 return new NodeBoolean(false);
             }
-
             less = val;
         }
-        
+
         return new NodeBoolean(true);
     }
 }

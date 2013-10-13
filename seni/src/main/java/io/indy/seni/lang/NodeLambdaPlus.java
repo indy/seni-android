@@ -12,14 +12,8 @@ public class NodeLambdaPlus extends NodeLambdaMath {
     protected Node executeInt(int first, Iterator<Node> iter) {
         
         int total = first;
-        Node n;
-
         while(iter.hasNext()) {
-            n = iter.next();
-            if(n.getType() != Node.Type.INT) {
-                // throw exception
-            }
-            total += ((NodeInt)n).getInt();
+            total += Node.asIntValue(iter.next());
         }
         
         return new NodeInt(total);
@@ -28,14 +22,8 @@ public class NodeLambdaPlus extends NodeLambdaMath {
     protected Node executeFloat(float first, Iterator<Node> iter) {
         
         float total = first;
-        Node n;
-
         while(iter.hasNext()) {
-            n = iter.next();
-            if(n.getType() != Node.Type.FLOAT) {
-                // throw exception
-            }
-            total += ((NodeFloat)n).getFloat();
+            total += Node.asFloatValue(iter.next());
         }
         
         return new NodeFloat(total);

@@ -11,22 +11,17 @@ public class NodeLambdaMore extends NodeLambdaMath {
 
     protected Node executeInt(int first, Iterator<Node> iter) {
         
-        int less = first;
+        int more = first;
         int val;
         Node n;
 
         while(iter.hasNext()) {
-            n = iter.next();
-            if(n.getType() != Node.Type.INT) {
-                // throw exception
-            }
-            val = ((NodeInt)n).getInt();
 
-            if (less < val) {
+            val = Node.asIntValue(iter.next());
+            if (more < val) {
                 return new NodeBoolean(false);
             }
-
-            less = val;
+            more = val;
         }
         
         return new NodeBoolean(true);
@@ -34,24 +29,19 @@ public class NodeLambdaMore extends NodeLambdaMath {
 
     protected Node executeFloat(float first, Iterator<Node> iter) {
         
-        float less = first;
+        float more = first;
         float val;
         Node n;
 
         while(iter.hasNext()) {
-            n = iter.next();
-            if(n.getType() != Node.Type.FLOAT) {
-                // throw exception
-            }
-            val = ((NodeFloat)n).getFloat();
 
-            if (less < val) {
+            val = Node.asFloatValue(iter.next());
+            if (more < val) {
                 return new NodeBoolean(false);
             }
-
-            less = val;
+            more = val;
         }
-        
+
         return new NodeBoolean(true);
     }
 }

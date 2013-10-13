@@ -21,21 +21,13 @@ public class NodeLambdaEqual extends NodeLambdaMath {
     }
 
     protected Node executeFloat(float first, Iterator<Node> iter) {
-        
-        float val;
-        Node n;
 
         while(iter.hasNext()) {
-            n = iter.next();
-            if(n.getType() != Node.Type.FLOAT) {
-                // throw exception
-            }
-
-            if (first != ((NodeFloat)n).getFloat()) {
+            if (first != Node.asFloatValue(iter.next())) {
                 return new NodeBoolean(false);
             }
         }
-        
+
         return new NodeBoolean(true);
     }
 }

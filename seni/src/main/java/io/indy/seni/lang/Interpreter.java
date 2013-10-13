@@ -104,7 +104,7 @@ public class Interpreter {
         // (fun args...)
         // ((lambda (x) (+ x x)) 4)
 
-        List<Node> children = asNodeList(listExpr).getChildren();
+        List<Node> children = Node.asList(listExpr).getChildren();
 
         Iterator<Node> iter = children.iterator();
             
@@ -112,10 +112,10 @@ public class Interpreter {
 
         // fun is either a lambda or a name
         if(fun.getType() == Node.Type.NAME) {
-            fun = env.lookup(asNodeName(fun).getName());
+            fun = env.lookup(Node.asNameValue(fun));
         }
 
-        NodeLambda lambda = asNodeLambda(fun);
+        NodeLambda lambda = Node.asLambda(fun);
 
         List<Node> args = new ArrayList<Node>();
         while(iter.hasNext()) {
@@ -163,7 +163,7 @@ public class Interpreter {
             // throw an error : set! not in form: set! name value
         }
 
-        NodeName var = asNodeName(children.get(1));
+        NodeName var = Node.asName(children.get(1));
         Node value = eval(env, children.get(2));
 
         // mutate the current env
@@ -181,7 +181,7 @@ public class Interpreter {
             // throw an error : define not in form: define name value
         }
 
-        NodeName var = asNodeName(children.get(1));
+        NodeName var = Node.asName(children.get(1));
 
         if (env.hasBinding(var.getName())) {
             // throw an error : var already defined
@@ -217,35 +217,11 @@ public class Interpreter {
 
         Node argNodes = children.get(1);
 
-        for (Node child : asNodeList(argNodes).getChildren()) {
-            args.add(asNodeName(child).getName());
+        for (Node child : Node.asList(argNodes).getChildren()) {
+            args.add(Node.asNameValue(child));
         }
 
         return new NodeLambda(args, children.get(2));
-    }
-
-    private static NodeName asNodeName(Node n) {
-        if (n.getType() != Node.Type.NAME) {
-            // throw an error
-        }
-
-        return (NodeName) n;
-    }
-
-    private static NodeList asNodeList(Node n) {
-        if (n.getType() != Node.Type.LIST) {
-            // throw an error
-        }
-
-        return (NodeList) n;
-    }
-
-    private static NodeLambda asNodeLambda(Node n) {
-        if (n.getType() != Node.Type.LAMBDA) {
-            // throw an error
-        }
-
-        return (NodeLambda) n;
     }
 
     private static boolean isSpecialForm(NodeList listExpr) {
@@ -276,8 +252,8 @@ public class Interpreter {
         }
 
         Node first = children.get(0);
-
-        return asNodeName(first).getName();
+        
+        return Node.asNameValue(first);
     }
 
 

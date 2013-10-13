@@ -476,4 +476,45 @@ public class InterpreterTest {
         }
     }
 
+
+    @Test
+    public void testCoreFunEqualInt() {
+        try {
+            Env e = Env.bindCoreFuns(mEnv);
+
+            // (= 4 4)
+            NodeList nList = new NodeList();
+            nList.addChild(new NodeName("="));
+            nList.addChild(new NodeInt(4));
+            nList.addChild(new NodeInt(4));
+
+            Node n = Interpreter.eval(e, nList);
+            assertThat(n.getType()).isEqualTo(Node.Type.BOOLEAN);
+            assertThat(((NodeBoolean)n).getBoolean()).isEqualTo(true);
+
+        } catch(LangException e) {
+            assertThat(true).isEqualTo(false);
+        }
+    }
+
+    @Test
+    public void testCoreFunEqualFloat() {
+        try {
+            Env e = Env.bindCoreFuns(mEnv);
+
+            // (= 4.0 4.0)
+            NodeList nList = new NodeList();
+            nList.addChild(new NodeName("="));
+            nList.addChild(new NodeFloat(4.0f));
+            nList.addChild(new NodeFloat(4.0f));
+
+            Node n = Interpreter.eval(e, nList);
+            assertThat(n.getType()).isEqualTo(Node.Type.BOOLEAN);
+            assertThat(((NodeBoolean)n).getBoolean()).isEqualTo(true);
+
+        } catch(LangException e) {
+            assertThat(true).isEqualTo(false);
+        }
+    }
+
 }

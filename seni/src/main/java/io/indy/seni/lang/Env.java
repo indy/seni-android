@@ -16,6 +16,7 @@ public class Env {
         e.addBinding("/", new NodeLambdaDivide());
         e.addBinding("*", new NodeLambdaMultiply());
         e.addBinding("<", new NodeLambdaLess());
+        e.addBinding(">", new NodeLambdaMore());
 
         return e;
     }

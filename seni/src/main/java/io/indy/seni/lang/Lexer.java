@@ -30,7 +30,7 @@ public class Lexer {
             sDigitSet.add(c);
         }
 
-        String alpha = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ+-*/";
+        String alpha = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ+-*/<>=";
         sAlphaSet = new HashSet<Character>();
         for(char c :  alpha.toCharArray()) {
             sAlphaSet.add(c);

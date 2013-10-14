@@ -512,6 +512,16 @@ public class InterpreterTest {
             assertThat(n.getType()).isEqualTo(Node.Type.BOOLEAN);
             assertThat(((NodeBoolean)n).getBoolean()).isEqualTo(true);
 
+
+            nList = new NodeList();
+            nList.addChild(new NodeName("="));
+            nList.addChild(new NodeInt(2));
+            nList.addChild(new NodeInt(1));
+
+            n = Interpreter.eval(e, nList);
+            assertThat(n.getType()).isEqualTo(Node.Type.BOOLEAN);
+            assertThat(((NodeBoolean)n).getBoolean()).isEqualTo(false);
+
         } catch(LangException e) {
             assertThat(true).isEqualTo(false);
         }

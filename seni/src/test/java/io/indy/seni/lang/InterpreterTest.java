@@ -400,7 +400,7 @@ public class InterpreterTest {
         try {
             Env e = Env.bindCoreFuns(mEnv);
 
-            // (< 3 4)
+            // (< 3 4) -> true
             NodeList nList = new NodeList();
             nList.addChild(new NodeName("<"));
             nList.addChild(new NodeInt(3));
@@ -409,6 +409,17 @@ public class InterpreterTest {
             Node n = Interpreter.eval(e, nList);
             assertThat(n.getType()).isEqualTo(Node.Type.BOOLEAN);
             assertThat(((NodeBoolean)n).getBoolean()).isEqualTo(true);
+
+
+            // (< 5 4) -> false
+            nList = new NodeList();
+            nList.addChild(new NodeName("<"));
+            nList.addChild(new NodeInt(5));
+            nList.addChild(new NodeInt(4));
+
+            n = Interpreter.eval(e, nList);
+            assertThat(n.getType()).isEqualTo(Node.Type.BOOLEAN);
+            assertThat(((NodeBoolean)n).getBoolean()).isEqualTo(false);
 
         } catch(LangException e) {
             assertThat(true).isEqualTo(false);
@@ -429,6 +440,15 @@ public class InterpreterTest {
             Node n = Interpreter.eval(e, nList);
             assertThat(n.getType()).isEqualTo(Node.Type.BOOLEAN);
             assertThat(((NodeBoolean)n).getBoolean()).isEqualTo(true);
+
+            nList = new NodeList();
+            nList.addChild(new NodeName("<"));
+            nList.addChild(new NodeFloat(5.0f));
+            nList.addChild(new NodeFloat(4.0f));
+
+            n = Interpreter.eval(e, nList);
+            assertThat(n.getType()).isEqualTo(Node.Type.BOOLEAN);
+            assertThat(((NodeBoolean)n).getBoolean()).isEqualTo(false);
 
         } catch(LangException e) {
             assertThat(true).isEqualTo(false);

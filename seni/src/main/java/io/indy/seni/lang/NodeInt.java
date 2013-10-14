@@ -14,4 +14,12 @@ public class NodeInt extends Node {
     public int getInt() {
         return mInteger;
     }
+
+    public boolean eq(Node n) {
+        if (n.mType != Node.Type.INT) {
+            return false;
+        }
+        return mInteger == ((NodeInt)n).mInteger;
+    }
+
 }

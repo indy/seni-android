@@ -14,4 +14,11 @@ public class NodeName extends Node {
     public String getName() {
         return mName;
     }
+
+    public boolean eq(Node n) {
+        if (n.mType != Node.Type.NAME) {
+            return false;
+        }
+        return ((NodeName)n).mName.equals(mName);
+    }
 }

@@ -7,4 +7,8 @@ public class NodeNull extends Node {
 
         mType = Node.Type.NULL;
     }
+
+    public boolean eq(Node n) {
+        return (n.mType == Node.Type.NULL);
+    }
 }

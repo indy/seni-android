@@ -7,6 +7,9 @@ public class NodeLambdaDivide extends NodeLambdaMath {
 
     public NodeLambdaDivide() {
         super();
+
+        mHasCompareSymbol = true;
+        mCompareSymbol = "/";
     }
 
     protected Node executeInt(int first, Iterator<Node> iter) throws LangException {
@@ -38,4 +41,12 @@ public class NodeLambdaDivide extends NodeLambdaMath {
 
         return new NodeFloat(total);
     }
+
+    public boolean eq(Node n) {
+        if (n.mType != Node.Type.LAMBDA) {
+            return false;
+        }
+        return mHasCompareSymbol && mCompareSymbol.equals("/");
+    }
+
 }

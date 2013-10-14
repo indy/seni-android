@@ -7,6 +7,9 @@ public class NodeLambdaPlus extends NodeLambdaMath {
 
     public NodeLambdaPlus() {
         super();
+
+        mHasCompareSymbol = true;
+        mCompareSymbol = "+";
     }
 
     protected Node executeInt(int first, Iterator<Node> iter) throws LangException {
@@ -36,4 +39,12 @@ public class NodeLambdaPlus extends NodeLambdaMath {
         }
         return new NodeFloat(total);
     }
+
+    public boolean eq(Node n) {
+        if (n.mType != Node.Type.LAMBDA) {
+            return false;
+        }
+        return mHasCompareSymbol && mCompareSymbol.equals("+");
+    }
+
 }

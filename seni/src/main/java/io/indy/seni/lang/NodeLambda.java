@@ -8,12 +8,18 @@ public class NodeLambda extends Node {
     protected List<String> mArgs;
     protected Node mBody;
 
+    protected boolean mHasCompareSymbol;
+    protected String mCompareSymbol; // for eq testing
+
     public NodeLambda(List<String> args, Node body) {
         super();
 
         mType = Node.Type.LAMBDA;
         mArgs = args;
         mBody = body;
+
+        mHasCompareSymbol = false;
+        mCompareSymbol = "";
     }
 
     public List<String> getArgs() {
@@ -48,5 +54,12 @@ public class NodeLambda extends Node {
         }
 
         return env;
+    }
+
+    public boolean eq(Node n) {
+        if (n.mType != Node.Type.LAMBDA) {
+            return false;
+        }
+        return true; // todo: fix this
     }
 }

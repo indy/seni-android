@@ -14,4 +14,12 @@ public class NodeFloat extends Node {
     public float getFloat() {
         return mFloat;
     }
+
+    public boolean eq(Node n) {
+        if (n.mType != Node.Type.FLOAT) {
+            return false;
+        }
+        return mFloat == ((NodeFloat)n).mFloat;
+    }
+
 }

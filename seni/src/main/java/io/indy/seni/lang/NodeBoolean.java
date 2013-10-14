@@ -14,4 +14,11 @@ public class NodeBoolean extends Node {
     public boolean getBoolean() {
         return mBoolean;
     }
+
+    public boolean eq(Node n) {
+        if (n.mType != Node.Type.BOOLEAN) {
+            return false;
+        }
+        return mBoolean == ((NodeBoolean)n).mBoolean;
+    }
 }

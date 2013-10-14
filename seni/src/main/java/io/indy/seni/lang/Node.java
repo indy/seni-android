@@ -68,4 +68,7 @@ abstract public class Node {
     public Type getType() {
         return mType;
     }
+
+    abstract public boolean eq(Node n);
+
 }

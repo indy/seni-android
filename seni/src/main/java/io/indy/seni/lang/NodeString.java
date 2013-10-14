@@ -14,4 +14,12 @@ public class NodeString extends Node {
     public String getString() {
         return mString;
     }
+
+    public boolean eq(Node n) {
+        if (n.mType != Node.Type.STRING) {
+            return false;
+        }
+        return ((NodeString)n).mString.equals(mString);
+    }
+
 }

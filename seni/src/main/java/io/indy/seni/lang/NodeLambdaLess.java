@@ -7,6 +7,9 @@ public class NodeLambdaLess extends NodeLambdaMath {
 
     public NodeLambdaLess() {
         super();
+
+        mHasCompareSymbol = true;
+        mCompareSymbol = "<";
     }
 
     protected Node executeInt(int first, Iterator<Node> iter) throws LangException {
@@ -49,5 +52,12 @@ public class NodeLambdaLess extends NodeLambdaMath {
         }
 
         return new NodeBoolean(true);
+    }
+
+    public boolean eq(Node n) {
+        if (n.mType != Node.Type.LAMBDA) {
+            return false;
+        }
+        return mHasCompareSymbol && mCompareSymbol.equals("<");
     }
 }

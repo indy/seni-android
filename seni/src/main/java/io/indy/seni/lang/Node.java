@@ -2,6 +2,19 @@ package io.indy.seni.lang;
 
 abstract public class Node {
 
+    public enum Type {
+        LIST,
+        INT,
+        FLOAT,
+        NAME,
+        STRING,
+        BOOLEAN,
+        LAMBDA,
+        NULL
+    }
+
+    protected Type mType;
+
     public static NodeInt asInt(Node n) throws LangException {
         if(n.getType() != Type.INT) {
             throw new LangException("incompatible cast to INT");
@@ -50,22 +63,6 @@ abstract public class Node {
         }
 
         return (NodeLambda) n;
-    }
-
-    public enum Type {
-        LIST,
-        INT,
-        FLOAT,
-        NAME,
-        STRING,
-        BOOLEAN,
-        LAMBDA,
-        NULL
-    }
-
-    protected Type mType;
-
-    public Node() {
     }
 
     public Type getType() {

@@ -30,5 +30,15 @@ public class NodeFloatTest {
         assertThat(n.getType()).isEqualTo(Node.Type.FLOAT);
         assertThat(n.getFloat()).isEqualTo(12.34f);
     }
+
+    @Test
+    public void testEq() {
+        NodeFloat n = new NodeFloat(12.34f);
+
+        assertThat(n.eq(n)).isTrue();
+        assertThat(n.eq(new NodeFloat(12.34f))).isTrue();
+
+        assertThat(n.eq(new NodeFloat(98.76f))).isFalse();
+    }
 }
 

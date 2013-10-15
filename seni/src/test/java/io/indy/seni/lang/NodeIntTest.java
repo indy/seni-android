@@ -30,4 +30,14 @@ public class NodeIntTest {
         assertThat(n.getType()).isEqualTo(Node.Type.INT);
         assertThat(n.getInt()).isEqualTo(42);
     }
+
+    @Test
+    public void testEq() {
+        NodeInt n = new NodeInt(42);
+
+        assertThat(n.eq(n)).isTrue();
+        assertThat(n.eq(new NodeInt(42))).isTrue();
+
+        assertThat(n.eq(new NodeInt(666))).isFalse();
+    }
 }

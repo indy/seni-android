@@ -82,7 +82,7 @@ public class LexerTest {
             t = q.remove();
             assertThat(t.getType()).isEqualTo(Token.Type.LIST_END);
         } catch (LangException exception) {
-            assertThat(true).isEqualTo(false);
+            assertThat(true).isFalse();
         }
 
     }

@@ -87,7 +87,7 @@ public class IntegrationTest {
             return Interpreter.eval(e, ast);
 
         } catch (LangException exception) {
-            assertThat(true).isEqualTo(false);
+            assertThat(true).isFalse();
         }
 
         return null;

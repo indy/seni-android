@@ -48,7 +48,7 @@ public class InterpreterTest {
             NodeBoolean nBoolean = new NodeBoolean(true);
             assertThat(Interpreter.eval(null, nBoolean)).isEqualTo(nBoolean);
         } catch(LangException e) {
-            assertThat(true).isEqualTo(false);
+            assertThat(true).isFalse();
         }
     }
 
@@ -61,7 +61,7 @@ public class InterpreterTest {
             mEnv.addBinding(var, nInt);
             assertThat(Interpreter.eval(mEnv, new NodeName(var))).isEqualTo(nInt);
         } catch(LangException e) {
-            assertThat(true).isEqualTo(false);
+            assertThat(true).isFalse();
         }
     }
 
@@ -78,7 +78,7 @@ public class InterpreterTest {
 
             assertThat(Interpreter.eval(null, nList)).isEqualTo(nName);
         } catch(LangException e) {
-            assertThat(true).isEqualTo(false);
+            assertThat(true).isFalse();
         }
     }
 
@@ -108,7 +108,7 @@ public class InterpreterTest {
 
             assertThat(Interpreter.eval(null, nList)).isEqualTo(four);
         } catch(LangException e) {
-            assertThat(true).isEqualTo(false);
+            assertThat(true).isFalse();
         }
     }
 
@@ -130,7 +130,7 @@ public class InterpreterTest {
             assertThat(n.getType()).isEqualTo(Node.Type.INT);
             assertThat(((NodeInt)n).getInt()).isEqualTo(45);
         } catch(LangException e) {
-            assertThat(true).isEqualTo(false);
+            assertThat(true).isFalse();
         }
     }
 
@@ -149,7 +149,7 @@ public class InterpreterTest {
             assertThat(n.getType()).isEqualTo(Node.Type.INT);
             assertThat(((NodeInt)n).getInt()).isEqualTo(99);
         } catch(LangException e) {
-            assertThat(true).isEqualTo(false);
+            assertThat(true).isFalse();
         }
     }
 
@@ -191,7 +191,7 @@ public class InterpreterTest {
             assertThat(n.getType()).isEqualTo(Node.Type.INT);
             assertThat(((NodeInt)n).getInt()).isEqualTo(11);
         } catch(LangException e) {
-            assertThat(true).isEqualTo(false);
+            assertThat(true).isFalse();
         }
     }
 
@@ -219,7 +219,7 @@ public class InterpreterTest {
             assertThat(n.getType()).isEqualTo(Node.Type.INT);
             assertThat(((NodeInt)n).getInt()).isEqualTo(18);
         } catch(LangException e) {
-            assertThat(true).isEqualTo(false);
+            assertThat(true).isFalse();
         }
     }
 
@@ -247,7 +247,7 @@ public class InterpreterTest {
             assertThat(n.getType()).isEqualTo(Node.Type.FLOAT);
             assertThat(((NodeFloat)n).getFloat()).isEqualTo(18.0f);
         } catch(LangException e) {
-            assertThat(true).isEqualTo(false);
+            assertThat(true).isFalse();
         }
     }
 
@@ -274,7 +274,7 @@ public class InterpreterTest {
             assertThat(n.getType()).isEqualTo(Node.Type.INT);
             assertThat(((NodeInt)n).getInt()).isEqualTo(-12);
         } catch(LangException e) {
-            assertThat(true).isEqualTo(false);
+            assertThat(true).isFalse();
         }
     }
 
@@ -301,7 +301,7 @@ public class InterpreterTest {
             assertThat(n.getType()).isEqualTo(Node.Type.FLOAT);
             assertThat(((NodeFloat)n).getFloat()).isEqualTo(-12.0f);
         } catch(LangException e) {
-            assertThat(true).isEqualTo(false);
+            assertThat(true).isFalse();
         }
     }
 
@@ -327,7 +327,7 @@ public class InterpreterTest {
             assertThat(n.getType()).isEqualTo(Node.Type.INT);
             assertThat(((NodeInt)n).getInt()).isEqualTo(6);
         } catch(LangException e) {
-            assertThat(true).isEqualTo(false);
+            assertThat(true).isFalse();
         }
     }
 
@@ -353,7 +353,7 @@ public class InterpreterTest {
             assertThat(n.getType()).isEqualTo(Node.Type.FLOAT);
             assertThat(((NodeFloat)n).getFloat()).isEqualTo(6.0f);
         } catch(LangException e) {
-            assertThat(true).isEqualTo(false);
+            assertThat(true).isFalse();
         }
     }
 
@@ -379,7 +379,7 @@ public class InterpreterTest {
             assertThat(n.getType()).isEqualTo(Node.Type.INT);
             assertThat(((NodeInt)n).getInt()).isEqualTo(96);
         } catch(LangException e) {
-            assertThat(true).isEqualTo(false);
+            assertThat(true).isFalse();
         }
     }
 
@@ -405,7 +405,7 @@ public class InterpreterTest {
             assertThat(n.getType()).isEqualTo(Node.Type.FLOAT);
             assertThat(((NodeFloat)n).getFloat()).isEqualTo(96.0f);
         } catch(LangException e) {
-            assertThat(true).isEqualTo(false);
+            assertThat(true).isFalse();
         }
     }
 
@@ -424,7 +424,7 @@ public class InterpreterTest {
 
             Node n = Interpreter.eval(e, nList);
             assertThat(n.getType()).isEqualTo(Node.Type.BOOLEAN);
-            assertThat(((NodeBoolean)n).getBoolean()).isEqualTo(true);
+            assertThat(((NodeBoolean)n).getBoolean()).isTrue();
 
 
             // (< 5 4) -> false
@@ -435,10 +435,10 @@ public class InterpreterTest {
 
             n = Interpreter.eval(e, nList);
             assertThat(n.getType()).isEqualTo(Node.Type.BOOLEAN);
-            assertThat(((NodeBoolean)n).getBoolean()).isEqualTo(false);
+            assertThat(((NodeBoolean)n).getBoolean()).isFalse();
 
         } catch(LangException e) {
-            assertThat(true).isEqualTo(false);
+            assertThat(true).isFalse();
         }
     }
 
@@ -455,7 +455,7 @@ public class InterpreterTest {
 
             Node n = Interpreter.eval(e, nList);
             assertThat(n.getType()).isEqualTo(Node.Type.BOOLEAN);
-            assertThat(((NodeBoolean)n).getBoolean()).isEqualTo(true);
+            assertThat(((NodeBoolean)n).getBoolean()).isTrue();
 
             nList = new NodeList();
             nList.addChild(new NodeName("<"));
@@ -464,10 +464,10 @@ public class InterpreterTest {
 
             n = Interpreter.eval(e, nList);
             assertThat(n.getType()).isEqualTo(Node.Type.BOOLEAN);
-            assertThat(((NodeBoolean)n).getBoolean()).isEqualTo(false);
+            assertThat(((NodeBoolean)n).getBoolean()).isFalse();
 
         } catch(LangException e) {
-            assertThat(true).isEqualTo(false);
+            assertThat(true).isFalse();
         }
     }
 
@@ -485,10 +485,10 @@ public class InterpreterTest {
 
             Node n = Interpreter.eval(e, nList);
             assertThat(n.getType()).isEqualTo(Node.Type.BOOLEAN);
-            assertThat(((NodeBoolean)n).getBoolean()).isEqualTo(true);
+            assertThat(((NodeBoolean)n).getBoolean()).isTrue();
 
         } catch(LangException e) {
-            assertThat(true).isEqualTo(false);
+            assertThat(true).isFalse();
         }
     }
 
@@ -505,10 +505,10 @@ public class InterpreterTest {
 
             Node n = Interpreter.eval(e, nList);
             assertThat(n.getType()).isEqualTo(Node.Type.BOOLEAN);
-            assertThat(((NodeBoolean)n).getBoolean()).isEqualTo(true);
+            assertThat(((NodeBoolean)n).getBoolean()).isTrue();
 
         } catch(LangException e) {
-            assertThat(true).isEqualTo(false);
+            assertThat(true).isFalse();
         }
     }
 
@@ -526,7 +526,7 @@ public class InterpreterTest {
 
             Node n = Interpreter.eval(e, nList);
             assertThat(n.getType()).isEqualTo(Node.Type.BOOLEAN);
-            assertThat(((NodeBoolean)n).getBoolean()).isEqualTo(true);
+            assertThat(((NodeBoolean)n).getBoolean()).isTrue();
 
 
             nList = new NodeList();
@@ -536,10 +536,10 @@ public class InterpreterTest {
 
             n = Interpreter.eval(e, nList);
             assertThat(n.getType()).isEqualTo(Node.Type.BOOLEAN);
-            assertThat(((NodeBoolean)n).getBoolean()).isEqualTo(false);
+            assertThat(((NodeBoolean)n).getBoolean()).isFalse();
 
         } catch(LangException e) {
-            assertThat(true).isEqualTo(false);
+            assertThat(true).isFalse();
         }
     }
 
@@ -556,10 +556,10 @@ public class InterpreterTest {
 
             Node n = Interpreter.eval(e, nList);
             assertThat(n.getType()).isEqualTo(Node.Type.BOOLEAN);
-            assertThat(((NodeBoolean)n).getBoolean()).isEqualTo(true);
+            assertThat(((NodeBoolean)n).getBoolean()).isTrue();
 
         } catch(LangException e) {
-            assertThat(true).isEqualTo(false);
+            assertThat(true).isFalse();
         }
     }
 

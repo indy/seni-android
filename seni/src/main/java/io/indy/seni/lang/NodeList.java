@@ -40,6 +40,7 @@ public class NodeList extends Node {
     }
 
     public boolean eq(Node n) {
+
         if (n.mType != Node.Type.LIST) {
             return false;
         }
@@ -53,12 +54,12 @@ public class NodeList extends Node {
         Iterator<Node> myIter = mChildren.iterator();
         Iterator<Node> otherIter = nl.mChildren.iterator();
 
-        if (myIter.hasNext()) {
+        while (myIter.hasNext()) {
             if (!myIter.next().eq(otherIter.next())) {
                 return false;
             }
         }
-        
+
         return true;
     }
 }

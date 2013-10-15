@@ -85,6 +85,34 @@ public class ParserTest {
     }
 
     @Test
+    public void parseBoolean() {
+        String val = "true";
+        Queue<Token> tokens = new ArrayDeque<Token>();
+        tokens.add(makeToken(Token.Type.NAME, val));
+
+        List<Node> nodes = Parser.parse(tokens);
+        assertThat(nodes.size()).isEqualTo(1);
+
+        Node n = nodes.get(0);
+        assertThat(n.getType()).isEqualTo(Node.Type.BOOLEAN);
+        NodeBoolean node = (NodeBoolean)n;
+        assertThat(node.getBoolean()).isEqualTo(true);
+
+
+        val = "false";
+        tokens = new ArrayDeque<Token>();
+        tokens.add(makeToken(Token.Type.NAME, val));
+
+        nodes = Parser.parse(tokens);
+        assertThat(nodes.size()).isEqualTo(1);
+
+        n = nodes.get(0);
+        assertThat(n.getType()).isEqualTo(Node.Type.BOOLEAN);
+        node = (NodeBoolean)n;
+        assertThat(node.getBoolean()).isEqualTo(false);
+    }
+
+    @Test
     public void parseListAndInt() {
         Queue<Token> tokens = new ArrayDeque<Token>();
         tokens.add(makeToken(Token.Type.LIST_START));

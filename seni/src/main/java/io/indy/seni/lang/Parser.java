@@ -48,7 +48,14 @@ public class Parser {
         } else if(type == Token.Type.FLOAT) {
             return new NodeFloat(token.getFloatValue());
         } else if(type == Token.Type.NAME) {
-            return new NodeName(token.getStringValue());
+            String val = token.getStringValue();
+            if (val.equals("true")) {
+                return new NodeBoolean(true);
+            } else if (val.equals("false")) {
+                return new NodeBoolean(false);
+            } else {
+                return new NodeName(token.getStringValue());
+            }
         } else if(type == Token.Type.STRING) {
             return new NodeString(token.getStringValue());
         } else {

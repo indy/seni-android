@@ -27,50 +27,44 @@ public class IntegrationTest {
 
     @Test
     public void testMath() {
-        assertExpression("(+ 2 1)", 3);
-        assertExpression("(+ (+ 2 1) (+ 2 1))", 6);
-        assertExpression("(* (* 2 2) (* 3 3))", 36);
-        assertExpression("(/ 54 9)", 6);
+        assertEval("(+ 2 1)", "3");
+        assertEval("(+ (+ 2 1) (+ 2 1))", "6");
+        assertEval("(* (* 2 2) (* 3 3))", "36");
+        assertEval("(/ 54 9)", "6");
     }
 
     @Test
     public void testComparisons() {
-        assertExpression("(> 2 1)", true);
-        assertExpression("(< 2 1)", false);
-        assertExpression("(= 2 1)", false);
-        assertExpression("(= 2 2)", true);
+        assertEval("(> 2 1)", "true");
+        assertEval("(< 2 1)", "false");
+        assertEval("(= 2 1)", "false");
+        assertEval("(= 2 2)", "true");
 
-        assertExpression("(> 2.0 1.0)", true);
-        assertExpression("(< 2.0 1.0)", false);
-        assertExpression("(= 2.0 1.0)", false);
-        assertExpression("(= 2.0 2.0)", true);
+        assertEval("(> 2.0 1.0)", "true");
+        assertEval("(< 2.0 1.0)", "false");
+        assertEval("(= 2.0 1.0)", "false");
+        assertEval("(= 2.0 2.0)", "true");
     }
 
     @Test
     public void testSpecialForms() {
-        assertExpression("((lambda (x) (+ x x)) 3)", 6);
+        assertEval("((lambda (x) (+ x x)) 3)", "6");
 
-        assertExpression("(if (< 12 77) (+ 1 3) (+ 1 7))", 4);
-        assertExpression("(if (< 12 77) 4 8)", 4);
+        assertEval("(if (< 12 77) (+ 1 3) (+ 1 7))", "4");
+        assertEval("(if (< 12 77) 4 8)", "4");
 
-
-        assertExpression("(begin (+ 1 1) (+ 2 2) (+ 3 3))", 6);
+        assertEval("(begin (+ 1 1) (+ 2 2) (+ 3 3))", "6");
     }
 
-    private void assertExpression(String code, int val) {
+
+    private void assertEval(String code, String expected) {
         Node n = run(code);
-        assertThat(n.getType()).isEqualTo(Node.Type.INT);
-        assertThat(((NodeInt)n).getInt()).isEqualTo(val);        
+        Node expectedAST = asAST(expected);
+        String errorMsg = "eval: " + code + " != " + expected;
+        assertThat(expectedAST.eq(n)).overridingErrorMessage(errorMsg).isTrue();
     }
 
-    private void assertExpression(String code, boolean val) {
-        Node n = run(code);
-        assertThat(n.getType()).isEqualTo(Node.Type.BOOLEAN);
-        assertThat(((NodeBoolean)n).getBoolean()).isEqualTo(val);
-    }
-
-    // runs single s-expressions
-    private Node run(String code) {
+    private Node asAST(String code) {
         Token t;
         Queue<Token> tokens;
 
@@ -81,7 +75,20 @@ public class IntegrationTest {
             List<Node> nodes = Parser.parse(tokens);
             assertThat(nodes.size()).isEqualTo(1);
         
-            Node ast = nodes.get(0);
+            return nodes.get(0);
+
+        } catch (LangException exception) {
+            assertThat(true).isFalse();
+        }
+
+        return null;
+    }
+
+    // runs single s-expressions
+    private Node run(String code) {
+
+        try {
+            Node ast = asAST(code);
             Env e = Env.bindCoreFuns(new Env());
 
             return Interpreter.eval(e, ast);

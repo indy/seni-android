@@ -45,6 +45,23 @@ public class NodeLambda extends Node {
         return mBody;
     }
 
+    public Node execute(Env env, Node param) throws LangException {
+
+        // param has already been eval'd
+
+        if(mArgs.size() != 1) {
+            // throw an exception
+        }
+
+        // bind param to a new scope
+        Env scoped = env.newScope();
+        Iterator<String> argIter = mArgs.iterator();
+        scoped.addBinding(argIter.next(), param);
+
+        // evaluate
+        return Interpreter.eval(scoped, mBody);
+    }
+
     public Node execute(Env env, List<Node> params) throws LangException {
 
         // the params have already been eval'd

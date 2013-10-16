@@ -562,5 +562,4 @@ public class InterpreterTest {
             assertThat(true).isFalse();
         }
     }
-
 }

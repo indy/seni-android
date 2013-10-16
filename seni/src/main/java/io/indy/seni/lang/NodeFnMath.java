@@ -19,10 +19,10 @@ package io.indy.seni.lang;
 import java.util.Iterator;
 import java.util.List;
 
-public abstract class NodeLambdaMath extends NodeLambda {
+public abstract class NodeFnMath extends NodeFn {
 
-    public NodeLambdaMath() {
-        super(null, null);
+    public NodeFnMath(String keyword) {
+        super(keyword);
     }
 
     public Node execute(Env env, List<Node> params) {
@@ -36,7 +36,6 @@ public abstract class NodeLambdaMath extends NodeLambda {
             n = iter.next();
         } else {
             // throw an error: no args for +
-
             return null;
         }
 
@@ -56,7 +55,7 @@ public abstract class NodeLambdaMath extends NodeLambda {
 
         return null;
     }
-
+    
     abstract protected Node executeInt(int first, Iterator<Node> iter) throws LangException; 
     abstract protected Node executeFloat(float first, Iterator<Node> iter) throws LangException;
 }

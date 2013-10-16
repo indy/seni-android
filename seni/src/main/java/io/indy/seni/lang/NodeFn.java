@@ -34,18 +34,20 @@ abstract public class NodeFn extends NodeLambda {
         return mKeyword;
     }
 
-    abstract public Node execute(Env env, List<Node> params);
+    abstract public Node execute(Env env, List<Node> params) 
+        throws LangException;
 
     public boolean eq(Node n) {
-        if (n.mType != mType) {
+        if (n.mType != Node.Type.LAMBDA) {
             return false;
         }
 
-        if (n.mIsKeyworded == false) {
+        NodeLambda nl = (NodeLambda)n;
+        if (nl.mIsKeyworded == false) {
             return false;
         }
 
-        NodeFn nfn = (NodeFn)n;
+        NodeFn nfn = (NodeFn)nl;
         return mKeyword.equals(nfn.mKeyword);
     }
 }

@@ -25,6 +25,8 @@ abstract public class NodeFn extends NodeLambda {
 
     public NodeFn(String keyword) {
         super(null, null);
+
+        mIsKeyworded = true;
         mKeyword = keyword;
     }
 
@@ -32,8 +34,14 @@ abstract public class NodeFn extends NodeLambda {
         return mKeyword;
     }
 
+    abstract public Node execute(Env env, List<Node> params);
+
     public boolean eq(Node n) {
         if (n.mType != mType) {
+            return false;
+        }
+
+        if (n.mIsKeyworded == false) {
             return false;
         }
 

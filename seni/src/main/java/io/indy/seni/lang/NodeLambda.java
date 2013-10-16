@@ -23,6 +23,7 @@ public class NodeLambda extends Node {
 
     protected List<String> mArgs;
     protected Node mBody;
+    protected boolean mIsKeyworded;
 
     public NodeLambda(List<String> args, Node body) {
         super();
@@ -30,6 +31,10 @@ public class NodeLambda extends Node {
         mType = Node.Type.LAMBDA;
         mArgs = args;
         mBody = body;
+
+        // true if we have specified a keyword for this lambda
+        // (currently only true for objects from NodeFn derived classes)
+        mIsKeyworded = false;
     }
 
     public List<String> getArgs() {

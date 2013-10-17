@@ -131,6 +131,22 @@ public class Env {
                 }                
             });
 
+        e.addBinding(new NodeFn("nth") {
+                public Node execute(Env env, List<Node> params) 
+                    throws LangException {
+
+                    if (params.size() != 2) {
+                        String msg = "wrong # of arguments for " + keyword();
+                        throw new LangException(msg);
+                    }
+
+                    // nth is 0-based
+                    int nth = Node.asIntValue(params.get(0));
+
+                    return Node.asList(params.get(1)).getChild(nth);
+                }                
+            });
+
         return e;
     }
 

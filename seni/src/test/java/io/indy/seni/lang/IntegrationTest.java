@@ -42,6 +42,9 @@ public class IntegrationTest {
     public void testListOperations() {
         assertEval("(first (quote (1 2 3)))", "1");
         assertEval("(second (quote (1 2 3)))", "2");
+        assertEval("(nth 0 (quote (1 2 3)))", "1");
+        assertEval("(nth 1 (quote (1 2 3)))", "2");
+        assertEval("(nth 2 (quote (1 2 3)))", "3");
     }
 
     @Test

@@ -35,6 +35,10 @@ public class NodeList extends Node {
         mChildren.add(child);
     }
 
+    public Node getChild(int nth) {
+        return mChildren.get(nth);
+    }
+
     public List<Node> getChildren() {
         return mChildren;
     }

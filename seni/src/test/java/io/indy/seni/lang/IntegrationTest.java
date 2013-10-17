@@ -39,6 +39,11 @@ public class IntegrationTest {
     }
 
     @Test
+    public void testListOperations() {
+        assertEval("(first (quote (1 2 3)))", "1");
+    }
+
+    @Test
     public void testComparisons() {
         assertEval("(> 2 1)", "true");
         assertEval("(< 2 1)", "false");

@@ -32,17 +32,13 @@ public class BinderFunctionalFns extends Binder {
 
                     Binder.checkArgs(params, 2, keyword());
 
-                    Node fun = params.get(0);
-                    if (fun.getType() == Node.Type.NAME) {
-                        fun = env.lookup(Node.asNameValue(fun));
-                    }
-                    NodeLambda lambda = Node.asLambda(fun);
+                    NodeLambda fn = Node.resolveLambda(env, params.get(0));
 
                     NodeList listExpr = Node.asList(params.get(1));
 
                     NodeList res = new NodeList();
                     for (Node child : listExpr.getChildren()) {
-                        res.addChild(lambda.execute(env, child));
+                        res.addChild(fn.execute(env, child));
                     }
                     return res;
                 }

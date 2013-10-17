@@ -77,8 +77,17 @@ abstract public class Node {
         if (n.getType() != Node.Type.LAMBDA) {
             // throw an error
         }
-
         return (NodeLambda) n;
+    }
+
+    public static NodeLambda resolveLambda(Env env, Node n) 
+        throws LangException {
+        // n is expected to be either a lambda or a name referencing a lambda
+        //
+        if (n.getType() == Node.Type.NAME) {
+            n = env.lookup(Node.asNameValue(n));
+        }
+        return Node.asLambda(n);
     }
 
     public Type getType() {

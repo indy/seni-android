@@ -118,6 +118,19 @@ public class Env {
                 }                
             });
 
+        e.addBinding(new NodeFn("second") {
+                public Node execute(Env env, List<Node> params) 
+                    throws LangException {
+
+                    if (params.size() != 1) {
+                        String msg = "wrong # of arguments for " + keyword();
+                        throw new LangException(msg);
+                    }
+
+                    return Node.asList(params.get(0)).getChild(1);
+                }                
+            });
+
         return e;
     }
 

@@ -23,8 +23,6 @@ import java.util.Iterator;
 public class BinderFunctionalFns extends Binder {
 
     public static Env bind(Env e) {
-        // todo:
-        // reduce, 
 
         e.addBinding(new NodeFn("apply") {
                 public Node execute(Env env, List<Node> params) 
@@ -55,6 +53,49 @@ public class BinderFunctionalFns extends Binder {
                         res.addChild(fn.execute(env, child));
                     }
                     return res;
+                }
+            });
+
+        e.addBinding(new NodeFn("reduce") {
+                public Node execute(Env env, List<Node> params) 
+                    throws LangException {
+
+                    int numArgs = params.size();
+                    if (numArgs < 2 || numArgs > 3) {
+                        String msg = "wrong # of arguments for " + keyword();
+                        throw new LangException(msg);
+                    }
+
+                    NodeList coll;
+                    Iterator<Node> iter;
+                    Node total;
+
+                    if (numArgs == 2) {
+                        coll = Node.asList(params.get(1));
+                        iter = coll.getChildren().iterator();
+                        if (iter.hasNext()) {
+                            total = iter.next();
+                        } else {
+                            throw new LangException("empty list given to reduce");
+                        }
+                    } else {
+                        coll = Node.asList(params.get(2));
+                        iter = coll.getChildren().iterator();
+                        total = params.get(1);
+                    }
+
+                    NodeLambda fn = Node.resolveLambda(env, params.get(0));
+
+                    List<Node> args = new ArrayList<Node>();
+
+                    while (iter.hasNext()) {
+                        args.clear();
+                        args.add(total);
+                        args.add(iter.next());
+                        total = fn.execute(env, args);
+                    }
+
+                    return total;
                 }
             });
 

@@ -35,6 +35,7 @@ public class IntegrationTest {
 
     @Test
     public void testFunctional() {
+        assertEval("(apply + (quote (4 5 6)))", "15");
         assertEval("(map (lambda (x) (+ x x)) (quote (1 2 3)))", "(2 4 6)");
     }
 

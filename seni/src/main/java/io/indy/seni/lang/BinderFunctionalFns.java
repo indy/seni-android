@@ -24,7 +24,21 @@ public class BinderFunctionalFns extends Binder {
 
     public static Env bind(Env e) {
         // todo:
-        // apply, reduce, 
+        // reduce, 
+
+        e.addBinding(new NodeFn("apply") {
+                public Node execute(Env env, List<Node> params) 
+                    throws LangException {
+
+                    Binder.checkArgs(params, 2, keyword());
+
+                    NodeLambda fn = Node.resolveLambda(env, params.get(0));
+                    NodeList listExpr = Node.asList(params.get(1));
+                    List<Node> fnArgs = listExpr.getChildren();
+
+                    return fn.execute(env, fnArgs);
+                }
+            });
 
         e.addBinding(new NodeFn("map") {
                 public Node execute(Env env, List<Node> params) 

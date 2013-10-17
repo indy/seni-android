@@ -17,6 +17,8 @@
 package io.indy.seni.lang;
 
 import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Iterator;
 
 public class Env {
@@ -29,7 +31,7 @@ public class Env {
         Env e = env.newScope();
 
         e = bindMathFuns(e);
-
+        e = bindFunctionalFuns(e);
         return e;
     }
 
@@ -73,6 +75,38 @@ public class Env {
         throw new LangException("unable to find value of key: " + key + " in env");
     }
 
+    private static Env bindFunctionalFuns(Env e) {
+        // apply, map, reduce, first, second, nth, cons, concat, mapcat,
+        // filter, interleave, interpose, partition, reverse, sort,
+        // quot, rem, mod, inc, dec, max, min, count 
+
+        e.addBinding(new NodeFn("map") {
+                public Node execute(Env env, List<Node> params) 
+                    throws LangException {
+
+                    if (params.size() != 2) {
+                        String msg = "wrong # of arguments for " + keyword();
+                        throw new LangException(msg);
+                    }
+
+                    Node fun = params.get(0);
+                    if (fun.getType() == Node.Type.NAME) {
+                        fun = env.lookup(Node.asNameValue(fun));
+                    }
+                    NodeLambda lambda = Node.asLambda(fun);
+
+                    NodeList listExpr = Node.asList(params.get(1));
+
+                    NodeList res = new NodeList();
+                    for (Node child : listExpr.getChildren()) {
+                        res.addChild(lambda.execute(env, child));
+                    }
+                    return res;
+                }
+            });
+
+        return e;
+    }
 
     private static Env bindMathFuns(Env e) {
 

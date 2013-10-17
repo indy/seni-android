@@ -34,6 +34,11 @@ public class IntegrationTest {
     }
 
     @Test
+    public void testFunctional() {
+        assertEval("(map (lambda (x) (+ x x)) (quote (1 2 3)))", "(2 4 6)");
+    }
+
+    @Test
     public void testComparisons() {
         assertEval("(> 2 1)", "true");
         assertEval("(< 2 1)", "false");
@@ -54,6 +59,8 @@ public class IntegrationTest {
         assertEval("(if (< 12 77) 4 8)", "4");
 
         assertEval("(begin (+ 1 1) (+ 2 2) (+ 3 3))", "6");
+
+        assertEval("(quote (1 2 3))", "(1 2 3)");
     }
 
 

@@ -27,23 +27,22 @@ abstract public class EvalTestBase {
 
     protected void assertEval(String code, String expected) {
         Node n = run(code);
-        Node expectedAST = asAST(expected);
+
+        // assuming that expected evals to a single node
+        Node expectedAST = asAST(expected).get(0);
+
         String errorMsg = "eval: " + code + " != " + expected;
         assertThat(expectedAST.eq(n)).overridingErrorMessage(errorMsg).isTrue();
     }
 
-    private Node asAST(String code) {
+    private List<Node> asAST(String code) {
         Token t;
         Queue<Token> tokens;
 
         try {
 
             tokens = Lexer.tokenise(code);
-
-            List<Node> nodes = Parser.parse(tokens);
-            assertThat(nodes.size()).isEqualTo(1);
-        
-            return nodes.get(0);
+            return Parser.parse(tokens);
 
         } catch (LangException exception) {
             assertThat(true).isFalse();
@@ -56,12 +55,19 @@ abstract public class EvalTestBase {
     private Node run(String code) {
 
         try {
-            Node ast = asAST(code);
+            List<Node> ast = asAST(code);
             Env e = Env.bindCoreFuns(new Env());
 
-            return Interpreter.eval(e, ast);
+            Node res = null;
+
+            for (Node node : ast) {
+                res = Interpreter.eval(e, node);
+            }
+            
+            return res;
 
         } catch (LangException exception) {
+            System.out.println(exception);
             assertThat(true).isFalse();
         }
 

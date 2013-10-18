@@ -90,6 +90,31 @@ abstract public class Node {
         return Node.asLambda(n);
     }
 
+    public static void debug(Node n, String msg) throws LangException {
+        System.out.println(msg);
+        debug(n);
+    }
+
+    public static void debug(Node n) throws LangException {
+        Type t = n.getType();
+        if(t == Type.NAME) {
+        } else if(t == Type.INT) {
+            System.out.println("" + n.getType() + ": " + Node.asIntValue(n));
+        } else if(t == Type.FLOAT) {
+            System.out.println("" + n.getType() + ": " + Node.asFloatValue(n));
+        } else if(t == Type.BOOLEAN) {
+            System.out.println("" + n.getType() + ": " + ((NodeBoolean)n).getBoolean());
+        } else if(t == Type.LAMBDA) {
+            System.out.println("" + n.getType());
+        } else if(t == Type.NAME) {
+            System.out.println("" + n.getType() + ": " + Node.asNameValue(n));
+        } else if(t == Type.STRING) {
+            System.out.println("" + n.getType() + ": " + ((NodeString)n).getString());
+        } else {
+            System.out.println("unknown type to debug");
+        }
+    }
+
     public Type getType() {
         return mType;
     }

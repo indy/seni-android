@@ -60,15 +60,22 @@ public class BinderListFns extends Binder {
             });
 
         e.addBinding(new NodeFn("cons") {
+                // (cons 2 (quote (4 8)))
                 public Node execute(Env env, List<Node> params) 
                     throws LangException {
 
                     Binder.checkArity(params, 2, keyword());
+                    
+                    NodeList res = new NodeList();
 
-                    // nth is 0-based
-                    int nth = Node.asIntValue(params.get(0));
+                    //Node.debug(params.get(1), "should be a list");
 
-                    return Node.asList(params.get(1)).getChild(nth);
+                    res.addChild(params.get(0));
+                    for (Node child : Node.asList(params.get(1)).getChildren()) {
+                        res.addChild(child);
+                    }
+
+                    return res;
                 }                
             });
 

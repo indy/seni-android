@@ -25,6 +25,32 @@ import static org.fest.assertions.api.Assertions.assertThat;
 
 abstract public class EvalTestBase {
 
+    protected void assertBinding(String code, String name, String expected) {
+
+        Node expectedAST = asAST(expected).get(0);
+
+        Queue<Token> tokens;
+        try {
+
+            Env e = Env.bindCoreFuns(new Env());
+
+            tokens = Lexer.tokenise(code);
+            List<Node> ast = Parser.parse(tokens);
+            for (Node node : ast) {
+                Interpreter.eval(e, node);
+            }
+
+            Node n = e.lookup(name);
+
+            String errorMsg = "binding " + name + " != " + expected;
+            assertThat(expectedAST.eq(n)).overridingErrorMessage(errorMsg).isTrue();
+
+        } catch (LangException e) {
+            assertThat(true).isFalse();
+        }
+    }
+
+
     protected void assertEval(String code, String expected) {
         Node n = run(code);
 

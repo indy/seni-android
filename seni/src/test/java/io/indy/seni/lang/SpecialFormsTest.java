@@ -18,6 +18,12 @@ package io.indy.seni.lang;
 
 import org.junit.Test;
 
+
+import java.util.List;
+import java.util.Queue;
+import org.junit.Before;
+import static org.fest.assertions.api.Assertions.assertThat;
+
 public class SpecialFormsTest extends EvalTestBase {
 
     @Test
@@ -30,5 +36,14 @@ public class SpecialFormsTest extends EvalTestBase {
         assertEval("(begin (+ 1 1) (+ 2 2) (+ 3 3))", "6");
 
         assertEval("(quote (1 2 3))", "(1 2 3)");
+    }
+
+
+    @Test
+    public void testDefine() {
+
+        assertBinding("(define foo 8)", "foo", "8");
+        assertBinding("(define bar \"somestring\")", "bar", "\"somestring\"");
+        assertBinding("(define baz (quote (6 5 4)))", "baz", "(6 5 4)");
     }
 }

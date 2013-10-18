@@ -20,7 +20,7 @@ import java.util.List;
 
 public class Binder {
 
-    public static void checkArgs(List<Node> params, int expected, String kw) 
+    public static void checkArity(List<Node> params, int expected, String kw) 
         throws LangException {
         int size = params.size();
         if (size != expected) {

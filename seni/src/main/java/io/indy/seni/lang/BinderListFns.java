@@ -30,7 +30,7 @@ public class BinderListFns extends Binder {
                 public Node execute(Env env, List<Node> params) 
                     throws LangException {
 
-                    Binder.checkArgs(params, 1, keyword());
+                    Binder.checkArity(params, 1, keyword());
 
                     return Node.asList(params.get(0)).getChild(0);
                 }                
@@ -40,7 +40,7 @@ public class BinderListFns extends Binder {
                 public Node execute(Env env, List<Node> params) 
                     throws LangException {
 
-                    Binder.checkArgs(params, 1, keyword());
+                    Binder.checkArity(params, 1, keyword());
 
                     return Node.asList(params.get(0)).getChild(1);
                 }                
@@ -50,7 +50,20 @@ public class BinderListFns extends Binder {
                 public Node execute(Env env, List<Node> params) 
                     throws LangException {
 
-                    Binder.checkArgs(params, 2, keyword());
+                    Binder.checkArity(params, 2, keyword());
+
+                    // nth is 0-based
+                    int nth = Node.asIntValue(params.get(0));
+
+                    return Node.asList(params.get(1)).getChild(nth);
+                }                
+            });
+
+        e.addBinding(new NodeFn("cons") {
+                public Node execute(Env env, List<Node> params) 
+                    throws LangException {
+
+                    Binder.checkArity(params, 2, keyword());
 
                     // nth is 0-based
                     int nth = Node.asIntValue(params.get(0));

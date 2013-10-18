@@ -23,61 +23,9 @@ import org.junit.Before;
 import static org.fest.assertions.api.Assertions.assertThat;
 
 
-public class IntegrationTest {
+abstract public class EvalTestBase {
 
-    @Test
-    public void testMath() {
-        assertEval("(+ 2 1)", "3");
-        assertEval("(+ (+ 2 1) (+ 2 1))", "6");
-        assertEval("(* (* 2 2) (* 3 3))", "36");
-        assertEval("(/ 54 9)", "6");
-    }
-
-    @Test
-    public void testFunctional() {
-        assertEval("(apply + (quote (4 5 6)))", "15");
-        assertEval("(map (lambda (x) (+ x x)) (quote (1 2 3)))", "(2 4 6)");
-
-        assertEval("(reduce + (quote (4 5 6)))", "15");
-        assertEval("(reduce + 4 (quote (5 6)))", "15");
-    }
-
-    @Test
-    public void testListOperations() {
-        assertEval("(first (quote (1 2 3)))", "1");
-        assertEval("(second (quote (1 2 3)))", "2");
-        assertEval("(nth 0 (quote (1 2 3)))", "1");
-        assertEval("(nth 1 (quote (1 2 3)))", "2");
-        assertEval("(nth 2 (quote (1 2 3)))", "3");
-    }
-
-    @Test
-    public void testComparisons() {
-        assertEval("(> 2 1)", "true");
-        assertEval("(< 2 1)", "false");
-        assertEval("(= 2 1)", "false");
-        assertEval("(= 2 2)", "true");
-
-        assertEval("(> 2.0 1.0)", "true");
-        assertEval("(< 2.0 1.0)", "false");
-        assertEval("(= 2.0 1.0)", "false");
-        assertEval("(= 2.0 2.0)", "true");
-    }
-
-    @Test
-    public void testSpecialForms() {
-        assertEval("((lambda (x) (+ x x)) 3)", "6");
-
-        assertEval("(if (< 12 77) (+ 1 3) (+ 1 7))", "4");
-        assertEval("(if (< 12 77) 4 8)", "4");
-
-        assertEval("(begin (+ 1 1) (+ 2 2) (+ 3 3))", "6");
-
-        assertEval("(quote (1 2 3))", "(1 2 3)");
-    }
-
-
-    private void assertEval(String code, String expected) {
+    protected void assertEval(String code, String expected) {
         Node n = run(code);
         Node expectedAST = asAST(expected);
         String errorMsg = "eval: " + code + " != " + expected;

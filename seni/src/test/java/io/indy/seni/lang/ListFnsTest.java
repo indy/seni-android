@@ -22,47 +22,48 @@ public class ListFnsTest extends EvalTestBase {
 
     @Test
     public void testFirst() {
-        assertEval("(first (quote (1 2 3)))", "1");
+        assertEval("(first '(1 2 3))", "1");
     }
 
     @Test
     public void testSecond() {
-        assertEval("(second (quote (1 2 3)))", "2");
+        assertEval("(second '(1 2 3))", "2");
     }
 
     @Test
     public void testNth() {
-        assertEval("(nth 0 (quote (1 2 3)))", "1");
-        assertEval("(nth 1 (quote (1 2 3)))", "2");
-        assertEval("(nth 2 (quote (1 2 3)))", "3");
+        assertEval("(nth 0 '(1 2 3))", "1");
+        assertEval("(nth 1 '(1 2 3))", "2");
+        assertEval("(nth 2 '(1 2 3))", "3");
     }
 
     @Test
     public void testCons() {
-        assertEval("(cons 42 (quote ()))", "(42)");
-        assertEval("(cons 0 (quote (1 2 3)))", "(0 1 2 3)");
-        assertEval("(define foo (quote (1 2 3))) (cons 0 foo)", "(0 1 2 3)");
+        assertEval("(cons 42 '())", "(42)");
+        assertEval("(cons 0 '(1 2 3))", "(0 1 2 3)");
+        assertEval("(define foo '(1 2 3)) (cons 0 foo)", "(0 1 2 3)");
     }
 
     @Test
     public void testConcat() {
-        assertEval("(concat (quote (1 2)) (quote (3 4)))", "(1 2 3 4)");
+        assertEval("(concat '(1 2) '(3 4))", "(1 2 3 4)");
     }
 
     @Test
     public void testCount() {
-        assertEval("(count (quote (9 8 7 6)))", "4");
-        assertEval("(count (quote ()))", "0");
+        assertEval("(count '(9 8 7 6))", "4");
+        assertEval("(count '())", "0");
     }
 
     @Test
     public void testMapcat() {
-        assertEval("(mapcat (lambda (x) (cons x (quote ()))) (quote (1 2 3)))",
+        assertEval("(mapcat (lambda (x) (cons x '())) '(1 2 3))",
                    "(1 2 3)");
-        assertEval("(mapcat (lambda (x) (cons x (quote (8)))) (quote (1 2 3)))",
+
+        assertEval("(mapcat (lambda (x) (cons x '(8))) '(1 2 3))",
                    "(1 8 2 8 3 8)");
 
-        assertEval("(mapcat (lambda (x y) (cons (+ x y) (quote (42)))) (quote (1 2 3)) (quote (4 5 6)))",
+        assertEval("(mapcat (lambda (x y) (cons (+ x y) '(42))) '(1 2 3) '(4 5 6))",
                    "(5 42 7 42 9 42)");
     }
 

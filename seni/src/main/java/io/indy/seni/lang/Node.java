@@ -55,7 +55,7 @@ abstract public class Node {
 
     public static NodeName asName(Node n) throws LangException {
         if (n.getType() != Node.Type.NAME) {
-            throw new LangException("incompatible cast to NAME");
+            throw new LangException("cannot cast " + n.getType() +" to NAME");
         }
 
         return (NodeName) n;
@@ -65,17 +65,17 @@ abstract public class Node {
         return asName(n).getName();
     }
 
-    public static NodeList asList(Node n) {
+    public static NodeList asList(Node n) throws LangException {
         if (n.getType() != Node.Type.LIST) {
-            // throw an error
+            throw new LangException("cannot cast " + n.getType() +" to LIST");
         }
 
         return (NodeList) n;
     }
 
-    public static NodeLambda asLambda(Node n) {
+    public static NodeLambda asLambda(Node n) throws LangException {
         if (n.getType() != Node.Type.LAMBDA) {
-            // throw an error
+            throw new LangException("cannot cast " + n.getType() +" to LAMBDA");
         }
         return (NodeLambda) n;
     }

@@ -37,10 +37,14 @@ public class ListFnsTest extends EvalTestBase {
         assertEval("(nth 2 (quote (1 2 3)))", "3");
     }
 
-
     @Test
     public void testCons() {
         assertEval("(cons 0 (quote (1 2 3)))", "(0 1 2 3)");
         assertEval("(define foo (quote (1 2 3))) (cons 0 foo)", "(0 1 2 3)");
+    }
+
+    @Test
+    public void testConcat() {
+        assertEval("(concat (quote (1 2)) (quote (3 4)))", "(1 2 3 4)");
     }
 }

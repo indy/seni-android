@@ -24,7 +24,7 @@ public class BinderListFns extends Binder {
 
     public static Env bind(Env e) {
         // todo:
-        // cons, concat, mapcat, filter, interleave, interpose, partition, reverse, sort, count 
+        // concat, mapcat, filter, interleave, interpose, partition, reverse, sort, count 
 
         e.addBinding(new NodeFn("first") {
                 public Node execute(Env env, List<Node> params) 
@@ -78,6 +78,31 @@ public class BinderListFns extends Binder {
                     return res;
                 }                
             });
+
+        e.addBinding(new NodeFn("concat") {
+                public Node execute(Env env, List<Node> params) 
+                    throws LangException {
+
+                    NodeList res = new NodeList();
+                    NodeList nodeList;
+
+                    for (Node n : params) {
+                        // all params have to be lists
+                        try {
+                            nodeList = Node.asList(n);
+                        } catch (LangException e) {
+                            String msg = "All args to concat have to be lists";
+                            throw new LangException(msg);
+                        }
+
+                        for(Node m : nodeList.getChildren()) {
+                            res.addChild(m);
+                        }
+                    }
+                    return res;
+                }                
+            });
+
 
         return e;
     }    

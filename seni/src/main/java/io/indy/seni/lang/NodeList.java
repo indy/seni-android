@@ -43,6 +43,10 @@ public class NodeList extends Node {
         return mChildren;
     }
 
+    public int size() {
+        return getChildren().size();
+    }
+
     public boolean eq(Node n) {
 
         if (n.mType != Node.Type.LIST) {

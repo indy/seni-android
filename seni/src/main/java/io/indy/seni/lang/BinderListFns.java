@@ -32,7 +32,9 @@ public class BinderListFns extends Binder {
 
                     Binder.checkArity(params, 1, keyword());
 
-                    return Node.asList(params.get(0)).getChild(0);
+                    NodeList nodeList = Node.asList(params.get(0));
+
+                    return nodeList.getChild(0);
                 }                
             });
 
@@ -42,7 +44,9 @@ public class BinderListFns extends Binder {
 
                     Binder.checkArity(params, 1, keyword());
 
-                    return Node.asList(params.get(0)).getChild(1);
+                    NodeList nodeList = Node.asList(params.get(0));
+
+                    return nodeList.getChild(1);
                 }                
             });
 
@@ -54,8 +58,9 @@ public class BinderListFns extends Binder {
 
                     // nth is 0-based
                     int nth = Node.asIntValue(params.get(0));
+                    NodeList nodeList = Node.asList(params.get(1));
 
-                    return Node.asList(params.get(1)).getChild(nth);
+                    return nodeList.getChild(nth);
                 }                
             });
 
@@ -107,12 +112,11 @@ public class BinderListFns extends Binder {
                 public Node execute(Env env, List<Node> params) 
                     throws LangException {
 
-                    // only accepts 1 parameter
                     Binder.checkArity(params, 1, keyword());
-                    // it has to be a list
+
                     NodeList nodeList = Node.asList(params.get(0));
-                    // return the size of the list
-                    return new NodeInt(nodeList.getChildren().size());
+
+                    return new NodeInt(nodeList.size());
                 }                
             });
 

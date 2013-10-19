@@ -24,7 +24,7 @@ public class BinderListFns extends Binder {
 
     public static Env bind(Env e) {
         // todo:
-        // mapcat, filter, interleave, interpose, partition, reverse, sort 
+        // filter, interleave, interpose, partition, reverse, sort 
 
         e.addBinding(new NodeFn("first") {
                 public Node execute(Env env, List<Node> params) 
@@ -117,6 +117,55 @@ public class BinderListFns extends Binder {
                     NodeList nodeList = Node.asList(params.get(0));
 
                     return new NodeInt(nodeList.size());
+                }                
+            });
+
+
+        e.addBinding(new NodeFn("mapcat") {
+                public Node execute(Env env, List<Node> params) 
+                    throws LangException {
+
+                    // first arg is a lambda|name rest are lists
+                    NodeLambda fn = Node.resolveLambda(env, params.get(0));
+
+                    int numArgs = params.size() - 1;
+                    List<Node> fnArgs = new ArrayList<Node>(numArgs);
+
+                    NodeList firstList = Node.asList(params.get(1));
+                    int numIterations = firstList.size();
+
+                    List<Node> resLists = new ArrayList<Node>(numIterations);
+
+                    for (int i=0;i<numIterations;i++) {
+                        fnArgs.clear();
+                        for (int j=1;j<params.size();j++) {
+                            NodeList nl = Node.asList(params.get(j));
+                            fnArgs.add(nl.getChildren().get(i));
+                        }
+                        // invoking the lambda returns a list
+                        Node res = fn.execute(env, fnArgs);
+                        resLists.add(res);
+                    }
+
+                    // concat the returned lists
+                    NodeList ret = new NodeList();
+                    NodeList nodeList;
+
+                    for (Node n : resLists) {
+                        // all params have to be lists
+                        try {
+                            nodeList = Node.asList(n);
+                        } catch (LangException e) {
+                            String msg = "All results have to be lists";
+                            throw new LangException(msg);
+                        }
+
+                        for(Node m : nodeList.getChildren()) {
+                            ret.addChild(m);
+                        }
+                    }
+
+                    return ret;
                 }                
             });
 

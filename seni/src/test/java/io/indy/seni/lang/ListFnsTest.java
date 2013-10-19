@@ -47,4 +47,10 @@ public class ListFnsTest extends EvalTestBase {
     public void testConcat() {
         assertEval("(concat (quote (1 2)) (quote (3 4)))", "(1 2 3 4)");
     }
+
+    @Test
+    public void testCount() {
+        assertEval("(count (quote (9 8 7 6)))", "4");
+        assertEval("(count (quote ()))", "0");
+    }
 }

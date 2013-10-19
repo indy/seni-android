@@ -24,7 +24,7 @@ public class BinderListFns extends Binder {
 
     public static Env bind(Env e) {
         // todo:
-        // concat, mapcat, filter, interleave, interpose, partition, reverse, sort, count 
+        // mapcat, filter, interleave, interpose, partition, reverse, sort 
 
         e.addBinding(new NodeFn("first") {
                 public Node execute(Env env, List<Node> params) 
@@ -100,6 +100,19 @@ public class BinderListFns extends Binder {
                         }
                     }
                     return res;
+                }                
+            });
+
+        e.addBinding(new NodeFn("count") {
+                public Node execute(Env env, List<Node> params) 
+                    throws LangException {
+
+                    // only accepts 1 parameter
+                    Binder.checkArity(params, 1, keyword());
+                    // it has to be a list
+                    NodeList nodeList = Node.asList(params.get(0));
+                    // return the size of the list
+                    return new NodeInt(nodeList.getChildren().size());
                 }                
             });
 

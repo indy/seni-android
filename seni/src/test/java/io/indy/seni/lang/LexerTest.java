@@ -81,6 +81,14 @@ public class LexerTest {
             assertThat(t.getStringValue()).isEqualTo("bob");
             t = q.remove();
             assertThat(t.getType()).isEqualTo(Token.Type.LIST_END);
+
+            q = Lexer.tokenise("'bob");
+            t = q.remove();
+            assertThat(t.getType()).isEqualTo(Token.Type.QUOTE_ABBREVIATION);
+            t = q.remove();
+            assertThat(t.getType()).isEqualTo(Token.Type.NAME);
+            assertThat(t.getStringValue()).isEqualTo("bob");
+
         } catch (LangException exception) {
             assertThat(true).isFalse();
         }

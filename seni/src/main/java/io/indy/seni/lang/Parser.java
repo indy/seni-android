@@ -58,11 +58,24 @@ public class Parser {
             }
         } else if(type == Token.Type.STRING) {
             return new NodeString(token.getStringValue());
+        } else if(type == Token.Type.QUOTE_ABBREVIATION) {
+            return consumeQuotedForm();
         } else {
             // throw an error
         }
 
         return null;
+    }
+
+    private static Node consumeQuotedForm() {
+        // '(2 3 4) -> (quote (2 3 4))
+        
+        NodeList node = new NodeList();
+
+        node.addChild(new NodeName("quote"));
+        node.addChild(consumeItem());
+        
+        return node;
     }
 
     private static Node consumeList() {

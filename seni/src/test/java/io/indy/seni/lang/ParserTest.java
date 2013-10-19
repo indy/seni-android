@@ -157,6 +157,45 @@ public class ParserTest {
         assertThat(nl.getChildren().size()).isEqualTo(3);
     }
 
+    @Test
+    public void parseQuoteAbbreviation() {
+        // '(42 38)    -> (quote (42 38))
+        Queue<Token> tokens = new ArrayDeque<Token>();
+        tokens.add(makeToken(Token.Type.QUOTE_ABBREVIATION));
+        tokens.add(makeToken(Token.Type.LIST_START));
+        tokens.add(makeToken(42));
+        tokens.add(makeToken(38));
+        tokens.add(makeToken(Token.Type.LIST_END));
+
+        List<Node> nodes = Parser.parse(tokens);
+        assertThat(nodes.size()).isEqualTo(1);
+
+        Node n = nodes.get(0);
+        assertThat(n.getType()).isEqualTo(Node.Type.LIST);
+
+        NodeList nl = (NodeList)n;
+        assertThat(nl.getChildren().size()).isEqualTo(2);
+
+        n = nl.getChild(0);
+        assertThat(n.getType()).isEqualTo(Node.Type.NAME);
+        NodeName nn = (NodeName)n;
+        assertThat(nn.getName()).isEqualTo("quote");
+
+        n = nl.getChild(1);
+        assertThat(n.getType()).isEqualTo(Node.Type.LIST);
+        nl = (NodeList)n;
+
+        n = nl.getChild(0);
+        assertThat(n.getType()).isEqualTo(Node.Type.INT);
+        NodeInt ni = (NodeInt)n;
+        assertThat(ni.getInt()).isEqualTo(42);
+
+        n = nl.getChild(1);
+        assertThat(n.getType()).isEqualTo(Node.Type.INT);
+        ni = (NodeInt)n;
+        assertThat(ni.getInt()).isEqualTo(38);
+    }
+
     private Token makeToken(int val) {
         try {
             return new Token(Token.Type.INT, val);

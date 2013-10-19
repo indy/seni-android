@@ -27,7 +27,8 @@ public class Token {
         FLOAT,
         NAME,
         // KEYWORD, // too clojure specific???
-        STRING
+        STRING,
+        QUOTE_ABBREVIATION
     }
 
     public static class TokenException extends Exception {

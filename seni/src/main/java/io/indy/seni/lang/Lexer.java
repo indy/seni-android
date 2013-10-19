@@ -89,6 +89,10 @@ public class Lexer {
             case FLOAT :
                 p = consumeFloat(s);
                 break;
+            case QUOTE_ABBREVIATION :
+                p = consumeQuoteAbbreviation(s);
+                break;
+
             default :
                 throw new LangException("unknown token type: " + s.charAt(0));
             }
@@ -198,6 +202,13 @@ public class Lexer {
         return p;
     }
 
+    private static Pair consumeQuoteAbbreviation(String s) {
+        Pair p = new Pair();
+        p.mToken = new Token(Token.Type.QUOTE_ABBREVIATION);
+        p.mRemaining = s.substring(1);
+        return p;
+    }
+
     private static int indexOfNext(String s, Character c) {
         for(int i=0;i<s.length();i++) {
             if(s.charAt(i) == c) {
@@ -209,6 +220,10 @@ public class Lexer {
 
     private static Token.Type nextTokenType(String s) {
         char c = s.charAt(0);
+
+        if(isQuoteAbbreviation(c)) {
+            return Token.Type.QUOTE_ABBREVIATION;
+        }
 
         if(isListStart(c)) {
             return Token.Type.LIST_START;
@@ -277,6 +292,10 @@ public class Lexer {
 
     private static boolean isQuotedString(Character c) {
         return c == '"';
+    }
+
+    private static boolean isQuoteAbbreviation(Character c) {
+        return c == '\'';
     }
 
     private static boolean isName(Character c) {

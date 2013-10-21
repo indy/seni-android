@@ -21,10 +21,17 @@ import org.junit.Test;
 public class FunctionalFnsTest extends EvalTestBase {
 
     @Test
-    public void testFunctional() {
+    public void testApply() {
         assertEval("(apply + (quote (4 5 6)))", "15");
-        assertEval("(map (lambda (x) (+ x x)) (quote (1 2 3)))", "(2 4 6)");
+    }
 
+    @Test
+    public void testMap() {
+        assertEval("(map (lambda (x) (+ x x)) (quote (1 2 3)))", "(2 4 6)");
+    }
+
+    @Test
+    public void testReduce() {
         assertEval("(reduce + (quote (4 5 6)))", "15");
         assertEval("(reduce + 4 (quote (5 6)))", "15");
     }

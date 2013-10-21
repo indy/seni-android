@@ -26,7 +26,6 @@ import static org.fest.assertions.api.Assertions.assertThat;
 abstract public class EvalTestBase {
 
     protected void assertBinding(String code, String name, String expected) {
-
         Node expectedAST = asAST(expected).get(0);
 
         Queue<Token> tokens;
@@ -49,7 +48,6 @@ abstract public class EvalTestBase {
             assertThat(true).isFalse();
         }
     }
-
 
     protected void assertEval(String code, String expected) {
         Node n = run(code);

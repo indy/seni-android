@@ -24,7 +24,7 @@ public class BinderListFns extends Binder {
 
     public static Env bind(Env e) {
         // todo:
-        // filter, interleave, interpose, partition, reverse, sort 
+        // interleave, interpose, partition, sort 
 
         e.addBinding(new NodeFn("first") {
                 public Node execute(Env env, List<Node> params) 
@@ -187,7 +187,6 @@ public class BinderListFns extends Binder {
                     return res;
                 }                
             });
-
 
         return e;
     }    

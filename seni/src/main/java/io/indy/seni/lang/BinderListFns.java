@@ -169,6 +169,25 @@ public class BinderListFns extends Binder {
                 }                
             });
 
+        e.addBinding(new NodeFn("reverse") {
+                public Node execute(Env env, List<Node> params) 
+                    throws LangException {
+
+                    Binder.checkArity(params, 1, keyword());
+                    
+                    NodeList res = new NodeList();
+
+                    NodeList in = Node.asList(params.get(0));
+                    int inSize = in.size();
+
+                    for (int i=0;i<inSize;i++) {
+                        res.addChild(in.getChild(inSize - i - 1));
+                    }
+
+                    return res;
+                }                
+            });
+
 
         return e;
     }    

@@ -67,4 +67,10 @@ public class ListFnsTest extends EvalTestBase {
                    "(5 42 7 42 9 42)");
     }
 
+    @Test
+    public void testReverse() {
+        assertEval("(reverse '())", "()");
+        assertEval("(reverse '(1 2))", "(2 1)");
+        assertEval("(reverse '(1 2 3 4))", "(4 3 2 1)");
+    }
 }

@@ -28,4 +28,9 @@ public class FunctionalFnsTest extends EvalTestBase {
         assertEval("(reduce + (quote (4 5 6)))", "15");
         assertEval("(reduce + 4 (quote (5 6)))", "15");
     }
+
+    @Test
+    public void testFilter() {
+        assertEval("(filter (lambda (x) (< x 10)) '(12 1 43 9 4))", "(1 9 4)");
+    }
 }

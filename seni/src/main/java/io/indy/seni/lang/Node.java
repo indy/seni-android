@@ -31,6 +31,13 @@ abstract public class Node {
 
     protected Type mType;
 
+    public static NodeBoolean asBoolean(Node n) throws LangException {
+        if(n.getType() != Type.BOOLEAN) {
+            throw new LangException("incompatible cast to BOOLEAN");
+        }
+        return (NodeBoolean) n;
+    }
+
     public static NodeInt asInt(Node n) throws LangException {
         if(n.getType() != Type.INT) {
             throw new LangException("incompatible cast to INT");

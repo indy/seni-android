@@ -16,10 +16,13 @@
 
 package io.indy.seni.lang;
 
+import io.indy.seni.core.Colour;
 import java.util.List;
 import java.util.Iterator;
 
 public class BinderGraphicFns extends Binder {
+
+    // complementary, splitComplementary, analagous, triad
 
     public static Env bind(Env e) {
 
@@ -36,7 +39,68 @@ public class BinderGraphicFns extends Binder {
                     float g = Node.asFloatValue(params.get(1));
                     float b = Node.asFloatValue(params.get(2));
 
-                    return new NodeColour(r, g, b);
+                    return new NodeColour(Colour.fromRGB(r, g, b));
+                }
+            });
+
+
+        e.addBinding(new NodeFn("complementary") {
+                public Node execute(Env env, List<Node> params) 
+                    throws LangException {
+
+                    Binder.checkArity(params, 1, keyword());
+
+                    Colour c = Node.asColourValue(params.get(0));
+
+                    return new NodeColour(c.complementary());
+                }
+            });
+
+        e.addBinding(new NodeFn("split-complementary") {
+                public Node execute(Env env, List<Node> params) 
+                    throws LangException {
+
+                    Binder.checkArity(params, 1, keyword());
+
+                    Colour c = Node.asColourValue(params.get(0));
+                    Colour cols[] = c.splitComplementary();
+
+                    NodeList res = new NodeList();
+                    res.addChild(new NodeColour(cols[0]));
+                    res.addChild(new NodeColour(cols[1]));
+                    return res;
+                }
+            });
+
+        e.addBinding(new NodeFn("analagous") {
+                public Node execute(Env env, List<Node> params) 
+                    throws LangException {
+
+                    Binder.checkArity(params, 1, keyword());
+
+                    Colour c = Node.asColourValue(params.get(0));
+                    Colour cols[] = c.analagous();
+
+                    NodeList res = new NodeList();
+                    res.addChild(new NodeColour(cols[0]));
+                    res.addChild(new NodeColour(cols[1]));
+                    return res;
+                }
+            });
+
+        e.addBinding(new NodeFn("triad") {
+                public Node execute(Env env, List<Node> params) 
+                    throws LangException {
+
+                    Binder.checkArity(params, 1, keyword());
+
+                    Colour c = Node.asColourValue(params.get(0));
+                    Colour cols[] = c.triad();
+
+                    NodeList res = new NodeList();
+                    res.addChild(new NodeColour(cols[0]));
+                    res.addChild(new NodeColour(cols[1]));
+                    return res;
                 }
             });
 

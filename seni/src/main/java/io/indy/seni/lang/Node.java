@@ -16,6 +16,8 @@
 
 package io.indy.seni.lang;
 
+import io.indy.seni.core.Colour;
+
 abstract public class Node {
 
     public enum Type {
@@ -26,6 +28,7 @@ abstract public class Node {
         STRING,
         BOOLEAN,
         LAMBDA,
+        COLOUR,
         NULL
     }
 
@@ -86,6 +89,18 @@ abstract public class Node {
         }
         return (NodeLambda) n;
     }
+
+    public static NodeColour asColour(Node n) throws LangException {
+        if(n.getType() != Type.COLOUR) {
+            throw new LangException("incompatible cast to COLOUR");
+        }
+        return (NodeColour) n;
+    }
+
+    public static Colour asColourValue(Node n) throws LangException {
+        return asColour(n).getColour();
+    }
+
 
     public static NodeLambda resolveLambda(Env env, Node n) 
         throws LangException {

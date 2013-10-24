@@ -90,7 +90,7 @@ public class LexerTest {
             assertThat(t.getStringValue()).isEqualTo("bob");
 
         } catch (LangException exception) {
-            assertThat(true).isFalse();
+            assertThat(true).overridingErrorMessage(exception.toString()).isFalse();
         }
 
     }

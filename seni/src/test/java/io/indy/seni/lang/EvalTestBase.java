@@ -45,7 +45,7 @@ abstract public class EvalTestBase {
             assertThat(expectedAST.eq(n)).overridingErrorMessage(errorMsg).isTrue();
 
         } catch (LangException e) {
-            assertThat(true).isFalse();
+            assertThat(true).overridingErrorMessage(e.toString()).isFalse();
         }
     }
 
@@ -69,14 +69,14 @@ abstract public class EvalTestBase {
             return Parser.parse(tokens);
 
         } catch (LangException exception) {
-            assertThat(true).isFalse();
+            assertThat(true).overridingErrorMessage(exception.toString()).isFalse();
         }
 
         return null;
     }
 
     // runs single s-expressions
-    private Node run(String code) {
+    protected Node run(String code) {
 
         try {
             List<Node> ast = asAST(code);
@@ -91,8 +91,7 @@ abstract public class EvalTestBase {
             return res;
 
         } catch (LangException exception) {
-            System.out.println(exception);
-            assertThat(true).isFalse();
+            assertThat(true).overridingErrorMessage(exception.toString()).isFalse();
         }
 
         return null;

@@ -63,6 +63,10 @@ public class Interpreter {
             return expr;
         }
 
+        if(type == Node.Type.COLOUR) {
+            return expr;
+        }
+
         if(type == Node.Type.STRING) {
             return expr;
         }

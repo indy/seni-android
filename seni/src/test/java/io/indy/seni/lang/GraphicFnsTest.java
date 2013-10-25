@@ -25,8 +25,42 @@ import java.util.Queue;
 public class GraphicFnsTest extends EvalTestBase {
 
     @Test
-    public void testFirst() {
-        assertColour("(colour 0.2 0.3 0.5)", Colour.fromRGB(0.2f, 0.3f, 0.5f));
+    public void testColourCreation() {
+        assertColour("(colour 0.2 0.3 0.5)", 
+                     Colour.fromRGB(0.2f, 0.3f, 0.5f));
+    }
+
+    @Test
+    public void testComplementary() {
+        assertColour("(complementary (colour 0.2 0.3 0.5))", 
+                     Colour.fromHSL(40.0f, 0.42857146f, 0.35f));
+    }
+
+    @Test
+    public void testSplitComplementary() {
+        assertColour("(first (split-complementary (colour 0.2 0.3 0.5)))", 
+                     Colour.fromHSL(10.0f, 0.42857146f, 0.35f));
+
+        assertColour("(second (split-complementary (colour 0.2 0.3 0.5)))", 
+                     Colour.fromHSL(70.0f, 0.42857146f, 0.35f));
+    }
+
+    @Test
+    public void testAnalagous() {
+        assertColour("(first (analagous (colour 0.2 0.3 0.5)))", 
+                     Colour.fromHSL(190.0f, 0.42857146f, 0.35f));
+
+        assertColour("(second (analagous (colour 0.2 0.3 0.5)))", 
+                     Colour.fromHSL(250.0f, 0.42857146f, 0.35f));
+    }
+
+    @Test
+    public void testTriad() {
+        assertColour("(first (triad (colour 0.2 0.3 0.5)))", 
+                     Colour.fromHSL(100.0f, 0.42857146f, 0.35f));
+
+        assertColour("(second (triad (colour 0.2 0.3 0.5)))", 
+                     Colour.fromHSL(340.0f, 0.42857146f, 0.35f));
     }
 
     protected void assertColour(String code, Colour expected) {
@@ -35,7 +69,7 @@ public class GraphicFnsTest extends EvalTestBase {
             Node n = run(code);
             Colour actual = Node.asColourValue(n);
 
-            String errorMsg = "failed assertion with eval: " + code;
+            String errorMsg = "eval: " + code + " => " + actual + " [expected: " + expected + "]";
             assertThat(actual.compare(expected)).overridingErrorMessage(errorMsg).isTrue();
 
         } catch (LangException exception) {

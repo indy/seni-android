@@ -411,7 +411,7 @@ public class Colour {
             } else if(f == Format.HSL) {
                 return LABToXYZ().XYZToRGB().RGBToHSL();
             } else if(f == Format.LAB) {
-                return this;
+                return Colour.fromLAB(mVal[0], mVal[1], mVal[2], mVal[3]);
             }
 
             // TODO: throw an error
@@ -437,7 +437,7 @@ public class Colour {
             if(f == Format.RGB) {
                 return HSVToRGB(mValidHue);
             } else if(f == Format.HSV) {
-                return this;
+                return Colour.fromHSV(mVal[0], mVal[1], mVal[2], mVal[3]);
             } else if(f == Format.HSL) {
                 return HSVToRGB(mValidHue).RGBToHSL();
             } else if(f == Format.LAB) {
@@ -469,7 +469,7 @@ public class Colour {
             } else if(f == Format.HSV) {
                 return HSLToRGB(mValidHue).RGBToHSV();
             } else if(f == Format.HSL) {
-                return this;
+                return Colour.fromHSL(mVal[0], mVal[1], mVal[2], mVal[3]);
             } else if(f == Format.LAB) {
                 return HSLToRGB(mValidHue).RGBToXYZ().XYZToLAB();
             }
@@ -488,7 +488,7 @@ public class Colour {
         public Colour as(Format f) {
 
             if(f == Format.RGB) {
-                return this;
+                return Colour.fromRGB(mVal[0], mVal[1], mVal[2], mVal[3]);
             } else if(f == Format.HSV) {
                 return RGBToHSV();
             } else if(f == Format.HSL) {

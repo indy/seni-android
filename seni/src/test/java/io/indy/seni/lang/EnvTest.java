@@ -60,7 +60,7 @@ public class EnvTest {
             NodeInt ni = (NodeInt)n;
             assertThat(ni.getInt()).isEqualTo(expected);
         } catch (LangException e) {
-            assertThat(true).isFalse();
+            assertThat(true).overridingErrorMessage(e.toString()).isFalse();
         }
     }
 }

@@ -59,6 +59,18 @@ abstract public class EvalTestBase {
         assertThat(expectedAST.eq(n)).overridingErrorMessage(errorMsg).isTrue();
     }
 
+    // parse the code string into an AST and then scribe it back into a string
+    // it's expected to return back to it's original string form
+    protected void assertScribe(String code) {
+        // assuming that code evals to a single node
+        Node codeAST = asAST(code).get(0);
+
+        String scribed = codeAST.scribe();
+
+        String errorMsg = "code: `" + code + "` incorrectly scribed to: `" + scribed + "`";
+        assertThat(scribed).overridingErrorMessage(errorMsg).isEqualTo(code);
+    }
+
     protected void assertScribe(String code, String expected) {
         // assuming that code evals to a single node
         Node codeAST = asAST(code).get(0);

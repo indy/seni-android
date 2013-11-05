@@ -100,6 +100,9 @@ public abstract class Colour {
     };
 
     public String scribe() {
+        if(mVal[ALPHA] == 1.0f) {
+            return "" + mVal[0] + " " + mVal[1] + " " + mVal[2];
+        }
         return "" + mVal[0] + " " + mVal[1] + " " + mVal[2] + " " + mVal[3];
     }
 

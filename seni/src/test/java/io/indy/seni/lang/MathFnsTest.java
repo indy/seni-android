@@ -44,10 +44,10 @@ public class MathFnsTest extends EvalTestBase {
 
     @Test
     public void testScribe() {
-        assertScribe(">", ">");
-        assertScribe("+", "+");
-        assertScribe("-", "-");
-        assertScribe("*", "*");
-        assertScribe("/", "/");
+        assertScribe(">");
+        assertScribe("+");
+        assertScribe("-");
+        assertScribe("*");
+        assertScribe("/");
     }
 }

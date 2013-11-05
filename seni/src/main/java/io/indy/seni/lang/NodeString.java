@@ -38,4 +38,7 @@ public class NodeString extends Node {
         return ((NodeString)n).mString.equals(mString);
     }
 
+    public String scribe() {
+        return mString;
+    }
 }

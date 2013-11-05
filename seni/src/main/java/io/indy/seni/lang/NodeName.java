@@ -37,4 +37,8 @@ public class NodeName extends Node {
         }
         return ((NodeName)n).mName.equals(mName);
     }
+
+    public String scribe() {
+        return mName;
+    }
 }

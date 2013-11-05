@@ -38,4 +38,7 @@ public class NodeInt extends Node {
         return mInteger == ((NodeInt)n).mInteger;
     }
 
+    public String scribe() {
+        return Integer.toString(mInteger);
+    }
 }

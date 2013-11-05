@@ -94,4 +94,9 @@ public class NodeLambda extends Node {
         }
         return true; // todo: fix this
     }
+
+
+    public String scribe() {
+        return "implement NodeLambda:scribe";
+    }
 }

@@ -40,5 +40,11 @@ public class NodeFloatTest {
 
         assertThat(n.eq(new NodeFloat(98.76f))).isFalse();
     }
+
+    @Test
+    public void testScribe() {
+        NodeFloat n = new NodeFloat(12.34f);
+        assertThat(n.scribe()).isEqualTo("12.34");
+    }
 }
 

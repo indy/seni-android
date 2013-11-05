@@ -42,4 +42,8 @@ public class NodeColour extends Node {
         return mColour.compare(nodeColour.mColour);
     }
 
+    public String scribe() {
+        Colour rgb = mColour.as(Colour.Format.RGB);
+        return "(colour " + rgb.scribe() + ")";
+    }
 }

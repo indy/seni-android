@@ -96,8 +96,12 @@ public abstract class Colour {
     public abstract Colour as(Format f);
 
     public String toString() {
-        return mFormat + ": " + mVal[0] + ", "+ mVal[1] + ", "+ mVal[2] + ", "+ mVal[3];
+        return mFormat + ": " + mVal[0] + ", " + mVal[1] + ", "+ mVal[2] + ", " + mVal[3];
     };
+
+    public String scribe() {
+        return "" + mVal[0] + " " + mVal[1] + " " + mVal[2] + " " + mVal[3];
+    }
 
     public boolean compare(Colour c) {
         if (c.mFormat != this.mFormat) {

@@ -27,4 +27,8 @@ public class NodeNull extends Node {
     public boolean eq(Node n) {
         return (n.mType == Node.Type.NULL);
     }
+
+    public String scribe() {
+        return "<null>";
+    }
 }

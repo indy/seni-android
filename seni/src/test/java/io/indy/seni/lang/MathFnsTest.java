@@ -28,7 +28,7 @@ public class MathFnsTest extends EvalTestBase {
         assertEval("(* (* 2 2) (* 3 3))", "36");
         assertEval("(/ 54 9)", "6");
     }
-    
+
     @Test
     public void testComparisons() {
         assertEval("(> 2 1)", "true");
@@ -40,5 +40,14 @@ public class MathFnsTest extends EvalTestBase {
         assertEval("(< 2.0 1.0)", "false");
         assertEval("(= 2.0 1.0)", "false");
         assertEval("(= 2.0 2.0)", "true");
+    }
+
+    @Test
+    public void testScribe() {
+        assertScribe(">", ">");
+        assertScribe("+", "+");
+        assertScribe("-", "-");
+        assertScribe("*", "*");
+        assertScribe("/", "/");
     }
 }

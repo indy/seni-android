@@ -142,5 +142,5 @@ abstract public class Node {
     }
 
     abstract public boolean eq(Node n);
-
+    abstract public String scribe();
 }

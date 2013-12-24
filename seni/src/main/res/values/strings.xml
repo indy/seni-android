@@ -3,5 +3,8 @@
 
     <string name="app_name">seni</string>
     <string name="title_script_detail">Script Detail</string>
+    <string name="title_activity_render">RenderActivity</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
 
 </resources>

@@ -30,6 +30,10 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ScriptListActivity" />
         </activity>
+        <activity
+            android:name="io.indy.seni.RenderActivity"
+            android:label="@string/title_activity_render" >
+        </activity>
     </application>
 
 </manifest>

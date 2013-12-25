@@ -1,65 +1,107 @@
 package io.indy.seni;
 
 import android.app.Activity;
-import android.app.ActionBar;
-import android.app.Fragment;
 import android.os.Bundle;
-import android.view.LayoutInflater;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.os.Build;
+
+import io.indy.seni.view.SeniView;
 
 public class RenderActivity extends Activity {
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_render);
 
-        if (savedInstanceState == null) {
-            getFragmentManager().beginTransaction()
-                    .add(R.id.container, new PlaceholderFragment())
-                    .commit();
-        }
+    private static final String TAG = "RenderActivity";
+    private static final boolean D = true;
+
+    static void ifd(final String message) {
+        if (AppConfig.DEBUG && D) Log.d(TAG, message);
     }
 
 
+    /** A handle to the thread that's actually running the animation. */
+    private SeniView.SeniViewThread mSeniViewThread;
+
+    /** A handle to the View in which the game is running. */
+    private SeniView mSeniView;
+
+    /**
+     * Invoked during init to give the Activity a chance to set up its Menu.
+     *
+     * @param menu the Menu to which entries may be added
+     * @return true
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.render, menu);
+        super.onCreateOptionsMenu(menu);
         return true;
     }
 
+    /**
+     * Invoked when the user selects an item from the Menu.
+     *
+     * @param item the Menu entry which was selected
+     * @return true if the Menu item was legit (and we consumed it), false
+     *         otherwise
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
+        return false;
     }
 
     /**
-     * A placeholder fragment containing a simple view.
+     * Invoked when the Activity is created.
+     *
+     * @param savedInstanceState a Bundle containing state saved from a previous
+     *        execution, or null if this is a new execution
      */
-    public static class PlaceholderFragment extends Fragment {
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
-        public PlaceholderFragment() {
-        }
+        // tell system to use the layout defined in our XML file
+        setContentView(R.layout.activity_render);
 
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_render, container, false);
-            return rootView;
+        // get handles to the SeniView from XML, and its SeniViewThread
+        mSeniView = (SeniView) findViewById(R.id.lunar);
+        mSeniViewThread = mSeniView.getThread();
+
+        // give the SeniView a handle to the TextView used for messages
+//        mSeniView.setTextView((TextView) findViewById(R.id.text));
+
+        if (savedInstanceState == null) {
+            // we were just launched: set up a new game
+//            mSeniViewThread.setState(SeniView.SeniViewThread.STATE_READY);
+        } else {
+            // we are being restored: resume a previous game
+            mSeniViewThread.restoreState(savedInstanceState);
         }
+    }
+
+    /**
+     * Invoked when the Activity loses user focus.
+     */
+    @Override
+    protected void onPause() {
+ //       mSeniView.getThread().pause(); // pause game when Activity pauses
+        super.onPause();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
+    /**
+     * Notification that something is about to happen, to give the Activity a
+     * chance to save state.
+     *
+     * @param outState a Bundle into which this Activity should save its state
+     */
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        // just have the View's thread save its state into our Bundle
+        super.onSaveInstanceState(outState);
     }
 
 }

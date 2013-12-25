@@ -40,4 +40,10 @@ public class NodeIntTest {
 
         assertThat(n.eq(new NodeInt(666))).isFalse();
     }
+
+    @Test
+    public void testScribe() {
+        NodeInt n = new NodeInt(42);
+        assertThat(n.scribe()).isEqualTo("42");
+    }
 }

@@ -88,35 +88,22 @@ public class Interpreter {
     private static Node funApplication(Env env, NodeList listExpr) throws LangException {
 
         if (isSpecialForm(listExpr)) {
-            // deal with special forms
-            String name = getCarName(listExpr);
-
-            if (name.equals(QUOTE)) { 
+            switch(getCarName(listExpr)) {
+            case QUOTE:
                 return specialFormQuote(env, listExpr);
-            }
-
-            if (name.equals(IF)) {
+            case IF:
                 return specialFormIf(env, listExpr);
-            }
-
-            if (name.equals(SET)) {
+            case SET:
                 return specialFormSet(env, listExpr);
-            }
-
-            if (name.equals(DEFINE)) {
+            case DEFINE:
                 return specialFormDefine(env, listExpr);
-            }
-
-            if (name.equals(BEGIN)) {
+            case BEGIN:
                 return specialFormBegin(env, listExpr);
-            }
-
-            if (name.equals(LAMBDA)) {
+            case LAMBDA:
                 return specialFormLambda(env, listExpr);
-            }
-
-            // throw an error
-
+            default:
+                // throw an error
+            };
         } 
 
         // general function application

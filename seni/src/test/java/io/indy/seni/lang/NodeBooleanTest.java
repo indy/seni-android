@@ -21,30 +21,35 @@ import java.util.List;
 import org.junit.Test;
 import static org.fest.assertions.api.Assertions.assertThat;
 
-public class NodeFloatTest {
+public class NodeBooleanTest {
 
     @Test
-    public void testNodeFloat() {
-        NodeFloat n = new NodeFloat(12.34f);
+    public void testNodeBoolean() {
+        NodeBoolean n = new NodeBoolean(true);
+        assertThat(n.getType()).isEqualTo(Node.Type.BOOLEAN);
+        assertThat(n.getBoolean()).isTrue();
 
-        assertThat(n.getType()).isEqualTo(Node.Type.FLOAT);
-        assertThat(n.getFloat()).isEqualTo(12.34f);
+        NodeBoolean m = new NodeBoolean(false);
+        assertThat(m.getType()).isEqualTo(Node.Type.BOOLEAN);
+        assertThat(m.getBoolean()).isFalse();
     }
 
     @Test
     public void testEq() {
-        NodeFloat n = new NodeFloat(12.34f);
+        NodeBoolean t = new NodeBoolean(true);
+        NodeBoolean f = new NodeBoolean(false);
 
-        assertThat(n.eq(n)).isTrue();
-        assertThat(n.eq(new NodeFloat(12.34f))).isTrue();
+        assertThat(t.eq(t)).isTrue();
+        assertThat(t.eq(new NodeBoolean(true))).isTrue();
 
-        assertThat(n.eq(new NodeFloat(98.76f))).isFalse();
+        assertThat(t.eq(f)).isFalse();
     }
 
     @Test
     public void testScribe() {
-        NodeFloat n = new NodeFloat(12.34f);
-        assertThat(n.scribe()).isEqualTo("12.34");
+        NodeBoolean t = new NodeBoolean(true);
+        NodeBoolean f = new NodeBoolean(false);
+        assertThat(t.scribe()).isEqualTo("true");
+        assertThat(f.scribe()).isEqualTo("false");
     }
 }
-

@@ -21,30 +21,29 @@ import java.util.List;
 import org.junit.Test;
 import static org.fest.assertions.api.Assertions.assertThat;
 
-public class NodeFloatTest {
+public class NodeNameTest {
 
     @Test
-    public void testNodeFloat() {
-        NodeFloat n = new NodeFloat(12.34f);
+    public void testNodeName() {
+        NodeName n = new NodeName("cons");
 
-        assertThat(n.getType()).isEqualTo(Node.Type.FLOAT);
-        assertThat(n.getFloat()).isEqualTo(12.34f);
+        assertThat(n.getType()).isEqualTo(Node.Type.NAME);
+        assertThat(n.getName()).isEqualTo("cons");
     }
 
     @Test
     public void testEq() {
-        NodeFloat n = new NodeFloat(12.34f);
+        NodeName n = new NodeName("cons");
 
         assertThat(n.eq(n)).isTrue();
-        assertThat(n.eq(new NodeFloat(12.34f))).isTrue();
+        assertThat(n.eq(new NodeName("cons"))).isTrue();
 
-        assertThat(n.eq(new NodeFloat(98.76f))).isFalse();
+        assertThat(n.eq(new NodeName("car"))).isFalse();
     }
 
     @Test
     public void testScribe() {
-        NodeFloat n = new NodeFloat(12.34f);
-        assertThat(n.scribe()).isEqualTo("12.34");
+        NodeName n = new NodeName("cons");
+        assertThat(n.scribe()).isEqualTo("cons");
     }
 }
-

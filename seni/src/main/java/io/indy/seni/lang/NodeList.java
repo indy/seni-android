@@ -70,4 +70,12 @@ public class NodeList extends Node {
 
         return true;
     }
+
+    public String scribe() {
+        String res = "(";
+        for(Node n : mChildren) {
+            res += n.scribe() + " ";
+        }
+        return res.substring(0, res.length() - 1) + ")";
+    }
 }

@@ -16,29 +16,16 @@
 
 package io.indy.seni.lang;
 
-public class NodeString extends Node {
+import java.util.List;
+import org.junit.Test;
+import static org.fest.assertions.api.Assertions.assertThat;
 
-    private String mString;
+public class NodeLambdaTest extends EvalTestBase {
 
-    public NodeString(String value) {
-        super();
-
-        mType = Node.Type.STRING;
-        mString = value;
-    }
-
-    public String getString() {
-        return mString;
-    }
-
-    public boolean eq(Node n) {
-        if (n.mType != Node.Type.STRING) {
-            return false;
-        }
-        return ((NodeString)n).mString.equals(mString);
-    }
-
-    public String scribe() {
-        return mString;
+    @Test
+    public void testScribe() {
+        assertScribe("(lambda (x) (+ x x))");
+        assertScribe("(lambda (x y z) (/ x (* y z)))");
     }
 }
+

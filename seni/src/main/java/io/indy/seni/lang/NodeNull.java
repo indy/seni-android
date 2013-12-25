@@ -16,6 +16,13 @@
 
 package io.indy.seni.lang;
 
+// NodeNull is returned in the following cases:
+//
+// (if false 1)   ;  conditional eval's to false but there's no false clause
+// (begin)        ;  empty begin
+
+// TODO: deal with the above cases and remove concept of NULL from seni
+
 public class NodeNull extends Node {
 
     public NodeNull() {
@@ -26,5 +33,10 @@ public class NodeNull extends Node {
 
     public boolean eq(Node n) {
         return (n.mType == Node.Type.NULL);
+    }
+
+    public String scribe() {
+        // sssert an error?
+        return "<null>";
     }
 }

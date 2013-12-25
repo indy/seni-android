@@ -49,4 +49,8 @@ abstract public class NodeFn extends NodeLambda {
         NodeFn nfn = (NodeFn)nl;
         return mKeyword.equals(nfn.mKeyword);
     }
+
+    public String scribe() {
+        return mKeyword;
+    }
 }

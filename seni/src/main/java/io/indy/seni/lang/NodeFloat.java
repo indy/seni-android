@@ -38,4 +38,7 @@ public class NodeFloat extends Node {
         return mFloat == ((NodeFloat)n).mFloat;
     }
 
+    public String scribe() {
+        return String.valueOf(mFloat);
+    }
 }

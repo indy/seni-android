@@ -16,9 +16,9 @@
 
 package io.indy.seni.lang;
 
-import io.indy.seni.core.Colour;
 import java.util.List;
-import java.util.Iterator;
+
+import io.indy.seni.core.Colour;
 
 public class BinderGraphicFns extends Binder {
 

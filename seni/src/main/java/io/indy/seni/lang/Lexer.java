@@ -16,10 +16,10 @@
 
 package io.indy.seni.lang;
 
-import java.util.HashSet;
-import java.util.Set;
-import java.util.Queue;
 import java.util.ArrayDeque;
+import java.util.HashSet;
+import java.util.Queue;
+import java.util.Set;
 
 public class Lexer {
 

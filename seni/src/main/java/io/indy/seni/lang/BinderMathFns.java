@@ -16,8 +16,6 @@
 
 package io.indy.seni.lang;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Iterator;
 
 public class BinderMathFns extends Binder {

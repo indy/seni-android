@@ -68,10 +68,10 @@ public abstract class Colour {
         return new ColourXYZ(x, y, z, alpha);
     }
 
-    private static final int RED = 0;
-    private static final int GREEN = 1;
-    private static final int BLUE = 2;
-    private static final int ALPHA = 3;
+    public static final int RED = 0;
+    public static final int GREEN = 1;
+    public static final int BLUE = 2;
+    public static final int ALPHA = 3;
 
     private static final int X = 0;
     private static final int Y = 1;
@@ -95,9 +95,13 @@ public abstract class Colour {
 
     public abstract Colour as(Format f);
 
+    public float[] getVals() {
+        return mVal;
+    }
+
     public String toString() {
         return mFormat + ": " + mVal[0] + ", " + mVal[1] + ", "+ mVal[2] + ", " + mVal[3];
-    };
+    }
 
     public String scribe() {
         if(mVal[ALPHA] == 1.0f) {
@@ -243,7 +247,8 @@ public abstract class Colour {
 
         return Colour.fromRGB(AxisToColour(r),
                               AxisToColour(g),
-                              AxisToColour(b));
+                              AxisToColour(b),
+                              mVal[ALPHA]);
     }
 
     protected int maxChannel() {
@@ -262,7 +267,7 @@ public abstract class Colour {
         } 
         switch(maxChan) {
         case RED: 
-            return 60.0f * (float)(((mVal[GREEN] - mVal[BLUE]) / chroma) % 6);
+            return 60.0f * (((mVal[GREEN] - mVal[BLUE]) / chroma) % 6);
         case GREEN:
             return 60.0f * (((mVal[BLUE] - mVal[RED]) / chroma) + 2.0f);
         case BLUE: 
@@ -290,7 +295,7 @@ public abstract class Colour {
             saturation = chroma / (1.0f - Math.abs((2.0f * lightness) - 1.0f));
         }
 
-        ColourHSL ret = new ColourHSL(h, saturation, lightness, 1.0f);
+        ColourHSL ret = new ColourHSL(h, saturation, lightness, mVal[ALPHA]);
         ret.setValidHue(validHue);
         return ret;
     }
@@ -317,14 +322,14 @@ public abstract class Colour {
             saturation = chroma / value;
         }
 
-        ColourHSV ret = new ColourHSV(h, saturation, value, 1.0f);
+        ColourHSV ret = new ColourHSV(h, saturation, value, mVal[ALPHA]);
         ret.setValidHue(validHue);
         return ret;
     }
 
     protected Colour CHMToRGB(float chroma, float h, float m, boolean validHue) {
         if (!validHue) {
-            return Colour.fromRGB(m, m, m);
+            return Colour.fromRGB(m, m, m, mVal[ALPHA]);
         }
 
         float hprime = h / 60.0f;
@@ -347,7 +352,7 @@ public abstract class Colour {
             r = chroma; g = 0.0f; b = x;
         } 
         
-        return Colour.fromRGB(r + m, g + m, b + m);
+        return Colour.fromRGB(r + m, g + m, b + m, mVal[ALPHA]);
     }
 
     protected Colour HSLToRGB(boolean validHue) {
@@ -383,7 +388,8 @@ public abstract class Colour {
         
         return Colour.fromXYZ(refX * xx, 
                               refY * yy, 
-                              refZ * zz);
+                              refZ * zz,
+                              mVal[ALPHA]);
     }
 
     protected Colour HSVToRGB(boolean validHue) {

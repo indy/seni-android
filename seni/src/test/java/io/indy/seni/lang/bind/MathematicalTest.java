@@ -15,11 +15,13 @@
  * limitations under the License.
  */
 
-package io.indy.seni.lang;
+package io.indy.seni.lang.bind;
 
 import org.junit.Test;
+import io.indy.seni.lang.EvalTestBase;
 
-public class MathFnsTest extends EvalTestBase {
+
+public class MathematicalTest extends EvalTestBase {
 
     @Test
     public void testMath() {

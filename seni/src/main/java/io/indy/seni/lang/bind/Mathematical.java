@@ -14,18 +14,27 @@
  * limitations under the License.
  */
 
-package io.indy.seni.lang;
+package io.indy.seni.lang.bind;
 
 import java.util.Iterator;
 
-public class BinderMathFns extends Binder {
+import io.indy.seni.lang.Binder;
+import io.indy.seni.lang.Env;
+import io.indy.seni.lang.LangException;
+import io.indy.seni.lang.Node;
+import io.indy.seni.lang.NodeBoolean;
+import io.indy.seni.lang.NodeFloat;
+import io.indy.seni.lang.NodeFnMath;
+import io.indy.seni.lang.NodeInt;
+
+public class Mathematical extends Binder {
 
     public static Env bind(Env e) {
 
         // TODO: quot, rem, mod, inc, dec, max, min, 
 
         e.addBinding(new NodeFnMath("+") {
-                protected Node executeInt(int first, Iterator<Node> iter) 
+                protected Node executeInt(int first, Iterator<Node> iter)
                     throws LangException {
 
                     int total = first;

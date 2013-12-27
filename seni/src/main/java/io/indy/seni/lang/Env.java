@@ -18,6 +18,9 @@ package io.indy.seni.lang;
 
 import java.util.HashMap;
 
+import io.indy.seni.core.bind.Core;
+import io.indy.seni.lang.bind.*;
+
 public class Env {
 
     private Env mOuter;
@@ -27,10 +30,10 @@ public class Env {
         // binds core functions in a new scope of env
         Env e = env.newScope();
 
-        e = BinderMathFns.bind(e);
-        e = BinderFunctionalFns.bind(e);
-        e = BinderListFns.bind(e);
-        e = BinderCoreGraphicFns.bind(e);
+        e = Mathematical.bind(e);
+        e = Functional.bind(e);
+        e = Lists.bind(e);
+        e = Core.bind(e);
 
         return e;
     }

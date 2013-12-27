@@ -14,18 +14,27 @@
  * limitations under the License.
  */
 
-package io.indy.seni.lang;
+package io.indy.seni.lang.bind;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-public class BinderFunctionalFns extends Binder {
+import io.indy.seni.lang.Binder;
+import io.indy.seni.lang.Env;
+import io.indy.seni.lang.LangException;
+import io.indy.seni.lang.Node;
+import io.indy.seni.lang.NodeBoolean;
+import io.indy.seni.lang.NodeFn;
+import io.indy.seni.lang.NodeLambda;
+import io.indy.seni.lang.NodeList;
+
+public class Functional extends Binder {
 
     public static Env bind(Env e) {
 
         e.addBinding(new NodeFn("apply") {
-                public Node execute(Env env, List<Node> params) 
+                public Node execute(Env env, List<Node> params)
                     throws LangException {
 
                     Binder.checkArity(params, 2, keyword());

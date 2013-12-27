@@ -14,13 +14,20 @@
  * limitations under the License.
  */
 
-package io.indy.seni.lang;
+package io.indy.seni.core.bind;
 
 import java.util.List;
 
 import io.indy.seni.core.Colour;
+import io.indy.seni.lang.Binder;
+import io.indy.seni.lang.Env;
+import io.indy.seni.lang.LangException;
+import io.indy.seni.lang.Node;
+import io.indy.seni.lang.NodeColour;
+import io.indy.seni.lang.NodeFn;
+import io.indy.seni.lang.NodeList;
 
-public class BinderCoreGraphicFns extends Binder {
+public class Core extends Binder {
 
     // complementary, splitComplementary, analagous, triad
 
@@ -28,7 +35,7 @@ public class BinderCoreGraphicFns extends Binder {
 
         // create a colour node
         e.addBinding(new NodeFn("colour") {
-                public Node execute(Env env, List<Node> params) 
+                public Node execute(Env env, List<Node> params)
                     throws LangException {
 
                     // currently just rgb

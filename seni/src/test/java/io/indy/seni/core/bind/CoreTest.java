@@ -14,15 +14,19 @@
  * limitations under the License.
  */
 
-package io.indy.seni.lang;
+package io.indy.seni.core.bind;
 
 import io.indy.seni.core.Colour;
 import org.junit.Test;
 import static org.fest.assertions.api.Assertions.assertThat;
 import java.util.List;
 import java.util.Queue;
+import io.indy.seni.lang.EvalTestBase;
+import io.indy.seni.lang.LangException;
+import io.indy.seni.lang.Node;
 
-public class GraphicFnsTest extends EvalTestBase {
+
+public class CoreTest extends EvalTestBase {
 
     @Test
     public void testColourCreation() {

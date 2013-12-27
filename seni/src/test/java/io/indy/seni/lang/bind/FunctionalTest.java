@@ -14,11 +14,12 @@
  * limitations under the License.
  */
 
-package io.indy.seni.lang;
+package io.indy.seni.lang.bind;
 
 import org.junit.Test;
+import io.indy.seni.lang.EvalTestBase;
 
-public class FunctionalFnsTest extends EvalTestBase {
+public class FunctionalTest extends EvalTestBase {
 
     @Test
     public void testApply() {

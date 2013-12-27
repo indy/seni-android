@@ -14,19 +14,28 @@
  * limitations under the License.
  */
 
-package io.indy.seni.lang;
+package io.indy.seni.lang.bind;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class BinderListFns extends Binder {
+import io.indy.seni.lang.Binder;
+import io.indy.seni.lang.Env;
+import io.indy.seni.lang.LangException;
+import io.indy.seni.lang.Node;
+import io.indy.seni.lang.NodeFn;
+import io.indy.seni.lang.NodeInt;
+import io.indy.seni.lang.NodeLambda;
+import io.indy.seni.lang.NodeList;
+
+public class Lists extends Binder {
 
     public static Env bind(Env e) {
         // todo:
         // interleave, interpose, partition, sort 
 
         e.addBinding(new NodeFn("first") {
-                public Node execute(Env env, List<Node> params) 
+                public Node execute(Env env, java.util.List<Node> params)
                     throws LangException {
 
                     Binder.checkArity(params, 1, keyword());
@@ -38,7 +47,7 @@ public class BinderListFns extends Binder {
             });
 
         e.addBinding(new NodeFn("second") {
-                public Node execute(Env env, List<Node> params) 
+                public Node execute(Env env, java.util.List<Node> params)
                     throws LangException {
 
                     Binder.checkArity(params, 1, keyword());
@@ -50,7 +59,7 @@ public class BinderListFns extends Binder {
             });
 
         e.addBinding(new NodeFn("nth") {
-                public Node execute(Env env, List<Node> params) 
+                public Node execute(Env env, java.util.List<Node> params)
                     throws LangException {
 
                     Binder.checkArity(params, 2, keyword());
@@ -65,7 +74,7 @@ public class BinderListFns extends Binder {
 
         e.addBinding(new NodeFn("cons") {
                 // (cons 2 (quote (4 8)))
-                public Node execute(Env env, List<Node> params) 
+                public Node execute(Env env, java.util.List<Node> params)
                     throws LangException {
 
                     Binder.checkArity(params, 2, keyword());
@@ -84,7 +93,7 @@ public class BinderListFns extends Binder {
             });
 
         e.addBinding(new NodeFn("concat") {
-                public Node execute(Env env, List<Node> params) 
+                public Node execute(Env env, java.util.List<Node> params)
                     throws LangException {
 
                     NodeList res = new NodeList();
@@ -108,7 +117,7 @@ public class BinderListFns extends Binder {
             });
 
         e.addBinding(new NodeFn("count") {
-                public Node execute(Env env, List<Node> params) 
+                public Node execute(Env env, java.util.List<Node> params)
                     throws LangException {
 
                     Binder.checkArity(params, 1, keyword());
@@ -121,19 +130,19 @@ public class BinderListFns extends Binder {
 
 
         e.addBinding(new NodeFn("mapcat") {
-                public Node execute(Env env, List<Node> params) 
+                public Node execute(Env env, java.util.List<Node> params)
                     throws LangException {
 
                     // first arg is a lambda|name rest are lists
                     NodeLambda fn = Node.resolveLambda(env, params.get(0));
 
                     int numArgs = params.size() - 1;
-                    List<Node> fnArgs = new ArrayList<Node>(numArgs);
+                    java.util.List<Node> fnArgs = new ArrayList<Node>(numArgs);
 
                     NodeList firstList = Node.asList(params.get(1));
                     int numIterations = firstList.size();
 
-                    List<Node> resLists = new ArrayList<Node>(numIterations);
+                    java.util.List<Node> resLists = new ArrayList<Node>(numIterations);
 
                     for (int i=0;i<numIterations;i++) {
                         fnArgs.clear();
@@ -169,7 +178,7 @@ public class BinderListFns extends Binder {
             });
 
         e.addBinding(new NodeFn("reverse") {
-                public Node execute(Env env, List<Node> params) 
+                public Node execute(Env env, java.util.List<Node> params)
                     throws LangException {
 
                     Binder.checkArity(params, 1, keyword());

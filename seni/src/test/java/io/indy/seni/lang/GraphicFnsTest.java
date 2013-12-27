@@ -38,28 +38,37 @@ public class GraphicFnsTest extends EvalTestBase {
 
     @Test
     public void testSplitComplementary() {
-        assertColour("(first (split-complementary (colour 0.2 0.3 0.5)))", 
+        assertColour("(nth 0 (split-complementary (colour 0.2 0.3 0.5)))", 
+                     Colour.fromRGB(0.2f, 0.3f, 0.5f));
+
+        assertColour("(nth 1 (split-complementary (colour 0.2 0.3 0.5)))", 
                      Colour.fromHSL(10.0f, 0.42857146f, 0.35f));
 
-        assertColour("(second (split-complementary (colour 0.2 0.3 0.5)))", 
+        assertColour("(nth 2 (split-complementary (colour 0.2 0.3 0.5)))", 
                      Colour.fromHSL(70.0f, 0.42857146f, 0.35f));
     }
 
     @Test
     public void testAnalagous() {
-        assertColour("(first (analagous (colour 0.2 0.3 0.5)))", 
+        assertColour("(nth 0 (analagous (colour 0.2 0.3 0.5)))", 
+                     Colour.fromRGB(0.2f, 0.3f, 0.5f));
+
+        assertColour("(nth 1 (analagous (colour 0.2 0.3 0.5)))", 
                      Colour.fromHSL(190.0f, 0.42857146f, 0.35f));
 
-        assertColour("(second (analagous (colour 0.2 0.3 0.5)))", 
+        assertColour("(nth 2 (analagous (colour 0.2 0.3 0.5)))", 
                      Colour.fromHSL(250.0f, 0.42857146f, 0.35f));
     }
 
     @Test
     public void testTriad() {
-        assertColour("(first (triad (colour 0.2 0.3 0.5)))", 
+        assertColour("(nth 0 (triad (colour 0.2 0.3 0.5)))", 
+                     Colour.fromRGB(0.2f, 0.3f, 0.5f));
+
+        assertColour("(nth 1 (triad (colour 0.2 0.3 0.5)))", 
                      Colour.fromHSL(100.0f, 0.42857146f, 0.35f));
 
-        assertColour("(second (triad (colour 0.2 0.3 0.5)))", 
+        assertColour("(nth 2 (triad (colour 0.2 0.3 0.5)))", 
                      Colour.fromHSL(340.0f, 0.42857146f, 0.35f));
     }
 

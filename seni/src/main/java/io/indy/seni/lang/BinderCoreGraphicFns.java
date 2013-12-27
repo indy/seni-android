@@ -66,6 +66,7 @@ public class BinderCoreGraphicFns extends Binder {
                     Colour cols[] = c.splitComplementary();
 
                     NodeList res = new NodeList();
+                    res.addChild(new NodeColour(c));
                     res.addChild(new NodeColour(cols[0]));
                     res.addChild(new NodeColour(cols[1]));
                     return res;
@@ -82,6 +83,7 @@ public class BinderCoreGraphicFns extends Binder {
                     Colour cols[] = c.analagous();
 
                     NodeList res = new NodeList();
+                    res.addChild(new NodeColour(c));
                     res.addChild(new NodeColour(cols[0]));
                     res.addChild(new NodeColour(cols[1]));
                     return res;

@@ -1,6 +1,7 @@
 package io.indy.seni.runtime;
 
 import android.graphics.Canvas;
+import android.graphics.Paint;
 import android.util.Log;
 
 import io.indy.seni.AppConfig;
@@ -15,19 +16,19 @@ public class SeniContext {
     }
 
     private Canvas mCanvas;
+    private Paint mPaint;
 
     public SeniContext(Canvas canvas) {
         mCanvas = canvas;
+        mPaint = new Paint();
+        mPaint.setAntiAlias(true);
     }
 
-
-
-    public void save() {
-        mCanvas.save();
+    public Canvas getCanvas() {
+        return mCanvas;
     }
 
-    public void restore() {
-        mCanvas.restore();
+    public Paint getPaint() {
+        return mPaint;
     }
-
 }

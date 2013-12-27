@@ -14,7 +14,6 @@ import android.view.SurfaceView;
 
 import io.indy.seni.AppConfig;
 import io.indy.seni.dummy.Art1352;
-import io.indy.seni.util.SimpleBenchmark;
 
 public class SeniView extends SurfaceView implements SurfaceHolder.Callback {
 

@@ -28,7 +28,7 @@ public class NodeLambda extends Node {
     public NodeLambda(List<String> args, Node body) {
         super();
 
-        mType = Node.Type.LAMBDA;
+        mType = Type.LAMBDA;
         mArgs = args;
         mBody = body;
 

@@ -19,7 +19,9 @@ package io.indy.seni.lang;
 import java.util.HashMap;
 
 import io.indy.seni.core.bind.Core;
-import io.indy.seni.lang.bind.*;
+import io.indy.seni.lang.bind.Functional;
+import io.indy.seni.lang.bind.Lists;
+import io.indy.seni.lang.bind.Mathematical;
 
 public class Env {
 

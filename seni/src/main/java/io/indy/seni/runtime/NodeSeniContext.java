@@ -18,6 +18,7 @@ abstract public class NodeSeniContext extends NodeFn {
 
     public NodeSeniContext(String keyword, SeniContext seniContext) {
         super(keyword);
+
         mSeniContext = seniContext;
     }
 }

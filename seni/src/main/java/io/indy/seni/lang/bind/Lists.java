@@ -17,7 +17,6 @@
 package io.indy.seni.lang.bind;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import io.indy.seni.lang.Binder;
 import io.indy.seni.lang.Env;

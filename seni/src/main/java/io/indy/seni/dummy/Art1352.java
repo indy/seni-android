@@ -6,6 +6,7 @@ import android.util.Log;
 
 import io.indy.seni.AppConfig;
 import io.indy.seni.core.Colour;
+import io.indy.seni.runtime.CoreBridge;
 
 public class Art1352 {
 
@@ -16,20 +17,10 @@ public class Art1352 {
         if (AppConfig.DEBUG && D) Log.d(TAG, message);
     }
 
-    private static Paint setColour(Paint paint, Colour colour) {
-        float[] f = colour.as(Colour.Format.RGB).getVals();
-
-        paint.setARGB((int)(f[Colour.ALPHA] * 255),
-                      (int)(f[Colour.RED] * 255),
-                      (int)(f[Colour.GREEN] * 255),
-                      (int)(f[Colour.BLUE] * 255));
-        return paint;
-    }
-
     private static void squ(Canvas canvas, float angle, Colour colour, float boxRadius) {
         Paint paint = new Paint();
         paint.setAntiAlias(true);
-        setColour(paint, colour);
+        CoreBridge.setColour(paint, colour);
 
         canvas.save();
         canvas.rotate(angle);

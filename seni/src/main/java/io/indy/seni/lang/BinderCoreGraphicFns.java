@@ -20,7 +20,7 @@ import java.util.List;
 
 import io.indy.seni.core.Colour;
 
-public class BinderGraphicFns extends Binder {
+public class BinderCoreGraphicFns extends Binder {
 
     // complementary, splitComplementary, analagous, triad
 
@@ -98,6 +98,7 @@ public class BinderGraphicFns extends Binder {
                     Colour cols[] = c.triad();
 
                     NodeList res = new NodeList();
+                    res.addChild(new NodeColour(c));
                     res.addChild(new NodeColour(cols[0]));
                     res.addChild(new NodeColour(cols[1]));
                     return res;

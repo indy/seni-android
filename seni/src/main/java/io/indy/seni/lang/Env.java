@@ -30,7 +30,7 @@ public class Env {
         e = BinderMathFns.bind(e);
         e = BinderFunctionalFns.bind(e);
         e = BinderListFns.bind(e);
-        e = BinderGraphicFns.bind(e);
+        e = BinderCoreGraphicFns.bind(e);
 
         return e;
     }

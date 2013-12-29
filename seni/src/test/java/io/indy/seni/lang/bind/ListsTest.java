@@ -34,9 +34,9 @@ public class ListsTest extends EvalTestBase {
 
     @Test
     public void testNth() {
-        assertEval("(nth 0 '(1 2 3))", "1");
-        assertEval("(nth 1 '(1 2 3))", "2");
-        assertEval("(nth 2 '(1 2 3))", "3");
+        assertEval("(nth '(1 2 3) 0)", "1");
+        assertEval("(nth '(1 2 3) 1)", "2");
+        assertEval("(nth '(1 2 3) 2)", "3");
     }
 
     @Test

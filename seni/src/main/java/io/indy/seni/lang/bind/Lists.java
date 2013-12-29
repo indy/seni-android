@@ -31,7 +31,8 @@ public class Lists extends Binder {
 
     public static Env bind(Env e) {
         // todo:
-        // interleave, interpose, partition, sort 
+        // interleave, interpose, partition, sort
+
 
         e.addBinding(new NodeFn("first") {
                 public Node execute(Env env, java.util.List<Node> params)
@@ -63,9 +64,8 @@ public class Lists extends Binder {
 
                     Binder.checkArity(params, 2, keyword());
 
-                    // nth is 0-based
-                    int nth = Node.asIntValue(params.get(0));
-                    NodeList nodeList = Node.asList(params.get(1));
+                    NodeList nodeList = Node.asList(params.get(0));
+                    int nth = Node.asIntValue(params.get(1));
 
                     return nodeList.getChild(nth);
                 }                

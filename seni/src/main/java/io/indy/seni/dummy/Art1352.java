@@ -31,10 +31,15 @@ public class Art1352 {
         paint.setAntiAlias(true);
         CoreBridge.setColour(paint, colour);
 
+        ifd("--save");
         canvas.save();
+        ifd("--rotate " + angle);
         canvas.rotate(angle);
+        ifd("--translate 0.0f 200.0f");
         canvas.translate(0.0f, 200.0f);
+        ifd("--drawRect");
         canvas.drawRect(-boxRadius, -boxRadius, boxRadius, boxRadius, paint);
+        ifd("--restore");
         canvas.restore();
 
         float br2 = boxRadius;
@@ -47,22 +52,31 @@ public class Art1352 {
         for(int i=0;i<10;i++) {
             br2 *= shrinkFactor;
             ang += angDelta;
-
+            ifd("----save");
             canvas.save();
+            ifd("----rotate " + (angle - ang));
             canvas.rotate(angle - ang);
+            ifd("----translate " + "0.0f " + (200.0f - (i * toCenterFactor)));
             canvas.translate(0.0f, 200.0f - (i * toCenterFactor));
+            ifd("----rect");
             canvas.drawRect(-br2, -br2, br2, br2, paint);
+            ifd("----restore");
             canvas.restore();
 
+            ifd("----save");
             canvas.save();
+            ifd("----rotate " + (angle + ang));
             canvas.rotate(angle + ang);
+            ifd("----translate " + "0.0f " + (200.0f - (i * toCenterFactor)));
             canvas.translate(0.0f, 200.0f - (i * toCenterFactor));
+            ifd("----rect");
             canvas.drawRect(-br2, -br2, br2, br2, paint);
+            ifd("----restore");
             canvas.restore();
         }
     }
 
-    public static void DrawWorking(Canvas canvas, int width, int height) {
+    public static void Draw2(Canvas canvas, int width, int height) {
         ifd("Draw");
 
         // use colour
@@ -77,9 +91,12 @@ public class Art1352 {
 
         float angle = 0.0f;
         for(int i=0;i<3;i++) {
+            ifd("-save");
             canvas.save();
+            ifd("-translate " + focalX + " " + focalY);
             canvas.translate(focalX, focalY);
             squ(canvas, angle, c[i], boxRadius);
+            ifd("-restore");
             canvas.restore();
             angle += 360.0f / 3.0f;
         }
@@ -93,14 +110,44 @@ public class Art1352 {
         Paint paint = sc.getPaint();
         paint.setARGB(250, 250, 0, 0);
 
-        String code1 = "(rect 50.0 50.0 290.0 200.0)";
+        ifd("width " + width);
+        ifd("height " + height);
 
-        String code = ""
-                + "(scope"
-                + "  (set-colour (colour 0.0 1.0 0.0))"
-                + "  (rotate -10.0)"
-                + "  (rect 150.0 150.0 290.0 250.0)"
-                + ")";
+        String code3 = ""
+                + "(define squ "
+                + "  (lambda (angle colour box-radius)"
+                + "    (begin (set-colour colour)"
+                + "        (scope (rotate angle)"
+                + "               (translate 0.0 200.0)"
+                + "               (rect (* -1.0 box-radius) (* -1.0 box-radius) box-radius box-radius))"
+
+                + "      (let ((br2 box-radius)"
+                + "            (ang 20.0)"
+                + "            (to-center-factor 15.0)"
+                + "            (shrink-factor 0.9)"
+                + "            (ang-delta 8.0))"
+                + "        (do-times i 10"
+                + "                  (set! br2 (* br2 shrink-factor))"
+                + "                  (set! ang (+ ang ang-delta))"
+                + "                  (scope (rotate (- angle ang))"
+                + "                         (translate 0.0 (- 200.0 (* (as-float i) to-center-factor)))"
+                + "                         (rect (* -1.0 br2) (* -1.0 br2) br2 br2))"
+                + "                  (scope (rotate (+ angle ang))"
+                + "                         (translate 0.0 (- 200.0 (* (as-float i) to-center-factor)))"
+                + "                         (rect (* -1.0 br2) (* -1.0 br2) br2 br2)))))))"
+                + ""
+                + "(let ((canvas-width 768.0)"
+                + "      (canvas-height 1038.0)"
+                + "      (primary (colour 0.1 0.6 0.8 0.3))"
+                + "      (triads (triad primary))"
+                + "      (box-radius (/ canvas-width 12.0))"
+                + "      (focal-x (/ canvas-width 2.0))"
+                + "      (focal-y (/ canvas-height 2.0))"
+                + "      (angle 0.0))"
+                + "  (do-times i 3"
+                + "            (scope (translate focal-x focal-y)"
+                + "                   (squ angle (nth triads i) box-radius)"
+                + "                   (set! angle (+ angle (/ 360.0 3.0))))))";
 
         Runtime rt = new Runtime();
 
@@ -108,7 +155,7 @@ public class Art1352 {
         env = rt.bindCoreFunctions(env);
         env = rt.bindPlatformFunctions(env, sc);
 
-        List<Node> ast = rt.asAst(code);
+        List<Node> ast = rt.asAst(code3);
 
         try {
             for (Node node : ast) {
@@ -161,45 +208,40 @@ public class Art1352 {
     */
 }
 
+
+
 /*
- proposed equivalent seni syntax:
-
-
+(setup
+ (aspect-ratio square)
+ (primary-colour (colour 0.1 0.6 0.8 0.3))
+ (colour-scheme triad))
 
 (defn squ (angle colour box-radius)
   (set-colour colour)
   (scope (rotate angle)
-         (translate 0 200)
-         (rect -box-radius -box-radius box-radius box-radius))
+         (translate 0.0 200.0)
+         (rect (* -1.0 box-radius) (* -1.0 box-radius) box-radius box-radius))
   (let ((br2 box-radius)
-        (ang [20])
-        (to-center-factor [15])
-        (shrink-factor [0.9])
-        (ang-delta [8]))
-    (do-times [10] i
-              (setq br2 (* br2 shrink-factor))
-              (setq ang (* ang ang-delta))
+        (ang 20.0)
+        (to-center-factor 15.0)
+        (shrink-factor 0.9)
+        (ang-delta 8.0))
+    (do-times i 10
+              (set! br2 (* br2 shrink-factor))
+              (set! ang (+ ang ang-delta))
               (scope (rotate (- angle ang))
-                     (translate (0.0 (- 200.0 (* i to-center-factor))))
-                     (rect -br2 -br2 br2 br2))
+                     (translate 0.0 (- 200.0 (* i to-center-factor)))
+                     (rect (neg br2) (neg br2) br2 br2))
               (scope (rotate (+ angle ang))
-                     (translate (0.0 (- 200.0 (* i to-center-factor))))
-                     (rect -br2 -br2 br2 br2)))))
+                     (translate 0.0 (- 200.0 (* i to-center-factor)))
+                     (rect (neg br2) (neg br2) br2 br2)))))
 
-(defdraw art1352 ()
-  (let ((primary (fromRGB 0.1 0.6 0.8 0.3))
-        (triads ([as-triad] primary)) ; returns 3 elements incl. primary
-        (box-radius (/ canvas-width 12))
-        (focal-x (/ canvas-width 2))
-        (focal-y (/ canvas-height 2))
-        (angle 0))
-    (do-times i 3
-              (scope (translate focal-x focal-y)
-                     (squ angle (idx triads i) box-radius)
-                     (setq angle (+ angle (/ 360 3)))))))
-
-;;; scope is a special form ???
-;;; idx is a function -> array[index % array.length]
-
-
+(let ((box-radius (/ canvas-width 12.0))
+      (focal-x (/ canvas-width 2.0))
+      (focal-y (/ canvas-height 2.0))
+      (angle 0.0))
+  (do-times i 3
+            (scope (translate focal-x focal-y)
+                   (squ angle (looping-nth colour-scheme i) box-radius)
+                   (set! angle (+ angle (/ 360.0 3.0))))))
  */

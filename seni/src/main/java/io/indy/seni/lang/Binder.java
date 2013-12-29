@@ -20,8 +20,8 @@ import java.util.List;
 
 public class Binder {
 
-    public static void checkArity(List<Node> params, int expected, String kw) 
-        throws LangException {
+    public static void checkArity(List<Node> params, int expected, String kw)
+            throws LangException {
         int size = params.size();
         if (size != expected) {
             String msg = "wrong # of arguments for " + kw;
@@ -29,4 +29,15 @@ public class Binder {
             throw new LangException(msg);
         }
     }
+
+    public static void checkArityAtLeast(List<Node> params, int expected, String kw)
+            throws LangException {
+        int size = params.size();
+        if (size < expected) {
+            String msg = "wrong # of arguments for " + kw;
+            msg += " expected at least " + expected + ", given " + size;
+            throw new LangException(msg);
+        }
+    }
+
 }

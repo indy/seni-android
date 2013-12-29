@@ -34,15 +34,9 @@ public class Platform extends Binder {
 
                 mSeniContext.getCanvas().save();
 
-                // wrap params in a 'begin' node and eval it
-                //
- //               NodeList nl = new NodeList();
- //               nl.addChild(new NodeName("begin"));
                 for (Node child : params) {
-//                    nl.addChild(child);
                     Interpreter.eval(env, child);
                 }
-//                Interpreter.eval(env, nl);
 
                 mSeniContext.getCanvas().restore();
 

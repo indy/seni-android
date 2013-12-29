@@ -34,6 +34,7 @@ public class Interpreter {
 
     // seni-specific special forms
     private static final String DOTIMES = "do-times";
+    private static final String SCOPE = "scope";
 
 
     private static final NodeNull NODE_NULL = new NodeNull();
@@ -41,7 +42,7 @@ public class Interpreter {
     private static HashSet<String> sSpecialFormNames;
 
     static {
-        sSpecialFormNames = new HashSet<>(8);
+        sSpecialFormNames = new HashSet<>(10);
 
         sSpecialFormNames.add(QUOTE);
         sSpecialFormNames.add(IF);
@@ -52,6 +53,7 @@ public class Interpreter {
         sSpecialFormNames.add(SET);
 
         sSpecialFormNames.add(DOTIMES);
+        sSpecialFormNames.add(SCOPE);
     }
     
     public static Node eval(Env env, Node expr) throws LangException {
@@ -115,20 +117,25 @@ public class Interpreter {
                 // seni specific
                 case DOTIMES:
                     return specialFormDoTimes(env, listExpr);
+                case SCOPE:
+                    return specialFormScope(env, listExpr);
                 default:
                     // throw an error
             };
         } 
 
         // general function application
-            
+        return generalApplication(env, listExpr);
+    }
+
+    private static Node generalApplication(Env env, NodeList listExpr) throws LangException {
         // (fun args...)
         // ((lambda (x) (+ x x)) 4)
 
         List<Node> children = Node.asList(listExpr).getChildren();
 
         Iterator<Node> iter = children.iterator();
-            
+
         Node fun = eval(env, iter.next());
 
         // fun is either a lambda or a name
@@ -146,6 +153,42 @@ public class Interpreter {
         // pass the eval'd args to lambda
         return lambda.execute(env, args);
     }
+
+    /**
+     * similar to generalApplication except that the arguments aren't evaluated
+     * @param env the environment
+     * @param listExpr NodeList
+     * @return Node
+     * @throws LangException
+     */
+    private static Node noEvalArgApplication(Env env, NodeList listExpr) throws LangException {
+        // (fun args...)
+        // ((lambda (x) (+ x x)) 4)
+
+        List<Node> children = Node.asList(listExpr).getChildren();
+
+        Iterator<Node> iter = children.iterator();
+
+        Node fun = eval(env, iter.next());
+
+        // fun is either a lambda or a name
+        if(fun.getType() == Node.Type.NAME) {
+            fun = env.lookup(Node.asNameValue(fun));
+        }
+
+        NodeLambda lambda = Node.asLambda(fun);
+
+        List<Node> args = new ArrayList<Node>();
+        while(iter.hasNext()) {
+            args.add(iter.next());
+        }
+
+        // pass the args to lambda
+        return lambda.execute(env, args);
+    }
+
+
+
 
     private static  Node specialFormQuote(Env env, NodeList listExpr) {
         return listExpr.getChildren().get(1);
@@ -303,6 +346,13 @@ public class Interpreter {
         }
 
         return res;
+    }
+
+
+    private static Node specialFormScope(Env env, NodeList listExpr) throws LangException {
+        // don't want to eval the arguments to scope since all rendering happens as a
+        // side effect. We want to wrap a save/restore around any evals
+        return noEvalArgApplication(env, listExpr);
     }
 
     private static boolean isSpecialForm(NodeList listExpr) throws LangException {

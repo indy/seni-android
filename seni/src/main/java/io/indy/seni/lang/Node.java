@@ -36,14 +36,14 @@ abstract public class Node {
 
     public static NodeBoolean asBoolean(Node n) throws LangException {
         if(n.getType() != Type.BOOLEAN) {
-            throw new LangException("incompatible cast to BOOLEAN");
+            throw new LangException("cannot cast to BOOLEAN from " + Node.debugString(n));
         }
         return (NodeBoolean) n;
     }
 
     public static NodeInt asInt(Node n) throws LangException {
         if(n.getType() != Type.INT) {
-            throw new LangException("incompatible cast to INT");
+            throw new LangException("cannot cast to INT from " + Node.debugString(n));
         }
         return (NodeInt) n;
     }
@@ -54,7 +54,7 @@ abstract public class Node {
 
     public static NodeFloat asFloat(Node n) throws LangException {
         if(n.getType() != Type.FLOAT) {
-            throw new LangException("incompatible cast to FLOAT");
+            throw new LangException("cannot cast to FLOAT from " + Node.debugString(n));
         }
         return (NodeFloat) n;
     }
@@ -65,7 +65,7 @@ abstract public class Node {
 
     public static NodeName asName(Node n) throws LangException {
         if (n.getType() != Node.Type.NAME) {
-            throw new LangException("cannot cast " + n.getType() +" to NAME");
+            throw new LangException("cannot cast to NAME from " + Node.debugString(n));
         }
 
         return (NodeName) n;
@@ -77,7 +77,7 @@ abstract public class Node {
 
     public static NodeList asList(Node n) throws LangException {
         if (n.getType() != Node.Type.LIST) {
-            throw new LangException("cannot cast " + n.getType() +" to LIST");
+            throw new LangException("cannot cast to LIST from " + Node.debugString(n));
         }
 
         return (NodeList) n;
@@ -85,14 +85,14 @@ abstract public class Node {
 
     public static NodeLambda asLambda(Node n) throws LangException {
         if (n.getType() != Node.Type.LAMBDA) {
-            throw new LangException("cannot cast " + n.getType() +" to LAMBDA");
+            throw new LangException("cannot cast to LAMBDA from " + Node.debugString(n));
         }
         return (NodeLambda) n;
     }
 
     public static NodeColour asColour(Node n) throws LangException {
         if(n.getType() != Type.COLOUR) {
-            throw new LangException("incompatible cast to COLOUR");
+            throw new LangException("cannot cast to COLOUR from " + Node.debugString(n));
         }
         return (NodeColour) n;
     }
@@ -117,24 +117,26 @@ abstract public class Node {
         debug(n);
     }
 
-    public static void debug(Node n) throws LangException {
+    public static String debugString(Node n) throws LangException {
         Type t = n.getType();
-        if(t == Type.NAME) {
-        } else if(t == Type.INT) {
-            System.out.println("" + n.getType() + ": " + Node.asIntValue(n));
+        if(t == Type.INT) {
+            return "" + n.getType() + ": " + Node.asIntValue(n);
         } else if(t == Type.FLOAT) {
-            System.out.println("" + n.getType() + ": " + Node.asFloatValue(n));
+            return "" + n.getType() + ": " + Node.asFloatValue(n);
         } else if(t == Type.BOOLEAN) {
-            System.out.println("" + n.getType() + ": " + ((NodeBoolean)n).getBoolean());
+            return "" + n.getType() + ": " + ((NodeBoolean)n).getBoolean();
         } else if(t == Type.LAMBDA) {
-            System.out.println("" + n.getType());
+            return "" + n.getType();
         } else if(t == Type.NAME) {
-            System.out.println("" + n.getType() + ": " + Node.asNameValue(n));
+            return "" + n.getType() + ": " + Node.asNameValue(n);
         } else if(t == Type.STRING) {
-            System.out.println("" + n.getType() + ": " + ((NodeString)n).getString());
+            return "" + n.getType() + ": " + ((NodeString)n).getString();
         } else {
-            System.out.println("unknown type to debug");
+            return "unknown type to debug";
         }
+    }
+    public static void debug(Node n) throws LangException {
+        System.out.println(Node.debugString(n));
     }
 
     public Type getType() {

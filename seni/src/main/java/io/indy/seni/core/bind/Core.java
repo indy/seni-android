@@ -39,14 +39,20 @@ public class Core extends Binder {
                     throws LangException {
 
                     // currently just rgb
-                    // TODO: accept rgba, another colour object, hsl etc
-                    Binder.checkArity(params, 3, keyword());
+                    // TODO: accept hsl etc
+
+                    Binder.checkArityAtLeast(params, 3, keyword());
+
+                    int numArgs = params.size();
+
 
                     float r = Node.asFloatValue(params.get(0));
                     float g = Node.asFloatValue(params.get(1));
                     float b = Node.asFloatValue(params.get(2));
 
-                    return new NodeColour(Colour.fromRGB(r, g, b));
+                    float a = numArgs == 3 ? 1.0f : Node.asFloatValue(params.get(3));
+
+                    return new NodeColour(Colour.fromRGB(r, g, b, a));
                 }
             });
 

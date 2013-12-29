@@ -31,7 +31,23 @@ public class Mathematical extends Binder {
 
     public static Env bind(Env e) {
 
-        // TODO: quot, rem, mod, inc, dec, max, min, 
+        // TODO: quot, rem, mod, inc, dec, max, min,
+
+
+        e.addBinding(new NodeFnMath("as-float") {
+            protected Node executeInt(int first, Iterator<Node> iter)
+                    throws LangException {
+
+                return new NodeFloat((float)first);
+            }
+
+            protected Node executeFloat(float first, Iterator<Node> iter)
+                    throws LangException {
+
+                return new NodeFloat(first);
+            }
+        });
+
 
         e.addBinding(new NodeFnMath("+") {
                 protected Node executeInt(int first, Iterator<Node> iter)

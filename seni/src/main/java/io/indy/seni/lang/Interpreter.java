@@ -23,6 +23,7 @@ import java.util.List;
 
 public class Interpreter {
 
+    // classical special forms
     private static final String QUOTE = "quote";
     private static final String IF = "if";
     private static final String LET = "let";
@@ -30,6 +31,10 @@ public class Interpreter {
     private static final String SET = "set!";
     private static final String LAMBDA = "lambda";
     private static final String BEGIN = "begin";
+
+    // seni-specific special forms
+    private static final String DOTIMES = "do-times";
+
 
     private static final NodeNull NODE_NULL = new NodeNull();
 
@@ -45,6 +50,8 @@ public class Interpreter {
         sSpecialFormNames.add(BEGIN);
         sSpecialFormNames.add(DEFINE);
         sSpecialFormNames.add(SET);
+
+        sSpecialFormNames.add(DOTIMES);
     }
     
     public static Node eval(Env env, Node expr) throws LangException {
@@ -89,20 +96,27 @@ public class Interpreter {
 
         if (isSpecialForm(listExpr)) {
             switch(getCarName(listExpr)) {
-            case QUOTE:
-                return specialFormQuote(env, listExpr);
-            case IF:
-                return specialFormIf(env, listExpr);
-            case SET:
-                return specialFormSet(env, listExpr);
-            case DEFINE:
-                return specialFormDefine(env, listExpr);
-            case BEGIN:
-                return specialFormBegin(env, listExpr);
-            case LAMBDA:
-                return specialFormLambda(env, listExpr);
-            default:
-                // throw an error
+                // classical
+                case QUOTE:
+                    return specialFormQuote(env, listExpr);
+                case IF:
+                    return specialFormIf(env, listExpr);
+                case LET:
+                    return specialFormLet(env, listExpr);
+                case DEFINE:
+                    return specialFormDefine(env, listExpr);
+                case SET:
+                    return specialFormSet(env, listExpr);
+                case LAMBDA:
+                    return specialFormLambda(env, listExpr);
+                case BEGIN:
+                    return specialFormBegin(env, listExpr);
+
+                // seni specific
+                case DOTIMES:
+                    return specialFormDoTimes(env, listExpr);
+                default:
+                    // throw an error
             };
         } 
 
@@ -213,6 +227,37 @@ public class Interpreter {
         return res;
     }
 
+    private static Node specialFormLet(Env env, NodeList listExpr) throws LangException {
+        // (let ((x 2) (y 3)) (+ x y) .... )
+
+        int i=0;
+        List<Node> children = listExpr.getChildren();
+
+        if(children.size() < 2) {
+            // throw an error: malformed let
+        }
+
+        Env scopedEnv = env.newScope();
+
+        NodeList newVars = Node.asList(children.get(1));  // ((x 2) (y 3))
+        for (i=0;i<newVars.getChildren().size();i++) {
+            NodeList nl = Node.asList(newVars.getChild(i));
+            if(nl.getChildren().size() != 2) {
+                // throw an error: let binding not part of a pair
+            }
+
+            scopedEnv.addBinding(Node.asName(nl.getChild(0)).getName(),
+                                 eval(scopedEnv, nl.getChild(1)));
+        }
+
+        Node res = NODE_NULL;
+        for (i=2;i<children.size();i++) {
+            res = eval(scopedEnv, children.get(i));
+        }
+
+        return res;
+    }
+
     private static Node specialFormLambda(Env env, NodeList listExpr) throws LangException {
         // (lambda (x y) (+ x y))
 
@@ -229,6 +274,35 @@ public class Interpreter {
         }
 
         return new NodeLambda(args, children.get(2));
+    }
+
+    private static Node specialFormDoTimes(Env env, NodeList listExpr) throws LangException {
+        /*
+           (do-times i 10
+                     (setq br2 (* br2 shrink-factor))
+                     (setq ang (* ang ang-delta))))
+         */
+
+        List<Node> children = listExpr.getChildren();
+        if(children.size() < 4) {
+            // throw an error : do-times not in form: do-times var count statements+
+        }
+
+        String name = Node.asName(children.get(1)).getName();
+        int iterations = Node.asInt(children.get(2)).getInt();
+
+        int paramsSize = children.size();
+
+        Env newScope = env.newScope();
+        Node res = null;
+        for (int i=0;i<iterations;i++) {
+            newScope.addBinding(name, new NodeInt(i));
+            for(int j=3;j<paramsSize;j++) {
+                res = eval(newScope, children.get(j));
+            }
+        }
+
+        return res;
     }
 
     private static boolean isSpecialForm(NodeList listExpr) throws LangException {

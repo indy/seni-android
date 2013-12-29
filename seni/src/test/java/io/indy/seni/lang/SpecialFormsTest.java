@@ -33,9 +33,27 @@ public class SpecialFormsTest extends EvalTestBase {
         assertEval("(if (< 12 77) (+ 1 3) (+ 1 7))", "4");
         assertEval("(if (< 12 77) 4 8)", "4");
 
+        assertEval("(let ((x 2) (y 3)) (+ x y))", "5");
+
+        assertEval("(let ((x 5) (y 6)) (let ((x 2) (y 3))(+ x y)) (+ x y))", "11");
+
         assertEval("(begin (+ 1 1) (+ 2 2) (+ 3 3))", "6");
 
         assertEval("(quote (1 2 3))", "(1 2 3)");
+    }
+
+    @Test
+    public void testDoTimes() {
+
+        assertEval("  (begin"
+                   + "  (set! sum 0)"
+                   + "  (do-times i 5"
+                   + "            (set! sum (+ sum i))))", 
+                   "10");
+
+        assertEval("(do-times j 5 (+ j j))",
+                   "8");
+
     }
 
 

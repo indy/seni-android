@@ -44,7 +44,7 @@ public class Platform extends Binder {
 
                 mSeniContext.getCanvas().restore();
 
-                return new NodeNull(); // todo: replace with a singleton
+                return Interpreter.NODE_NULL;
             }
         });
 
@@ -57,7 +57,7 @@ public class Platform extends Binder {
                 CoreBridge.setColour(mSeniContext.getPaint(),
                                      Node.asColourValue(params.get(0)));
 
-                return new NodeNull();
+                return Interpreter.NODE_NULL;
             }
         });
 
@@ -71,7 +71,7 @@ public class Platform extends Binder {
 
                 mSeniContext.getCanvas().rotate(angle);
 
-                return new NodeNull();
+                return Interpreter.NODE_NULL;
             }
         });
 
@@ -86,7 +86,7 @@ public class Platform extends Binder {
 
                 mSeniContext.getCanvas().translate(x,y);
 
-                return new NodeNull();
+                return Interpreter.NODE_NULL;
             }
         });
 
@@ -104,10 +104,10 @@ public class Platform extends Binder {
                 mSeniContext.getCanvas().drawRect(left, top, right, bottom,
                         mSeniContext.getPaint());
 
-                return new NodeNull();
+                return Interpreter.NODE_NULL;
             }
         });
-
+        
         return e;
     }
 }

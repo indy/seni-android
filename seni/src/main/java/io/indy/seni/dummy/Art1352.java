@@ -7,12 +7,10 @@ import android.util.Log;
 import java.util.List;
 
 import io.indy.seni.AppConfig;
-import io.indy.seni.core.Colour;
 import io.indy.seni.lang.Env;
 import io.indy.seni.lang.Interpreter;
 import io.indy.seni.lang.LangException;
 import io.indy.seni.lang.Node;
-import io.indy.seni.runtime.CoreBridge;
 import io.indy.seni.runtime.Runtime;
 import io.indy.seni.runtime.SeniContext;
 

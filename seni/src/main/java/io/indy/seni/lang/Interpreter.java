@@ -36,7 +36,7 @@ public class Interpreter {
     private static HashSet<String> sSpecialFormNames;
 
     static {
-        sSpecialFormNames = new HashSet<String>(8);
+        sSpecialFormNames = new HashSet<>(8);
 
         sSpecialFormNames.add(QUOTE);
         sSpecialFormNames.add(IF);

@@ -4,9 +4,18 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.util.Log;
 
+import java.util.List;
+
 import io.indy.seni.AppConfig;
 import io.indy.seni.core.Colour;
+import io.indy.seni.lang.Env;
+import io.indy.seni.lang.Interpreter;
+import io.indy.seni.lang.LangException;
+import io.indy.seni.lang.Node;
 import io.indy.seni.runtime.CoreBridge;
+import io.indy.seni.runtime.Runtime;
+import io.indy.seni.runtime.SeniContext;
+
 
 public class Art1352 {
 
@@ -53,7 +62,7 @@ public class Art1352 {
         }
     }
 
-    public static void Draw(Canvas canvas, int width, int height) {
+    public static void DrawWorking(Canvas canvas, int width, int height) {
         ifd("Draw");
 
         // use colour
@@ -75,6 +84,81 @@ public class Art1352 {
             angle += 360.0f / 3.0f;
         }
     }
+
+
+    public static void Draw(Canvas canvas, int width, int height) {
+        ifd("Draw");
+
+        SeniContext sc = new SeniContext(canvas);
+        Paint paint = sc.getPaint();
+        paint.setARGB(250, 250, 0, 0);
+
+        String code1 = "(rect 50.0 50.0 290.0 200.0)";
+
+        String code = ""
+                + "(scope"
+                + "  (set-colour (colour 0.0 1.0 0.0))"
+                + "  (rotate -10.0)"
+                + "  (rect 150.0 150.0 290.0 250.0)"
+                + ")";
+
+        Runtime rt = new Runtime();
+
+        Env env = new Env();
+        env = rt.bindCoreFunctions(env);
+        env = rt.bindPlatformFunctions(env, sc);
+
+        List<Node> ast = rt.asAst(code);
+
+        try {
+            for (Node node : ast) {
+                Interpreter.eval(env, node);
+            }
+        } catch(LangException e) {
+            ifd("exception: " + e);
+            e.printStackTrace();
+        }
+
+        //canvas.drawRect(50.0f, 50.0f, 300.0f, 300.f, sc.getPaint());
+    }
+
+    /*
+    public static void DrawSketch(Canvas canvas, int width, int height) {
+        ifd("Draw");
+
+        Runtime rt = new Runtime();
+
+        String code = "(+ 1 1)";
+        List<Node> ast = rt.asAst(code);
+
+        Env env = new Env();
+        env = rt.bindCoreFunctions(env);
+
+        SeniContext sc = null;
+
+        try {
+            Node setupNode = findSetupNode(ast);
+            Interpreter.eval(env, setupNode);
+            // check env for particular vars, use their values to configure the canvas
+            sc = buildSeniContextFromEnv(env);
+
+        } catch(LangException e) {
+            ifd("exception: " + e);
+            e.printStackTrace();
+        }
+
+        env = rt.bindPlatformFunctions(env, sc);
+
+        try {
+            for (Node node : ast) {
+                Interpreter.eval(env, node);
+            }
+        } catch(LangException e) {
+            ifd("exception: " + e);
+            e.printStackTrace();
+        }
+    }
+    */
 }
 
 /*
@@ -109,7 +193,7 @@ public class Art1352 {
         (focal-x (/ canvas-width 2))
         (focal-y (/ canvas-height 2))
         (angle 0))
-    (do-times 3 i
+    (do-times i 3
               (scope (translate focal-x focal-y)
                      (squ angle (idx triads i) box-radius)
                      (setq angle (+ angle (/ 360 3)))))))

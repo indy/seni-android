@@ -63,6 +63,10 @@ public class Env {
         return addBinding(val.keyword(), val);
     }
 
+    public Env addBinding(NodeSpecial val) {
+        return addBinding(val.keyword(), val);
+    }
+
     public boolean hasBinding(String key) {
         return mBindings.containsKey(key);
     }

@@ -28,6 +28,7 @@ abstract public class Node {
         STRING,
         BOOLEAN,
         LAMBDA,
+        SPECIAL,
         COLOUR,
         NULL
     }
@@ -90,6 +91,13 @@ abstract public class Node {
         return (NodeLambda) n;
     }
 
+    public static NodeSpecial asSpecial(Node n) throws LangException {
+        if (n.getType() != Node.Type.SPECIAL) {
+            throw new LangException("cannot cast to SPECIAL from " + Node.debugString(n));
+        }
+        return (NodeSpecial) n;
+    }
+
     public static NodeColour asColour(Node n) throws LangException {
         if(n.getType() != Type.COLOUR) {
             throw new LangException("cannot cast to COLOUR from " + Node.debugString(n));
@@ -126,6 +134,8 @@ abstract public class Node {
         } else if(t == Type.BOOLEAN) {
             return "" + n.getType() + ": " + ((NodeBoolean)n).getBoolean();
         } else if(t == Type.LAMBDA) {
+            return "" + n.getType();
+        } else if(t == Type.SPECIAL) {
             return "" + n.getType();
         } else if(t == Type.NAME) {
             return "" + n.getType() + ": " + Node.asNameValue(n);

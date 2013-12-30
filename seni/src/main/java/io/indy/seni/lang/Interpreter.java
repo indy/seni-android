@@ -36,7 +36,6 @@ public class Interpreter {
     private static final String DOTIMES = "do-times";
     private static final String SCOPE = "scope";
 
-
     private static final NodeNull NODE_NULL = new NodeNull();
 
     private static HashSet<String> sSpecialFormNames;
@@ -118,7 +117,7 @@ public class Interpreter {
                 case DOTIMES:
                     return specialFormDoTimes(env, listExpr);
                 case SCOPE:
-                    return specialFormScope(env, listExpr);
+                    return specialApplication(env, listExpr);
                 default:
                     // throw an error
             };
@@ -171,6 +170,8 @@ public class Interpreter {
 
         Node fun = eval(env, iter.next());
 
+        // in noEvalArgApplication fun will always be a name
+
         // fun is either a lambda or a name
         if(fun.getType() == Node.Type.NAME) {
             fun = env.lookup(Node.asNameValue(fun));
@@ -187,8 +188,13 @@ public class Interpreter {
         return lambda.execute(env, args);
     }
 
+    private static Node specialApplication(Env env, NodeList listExpr) throws LangException {
 
+        // 0th child is a NAME, eval will perform a lookup and return a SPECIAL
+        Node n = eval(env, listExpr.getChildren().get(0));
 
+        return Node.asSpecial(n).executeSpecial(env, listExpr);
+    }
 
     private static  Node specialFormQuote(Env env, NodeList listExpr) {
         return listExpr.getChildren().get(1);

@@ -22,6 +22,8 @@ import io.indy.seni.core.bind.Core;
 import io.indy.seni.lang.bind.Functional;
 import io.indy.seni.lang.bind.Lists;
 import io.indy.seni.lang.bind.Mathematical;
+import io.indy.seni.lang.bind.Misc;
+import io.indy.seni.lang.bind.Special;
 
 public class Env {
 
@@ -32,6 +34,8 @@ public class Env {
         // binds core functions in a new scope of env
         Env e = env.newScope();
 
+        e = Special.bind(e);
+        e = Misc.bind(e);
         e = Mathematical.bind(e);
         e = Functional.bind(e);
         e = Lists.bind(e);

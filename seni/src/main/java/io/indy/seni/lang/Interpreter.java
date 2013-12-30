@@ -23,38 +23,18 @@ import java.util.List;
 
 public class Interpreter {
 
-    // classical special forms
-    private static final String QUOTE = "quote";
-    private static final String IF = "if";
-    private static final String LET = "let";
-    private static final String DEFINE = "define";
-    private static final String SET = "set!";
-    private static final String LAMBDA = "lambda";
-    private static final String BEGIN = "begin";
-
-    // seni-specific special forms
-    private static final String DOTIMES = "do-times";
-    private static final String SCOPE = "scope";
-
-    private static final NodeNull NODE_NULL = new NodeNull();
+    public static final NodeNull NODE_NULL = new NodeNull();
 
     private static HashSet<String> sSpecialFormNames;
 
     static {
-        sSpecialFormNames = new HashSet<>(10);
-
-        sSpecialFormNames.add(QUOTE);
-        sSpecialFormNames.add(IF);
-        sSpecialFormNames.add(LET);
-        sSpecialFormNames.add(LAMBDA);
-        sSpecialFormNames.add(BEGIN);
-        sSpecialFormNames.add(DEFINE);
-        sSpecialFormNames.add(SET);
-
-        sSpecialFormNames.add(DOTIMES);
-        sSpecialFormNames.add(SCOPE);
+        sSpecialFormNames = new HashSet<>(20);
     }
-    
+
+    public static void registerSpecial(String name) {
+        sSpecialFormNames.add(name);
+    }
+
     public static Node eval(Env env, Node expr) throws LangException {
         
         Node.Type type = expr.getType();
@@ -96,31 +76,7 @@ public class Interpreter {
     private static Node funApplication(Env env, NodeList listExpr) throws LangException {
 
         if (isSpecialForm(listExpr)) {
-            switch(getCarName(listExpr)) {
-                // classical
-                case QUOTE:
-                    return specialFormQuote(env, listExpr);
-                case IF:
-                    return specialFormIf(env, listExpr);
-                case LET:
-                    return specialFormLet(env, listExpr);
-                case DEFINE:
-                    return specialFormDefine(env, listExpr);
-                case SET:
-                    return specialFormSet(env, listExpr);
-                case LAMBDA:
-                    return specialFormLambda(env, listExpr);
-                case BEGIN:
-                    return specialFormBegin(env, listExpr);
-
-                // seni specific
-                case DOTIMES:
-                    return specialFormDoTimes(env, listExpr);
-                case SCOPE:
-                    return specialApplication(env, listExpr);
-                default:
-                    // throw an error
-            };
+            return specialApplication(env, listExpr);
         } 
 
         // general function application
@@ -153,212 +109,12 @@ public class Interpreter {
         return lambda.execute(env, args);
     }
 
-    /**
-     * similar to generalApplication except that the arguments aren't evaluated
-     * @param env the environment
-     * @param listExpr NodeList
-     * @return Node
-     * @throws LangException
-     */
-    private static Node noEvalArgApplication(Env env, NodeList listExpr) throws LangException {
-        // (fun args...)
-        // ((lambda (x) (+ x x)) 4)
-
-        List<Node> children = Node.asList(listExpr).getChildren();
-
-        Iterator<Node> iter = children.iterator();
-
-        Node fun = eval(env, iter.next());
-
-        // in noEvalArgApplication fun will always be a name
-
-        // fun is either a lambda or a name
-        if(fun.getType() == Node.Type.NAME) {
-            fun = env.lookup(Node.asNameValue(fun));
-        }
-
-        NodeLambda lambda = Node.asLambda(fun);
-
-        List<Node> args = new ArrayList<Node>();
-        while(iter.hasNext()) {
-            args.add(iter.next());
-        }
-
-        // pass the args to lambda
-        return lambda.execute(env, args);
-    }
-
     private static Node specialApplication(Env env, NodeList listExpr) throws LangException {
 
         // 0th child is a NAME, eval will perform a lookup and return a SPECIAL
         Node n = eval(env, listExpr.getChildren().get(0));
 
         return Node.asSpecial(n).executeSpecial(env, listExpr);
-    }
-
-    private static  Node specialFormQuote(Env env, NodeList listExpr) {
-        return listExpr.getChildren().get(1);
-    }
-
-    private static Node specialFormIf(Env env, NodeList listExpr) throws LangException {
-
-        // TODO: check that there are only 3 or 4 forms in expr
-
-        // eval conditional
-        Node conditional = eval(env, listExpr.getChildren().get(1));
-
-        // currently assuming that conditional will be a boolean type
-        // (TODO: revise this assumption in the future)
-        if (conditional.getType() != Node.Type.BOOLEAN) {
-            // throw a not boolean exception
-        }
-
-        NodeBoolean cond = (NodeBoolean) conditional;
-        if(cond.getBoolean()) {
-            return eval(env, listExpr.getChildren().get(2));
-        } else {
-            if (listExpr.getChildren().size() == 4) {
-                return eval(env, listExpr.getChildren().get(3));
-            }
-        }
-
-        return NODE_NULL;
-    }
-
-    private static Node specialFormSet(Env env, NodeList listExpr) throws LangException {
-        // (set! foo 42)
-
-        List<Node> children = listExpr.getChildren();
-        if(children.size() != 3) {
-            // throw an error : set! not in form: set! name value
-        }
-
-        NodeName var = Node.asName(children.get(1));
-        Node value = eval(env, children.get(2));
-
-        // mutate the current env
-        //
-        env.addBinding(var.getName(), value);
-
-        return value;
-    }
-
-    private static Node specialFormDefine(Env env, NodeList listExpr) throws LangException {
-        // (define bar 99)
-
-        List<Node> children = listExpr.getChildren();
-        if(children.size() != 3) {
-            // throw an error : define not in form: define name value
-        }
-
-        NodeName var = Node.asName(children.get(1));
-
-        if (env.hasBinding(var.getName())) {
-            // throw an error : var already defined
-        }
-
-        Node value = eval(env, children.get(2));
-        env.addBinding(var.getName(), value);
-
-        return value;
-    }
-
-    private static Node specialFormBegin(Env env, NodeList listExpr) throws LangException {
-        // (begin (set! bar 99) (define foo 11) (set! bar 42))
-
-        List<Node> children = listExpr.getChildren();
-
-        Node res = NODE_NULL;
-        for (int i=1;i<children.size();i++) {
-            res = eval(env, children.get(i));
-        }
-
-        return res;
-    }
-
-    private static Node specialFormLet(Env env, NodeList listExpr) throws LangException {
-        // (let ((x 2) (y 3)) (+ x y) .... )
-
-        int i=0;
-        List<Node> children = listExpr.getChildren();
-
-        if(children.size() < 2) {
-            // throw an error: malformed let
-        }
-
-        Env scopedEnv = env.newScope();
-
-        NodeList newVars = Node.asList(children.get(1));  // ((x 2) (y 3))
-        for (i=0;i<newVars.getChildren().size();i++) {
-            NodeList nl = Node.asList(newVars.getChild(i));
-            if(nl.getChildren().size() != 2) {
-                // throw an error: let binding not part of a pair
-            }
-
-            scopedEnv.addBinding(Node.asName(nl.getChild(0)).getName(),
-                                 eval(scopedEnv, nl.getChild(1)));
-        }
-
-        Node res = NODE_NULL;
-        for (i=2;i<children.size();i++) {
-            res = eval(scopedEnv, children.get(i));
-        }
-
-        return res;
-    }
-
-    private static Node specialFormLambda(Env env, NodeList listExpr) throws LangException {
-        // (lambda (x y) (+ x y))
-
-        // (lambda (x y) 5)
-
-        List<Node> children = listExpr.getChildren();
-
-        List<String> args = new ArrayList<String>();
-
-        Node argNodes = children.get(1);
-
-        for (Node child : Node.asList(argNodes).getChildren()) {
-            args.add(Node.asNameValue(child));
-        }
-
-        return new NodeLambda(args, children.get(2));
-    }
-
-    private static Node specialFormDoTimes(Env env, NodeList listExpr) throws LangException {
-        /*
-           (do-times i 10
-                     (setq br2 (* br2 shrink-factor))
-                     (setq ang (* ang ang-delta))))
-         */
-
-        List<Node> children = listExpr.getChildren();
-        if(children.size() < 4) {
-            // throw an error : do-times not in form: do-times var count statements+
-        }
-
-        String name = Node.asName(children.get(1)).getName();
-        int iterations = Node.asInt(children.get(2)).getInt();
-
-        int paramsSize = children.size();
-
-        Env newScope = env.newScope();
-        Node res = null;
-        for (int i=0;i<iterations;i++) {
-            newScope.addBinding(name, new NodeInt(i));
-            for(int j=3;j<paramsSize;j++) {
-                res = eval(newScope, children.get(j));
-            }
-        }
-
-        return res;
-    }
-
-
-    private static Node specialFormScope(Env env, NodeList listExpr) throws LangException {
-        // don't want to eval the arguments to scope since all rendering happens as a
-        // side effect. We want to wrap a save/restore around any evals
-        return noEvalArgApplication(env, listExpr);
     }
 
     private static boolean isSpecialForm(NodeList listExpr) throws LangException {
@@ -371,7 +127,6 @@ public class Interpreter {
         Node first = children.get(0);
 
         if(first.getType() == Node.Type.LIST) {
-            // e.g. ((lambda (x) (+ x x)) 3)
             return false;
         }
 
@@ -392,6 +147,4 @@ public class Interpreter {
         
         return Node.asNameValue(first);
     }
-
-
 }

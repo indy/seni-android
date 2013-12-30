@@ -29,7 +29,7 @@ public class InterpreterTest {
     @Before
     public void initObjects() {
         // mInterpreter = new Interpreter();
-        mEnv = new Env();
+        mEnv = Env.bindCoreFuns(new Env());
     }
 
     @Test
@@ -76,7 +76,7 @@ public class InterpreterTest {
             NodeName nName = new NodeName("foo");
             nList.addChild(nName);
 
-            assertThat(Interpreter.eval(null, nList)).isEqualTo(nName);
+            assertThat(Interpreter.eval(mEnv, nList)).isEqualTo(nName);
         } catch(LangException e) {
             assertThat(true).overridingErrorMessage(e.toString()).isFalse();
         }
@@ -96,7 +96,7 @@ public class InterpreterTest {
             nList.addChild(two);
             nList.addChild(four);
 
-            assertThat(Interpreter.eval(null, nList)).isEqualTo(two);
+            assertThat(Interpreter.eval(mEnv, nList)).isEqualTo(two);
 
 
             // (if false 2 4) => 4
@@ -106,7 +106,7 @@ public class InterpreterTest {
             nList.addChild(two);
             nList.addChild(four);
 
-            assertThat(Interpreter.eval(null, nList)).isEqualTo(four);
+            assertThat(Interpreter.eval(mEnv, nList)).isEqualTo(four);
         } catch(LangException e) {
             assertThat(true).overridingErrorMessage(e.toString()).isFalse();
         }
@@ -198,7 +198,7 @@ public class InterpreterTest {
     @Test
     public void testCoreFunPlusInt() {
         try {
-            Env e = Env.bindCoreFuns(mEnv);
+            Env e = mEnv;//Env.bindCoreFuns(mEnv);
 
             // (+ 3 4)
             NodeList nList = new NodeList();
@@ -226,7 +226,7 @@ public class InterpreterTest {
     @Test
     public void testCoreFunPlusFloat() {
         try {
-            Env e = Env.bindCoreFuns(mEnv);
+            Env e = mEnv;
 
             // (+ 3.0 4.0)
             NodeList nList = new NodeList();
@@ -254,7 +254,7 @@ public class InterpreterTest {
     @Test
     public void testCoreFunMinusInt() {
         try {
-            Env e = Env.bindCoreFuns(mEnv);
+            Env e = mEnv;
 
             // (- 3 4)
             NodeList nList = new NodeList();
@@ -281,7 +281,7 @@ public class InterpreterTest {
     @Test
     public void testCoreFunMinusFloat() {
         try {
-            Env e = Env.bindCoreFuns(mEnv);
+            Env e = mEnv;
 
             // (- 3.0 4.0)
             NodeList nList = new NodeList();
@@ -308,7 +308,7 @@ public class InterpreterTest {
     @Test
     public void testCoreFunDivideInt() {
         try {
-            Env e = Env.bindCoreFuns(mEnv);
+            Env e = mEnv;
 
             // (/ 24 2)
             NodeList nList = new NodeList();
@@ -334,7 +334,7 @@ public class InterpreterTest {
     @Test
     public void testCoreFunDivideFloat() {
         try {
-            Env e = Env.bindCoreFuns(mEnv);
+            Env e = mEnv;
 
             // (/ 24.0 2.0)
             NodeList nList = new NodeList();
@@ -360,7 +360,7 @@ public class InterpreterTest {
     @Test
     public void testCoreFunMultiplyInt() {
         try {
-            Env e = Env.bindCoreFuns(mEnv);
+            Env e = mEnv;
 
             // (* 24 2)
             NodeList nList = new NodeList();
@@ -386,7 +386,7 @@ public class InterpreterTest {
     @Test
     public void testCoreFunMultiplyFloat() {
         try {
-            Env e = Env.bindCoreFuns(mEnv);
+            Env e = mEnv;
 
             // (* 24.0 2.0)
             NodeList nList = new NodeList();
@@ -414,7 +414,7 @@ public class InterpreterTest {
     @Test
     public void testCoreFunLessInt() {
         try {
-            Env e = Env.bindCoreFuns(mEnv);
+            Env e = mEnv;
 
             // (< 3 4) -> true
             NodeList nList = new NodeList();
@@ -445,7 +445,7 @@ public class InterpreterTest {
     @Test
     public void testCoreFunLessFloat() {
         try {
-            Env e = Env.bindCoreFuns(mEnv);
+            Env e = mEnv;
 
             // (< 3.0 4.0)
             NodeList nList = new NodeList();
@@ -475,7 +475,7 @@ public class InterpreterTest {
     @Test
     public void testCoreFunMoreInt() {
         try {
-            Env e = Env.bindCoreFuns(mEnv);
+            Env e = mEnv;
 
             // (> 4 3)
             NodeList nList = new NodeList();
@@ -495,7 +495,7 @@ public class InterpreterTest {
     @Test
     public void testCoreFunMoreFloat() {
         try {
-            Env e = Env.bindCoreFuns(mEnv);
+            Env e = mEnv;
 
             // (> 4.0 3.0)
             NodeList nList = new NodeList();
@@ -516,7 +516,7 @@ public class InterpreterTest {
     @Test
     public void testCoreFunEqualInt() {
         try {
-            Env e = Env.bindCoreFuns(mEnv);
+            Env e = mEnv;
 
             // (= 4 4)
             NodeList nList = new NodeList();
@@ -546,7 +546,7 @@ public class InterpreterTest {
     @Test
     public void testCoreFunEqualFloat() {
         try {
-            Env e = Env.bindCoreFuns(mEnv);
+            Env e = mEnv;
 
             // (= 4.0 4.0)
             NodeList nList = new NodeList();

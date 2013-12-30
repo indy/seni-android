@@ -16,15 +16,14 @@
 
 package io.indy.seni.lang;
 
-import java.util.Iterator;
-import java.util.List;
-
 public class NodeSpecial extends Node {
 
     private String mKeyword;
 
     public NodeSpecial(String keyword) {
         super();
+
+        Interpreter.registerSpecial(keyword);
 
         mKeyword = keyword;
         

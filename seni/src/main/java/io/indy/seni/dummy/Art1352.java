@@ -26,83 +26,6 @@ public class Art1352 {
         if (AppConfig.DEBUG && D) Log.d(TAG, message);
     }
 
-    private static void squ(Canvas canvas, float angle, Colour colour, float boxRadius) {
-        Paint paint = new Paint();
-        paint.setAntiAlias(true);
-        CoreBridge.setColour(paint, colour);
-
-        ifd("--save");
-        canvas.save();
-        ifd("--rotate " + angle);
-        canvas.rotate(angle);
-        ifd("--translate 0.0f 200.0f");
-        canvas.translate(0.0f, 200.0f);
-        ifd("--drawRect");
-        canvas.drawRect(-boxRadius, -boxRadius, boxRadius, boxRadius, paint);
-        ifd("--restore");
-        canvas.restore();
-
-        float br2 = boxRadius;
-
-        float ang = 20.0f;
-        float toCenterFactor = 15.0f;
-        float shrinkFactor = 0.9f;
-        float angDelta = 8;
-
-        for(int i=0;i<10;i++) {
-            br2 *= shrinkFactor;
-            ang += angDelta;
-            ifd("----save");
-            canvas.save();
-            ifd("----rotate " + (angle - ang));
-            canvas.rotate(angle - ang);
-            ifd("----translate " + "0.0f " + (200.0f - (i * toCenterFactor)));
-            canvas.translate(0.0f, 200.0f - (i * toCenterFactor));
-            ifd("----rect");
-            canvas.drawRect(-br2, -br2, br2, br2, paint);
-            ifd("----restore");
-            canvas.restore();
-
-            ifd("----save");
-            canvas.save();
-            ifd("----rotate " + (angle + ang));
-            canvas.rotate(angle + ang);
-            ifd("----translate " + "0.0f " + (200.0f - (i * toCenterFactor)));
-            canvas.translate(0.0f, 200.0f - (i * toCenterFactor));
-            ifd("----rect");
-            canvas.drawRect(-br2, -br2, br2, br2, paint);
-            ifd("----restore");
-            canvas.restore();
-        }
-    }
-
-    public static void Draw2(Canvas canvas, int width, int height) {
-        ifd("Draw");
-
-        // use colour
-        Colour primary = Colour.fromRGB(0.1f, 0.6f, 0.8f, 0.3f);
-        Colour[] triads = primary.triad();
-
-        int boxRadius = width / 12;
-        int focalX = width / 2;
-        int focalY = height / 2;
-
-        Colour[] c = {primary, triads[0], triads[1]};
-
-        float angle = 0.0f;
-        for(int i=0;i<3;i++) {
-            ifd("-save");
-            canvas.save();
-            ifd("-translate " + focalX + " " + focalY);
-            canvas.translate(focalX, focalY);
-            squ(canvas, angle, c[i], boxRadius);
-            ifd("-restore");
-            canvas.restore();
-            angle += 360.0f / 3.0f;
-        }
-    }
-
-
     public static void Draw(Canvas canvas, int width, int height) {
         ifd("Draw");
 
@@ -120,7 +43,6 @@ public class Art1352 {
                 + "        (scope (rotate angle)"
                 + "               (translate 0.0 200.0)"
                 + "               (rect (* -1.0 box-radius) (* -1.0 box-radius) box-radius box-radius))"
-
                 + "      (let ((br2 box-radius)"
                 + "            (ang 20.0)"
                 + "            (to-center-factor 15.0)"

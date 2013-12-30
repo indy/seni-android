@@ -15,7 +15,10 @@ import io.indy.seni.lang.NodeName;
 import io.indy.seni.lang.NodeNull;
 import io.indy.seni.runtime.CoreBridge;
 import io.indy.seni.runtime.NodeSeniContext;
+import io.indy.seni.runtime.NodeSpecialSeniContext;
 import io.indy.seni.runtime.SeniContext;
+
+import java.util.Iterator;
 
 public class Platform extends Binder {
 
@@ -28,14 +31,17 @@ public class Platform extends Binder {
 
     public static Env bind(Env e, SeniContext sc) {
 
-        e.addBinding(new NodeSeniContext("scope", sc) {
-            public Node execute(Env env, List<Node> params)
-                    throws LangException {
-
+        e.addBinding(new NodeSpecialSeniContext("scope", sc) {
+            public Node executeSpecial(Env env, NodeList listExpr)
+                throws LangException {
+                
                 mSeniContext.getCanvas().save();
-
-                for (Node child : params) {
-                    Interpreter.eval(env, child);
+                
+                List<Node> children = listExpr.getChildren();
+                Iterator<Node> iter = children.iterator();
+                iter.next(); // 'scope' name
+                while(iter.hasNext()) {
+                    Interpreter.eval(env, iter.next());
                 }
 
                 mSeniContext.getCanvas().restore();

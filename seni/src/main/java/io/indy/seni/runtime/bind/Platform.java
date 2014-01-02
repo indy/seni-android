@@ -107,7 +107,23 @@ public class Platform extends Binder {
                 return Interpreter.NODE_NULL;
             }
         });
-        
+
+        e.addBinding(new NodeSeniContext("circle", sc) {
+            public Node execute(Env env, List<Node> params)
+                    throws LangException {
+
+                Binder.checkArity(params, 3, keyword());
+
+                float x = Node.asFloatValue(params.get(0));
+                float y = Node.asFloatValue(params.get(1));
+                float r = Node.asFloatValue(params.get(2));
+
+                mSeniContext.getCanvas().drawCircle(x, y, r, mSeniContext.getPaint());
+
+                return Interpreter.NODE_NULL;
+            }
+        });
+
         return e;
     }
 }

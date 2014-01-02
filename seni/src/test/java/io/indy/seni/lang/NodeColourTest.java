@@ -38,5 +38,12 @@ public class NodeColourTest {
         NodeColour nc1 = new NodeColour(Colour.fromRGB(0.1f, 0.2f, 0.3f));
         assertThat(nc1.scribe()).isEqualTo("(colour 0.1 0.2 0.3)");
     }
+
+    @Test
+    public void testToString() {
+        NodeColour nc1 = new NodeColour(Colour.fromRGB(0.1f, 0.2f, 0.3f));
+        assertThat(nc1.toString()).isEqualTo("COLOUR: (colour 0.1 0.2 0.3)");
+    }
+
 }
 

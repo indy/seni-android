@@ -82,7 +82,7 @@ abstract public class EvalTestBase {
         
     }
 
-    private List<Node> asAST(String code) {
+    protected List<Node> asAST(String code) {
         Token t;
         Queue<Token> tokens;
 

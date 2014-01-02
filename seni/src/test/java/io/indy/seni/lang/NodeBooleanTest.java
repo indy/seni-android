@@ -52,4 +52,12 @@ public class NodeBooleanTest {
         assertThat(t.scribe()).isEqualTo("true");
         assertThat(f.scribe()).isEqualTo("false");
     }
+
+    @Test
+    public void testToString() {
+        NodeBoolean t = new NodeBoolean(true);
+        NodeBoolean f = new NodeBoolean(false);
+        assertThat(t.toString()).isEqualTo("BOOLEAN: true");
+        assertThat(f.toString()).isEqualTo("BOOLEAN: false");
+    }
 }

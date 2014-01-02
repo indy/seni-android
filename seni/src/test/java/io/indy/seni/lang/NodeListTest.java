@@ -95,5 +95,13 @@ public class NodeListTest {
         assertThat(n.scribe()).isEqualTo("(23.0 73.0 (82.0 38.0))");
     }
 
+    @Test
+    public void testToString() {
+        NodeList m = new NodeList();
+        m.addChild(new NodeFloat(82.0f));
+        m.addChild(new NodeFloat(38.0f));
+
+        assertThat(m.toString()).isEqualTo("LIST: (82.0 38.0)");
+    }
 
 }

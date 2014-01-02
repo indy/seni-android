@@ -37,14 +37,14 @@ abstract public class Node {
 
     public static NodeBoolean asBoolean(Node n) throws LangException {
         if(n.getType() != Type.BOOLEAN) {
-            throw new LangException("cannot cast to BOOLEAN from " + Node.debugString(n));
+            throw new LangException("cannot cast to BOOLEAN from " + n);
         }
         return (NodeBoolean) n;
     }
 
     public static NodeInt asInt(Node n) throws LangException {
         if(n.getType() != Type.INT) {
-            throw new LangException("cannot cast to INT from " + Node.debugString(n));
+            throw new LangException("cannot cast to INT from " + n);
         }
         return (NodeInt) n;
     }
@@ -55,7 +55,7 @@ abstract public class Node {
 
     public static NodeFloat asFloat(Node n) throws LangException {
         if(n.getType() != Type.FLOAT) {
-            throw new LangException("cannot cast to FLOAT from " + Node.debugString(n));
+            throw new LangException("cannot cast to FLOAT from " + n);
         }
         return (NodeFloat) n;
     }
@@ -66,7 +66,7 @@ abstract public class Node {
 
     public static NodeName asName(Node n) throws LangException {
         if (n.getType() != Node.Type.NAME) {
-            throw new LangException("cannot cast to NAME from " + Node.debugString(n));
+            throw new LangException("cannot cast to NAME from " + n);
         }
 
         return (NodeName) n;
@@ -78,7 +78,7 @@ abstract public class Node {
 
     public static NodeList asList(Node n) throws LangException {
         if (n.getType() != Node.Type.LIST) {
-            throw new LangException("cannot cast to LIST from " + Node.debugString(n));
+            throw new LangException("cannot cast to LIST from " + n);
         }
 
         return (NodeList) n;
@@ -86,21 +86,21 @@ abstract public class Node {
 
     public static NodeLambda asLambda(Node n) throws LangException {
         if (n.getType() != Node.Type.LAMBDA) {
-            throw new LangException("cannot cast to LAMBDA from " + Node.debugString(n));
+            throw new LangException("cannot cast to LAMBDA from " + n);
         }
         return (NodeLambda) n;
     }
 
     public static NodeSpecial asSpecial(Node n) throws LangException {
         if (n.getType() != Node.Type.SPECIAL) {
-            throw new LangException("cannot cast to SPECIAL from " + Node.debugString(n));
+            throw new LangException("cannot cast to SPECIAL from " + n);
         }
         return (NodeSpecial) n;
     }
 
     public static NodeColour asColour(Node n) throws LangException {
         if(n.getType() != Type.COLOUR) {
-            throw new LangException("cannot cast to COLOUR from " + Node.debugString(n));
+            throw new LangException("cannot cast to COLOUR from " + n);
         }
         return (NodeColour) n;
     }
@@ -122,31 +122,7 @@ abstract public class Node {
 
     public static void debug(Node n, String msg) throws LangException {
         System.out.println(msg);
-        debug(n);
-    }
-
-    public static String debugString(Node n) throws LangException {
-        Type t = n.getType();
-        if(t == Type.INT) {
-            return "" + n.getType() + ": " + Node.asIntValue(n);
-        } else if(t == Type.FLOAT) {
-            return "" + n.getType() + ": " + Node.asFloatValue(n);
-        } else if(t == Type.BOOLEAN) {
-            return "" + n.getType() + ": " + ((NodeBoolean)n).getBoolean();
-        } else if(t == Type.LAMBDA) {
-            return "" + n.getType();
-        } else if(t == Type.SPECIAL) {
-            return "" + n.getType();
-        } else if(t == Type.NAME) {
-            return "" + n.getType() + ": " + Node.asNameValue(n);
-        } else if(t == Type.STRING) {
-            return "" + n.getType() + ": " + ((NodeString)n).getString();
-        } else {
-            return "unknown type to debug";
-        }
-    }
-    public static void debug(Node n) throws LangException {
-        System.out.println(Node.debugString(n));
+        System.out.println(n);
     }
 
     public Type getType() {
@@ -155,4 +131,8 @@ abstract public class Node {
 
     abstract public boolean eq(Node n);
     abstract public String scribe();
+
+    public String toString() {
+        return "" + getType() + ": " + scribe();
+    }
 }

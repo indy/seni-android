@@ -46,4 +46,10 @@ public class NodeIntTest {
         NodeInt n = new NodeInt(42);
         assertThat(n.scribe()).isEqualTo("42");
     }
+
+    @Test
+    public void testToString() {
+        NodeInt n = new NodeInt(42);
+        assertThat(n.toString()).isEqualTo("INT: 42");
+    }
 }

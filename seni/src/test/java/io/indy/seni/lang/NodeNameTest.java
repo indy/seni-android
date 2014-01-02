@@ -46,4 +46,10 @@ public class NodeNameTest {
         NodeName n = new NodeName("cons");
         assertThat(n.scribe()).isEqualTo("cons");
     }
+
+    @Test
+    public void testToString() {
+        NodeName n = new NodeName("cons");
+        assertThat(n.toString()).isEqualTo("NAME: cons");
+    }
 }

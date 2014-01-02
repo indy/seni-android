@@ -46,4 +46,11 @@ public class NodeStringTest {
         NodeString n = new NodeString("cons");
         assertThat(n.scribe()).isEqualTo("cons");
     }
+
+    @Test
+    public void testToString() {
+        NodeString n = new NodeString("cons");
+        assertThat(n.toString()).isEqualTo("STRING: cons");
+    }
+
 }

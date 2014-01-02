@@ -54,7 +54,9 @@ abstract public class Node {
     }
 
     public static NodeFloat asFloat(Node n) throws LangException {
-        if(n.getType() != Type.FLOAT) {
+        if(n.getType() == Type.INT) {
+            return new NodeFloat((float)((NodeInt)n).getInt());
+        } else if(n.getType() != Type.FLOAT) {
             throw new LangException("cannot cast to FLOAT from " + n);
         }
         return (NodeFloat) n;

@@ -32,6 +32,17 @@ public class NodeFloatTest {
     }
 
     @Test
+    public void testCastingToNodeFloat() {
+        NodeInt n = new NodeInt(42);
+
+        try {
+            assertThat(Node.asFloatValue(n)).isEqualTo(42.0f);
+        } catch(LangException e) {
+            assertThat(false).isEqualTo(true);
+        }
+    }
+
+    @Test
     public void testEq() {
         NodeFloat n = new NodeFloat(12.34f);
 

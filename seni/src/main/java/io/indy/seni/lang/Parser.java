@@ -60,11 +60,32 @@ public class Parser {
             return new NodeString(token.getStringValue());
         } else if(type == Token.Type.QUOTE_ABBREVIATION) {
             return consumeQuotedForm();
+        } else if(type == Token.Type.BRACKET_START) {
+            return consumeBracketForm();
         } else {
             // throw an error
         }
 
         return null;
+    }
+
+    private static Node consumeBracketForm() {
+        // [4] -> 4
+        // [(foo bar)] -> (foo bar)
+
+        // should only be one form in-between square brackets
+        Node node = consumeItem();
+        
+        // mark node as having been surrounded by square brackets
+        node.setAlterable(true);
+
+        // after consuming it we should be on the end bracket
+        Token token = mTokens.remove();
+        if(token.getType() != Token.Type.BRACKET_END) {
+            // throw an error - only one form allowed in-between brackets
+        }
+
+        return node;
     }
 
     private static Node consumeQuotedForm() {

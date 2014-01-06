@@ -196,6 +196,30 @@ public class ParserTest {
         assertThat(ni.getInt()).isEqualTo(38);
     }
 
+    @Test
+    public void parseBracketedInt() {
+        Queue<Token> tokens = new ArrayDeque<Token>();
+        tokens.add(makeToken(Token.Type.BRACKET_START));
+        tokens.add(makeToken(16));
+        tokens.add(makeToken(Token.Type.BRACKET_END));
+        tokens.add(makeToken(99));
+
+        List<Node> nodes = Parser.parse(tokens);
+        assertThat(nodes.size()).isEqualTo(2);
+
+        Node n = nodes.get(0);
+        assertThat(n.getType()).isEqualTo(Node.Type.INT);
+        NodeInt ni = (NodeInt)n;
+        assertThat(ni.getInt()).isEqualTo(16);
+        assertThat(ni.isAlterable()).isTrue();
+
+        n = nodes.get(1);
+        assertThat(n.getType()).isEqualTo(Node.Type.INT);
+        ni = (NodeInt)n;
+        assertThat(ni.getInt()).isEqualTo(99);
+        assertThat(ni.isAlterable()).isFalse();
+    }
+
     private Token makeToken(int val) {
         try {
             return new Token(Token.Type.INT, val);

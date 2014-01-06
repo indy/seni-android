@@ -34,6 +34,19 @@ abstract public class Node {
     }
 
     protected Type mType;
+    protected boolean mAlterable;
+
+    public Node() {
+        mAlterable = false;
+    }
+
+    public void setAlterable(boolean alterable) {
+        mAlterable = alterable;
+    }
+
+    public boolean isAlterable() {
+        return mAlterable;
+    }
 
     public static NodeBoolean asBoolean(Node n) throws LangException {
         if(n.getType() != Type.BOOLEAN) {

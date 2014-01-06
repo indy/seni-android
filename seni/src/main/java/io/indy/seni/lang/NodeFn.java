@@ -50,7 +50,7 @@ abstract public class NodeFn extends NodeLambda {
         return mKeyword.equals(nfn.mKeyword);
     }
 
-    public String scribe() {
-        return mKeyword;
+    public String scribe() throws ScribeException {
+        throw new ScribeException(this.toString());
     }
 }

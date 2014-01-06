@@ -44,7 +44,12 @@ public class NodeIntTest {
     @Test
     public void testScribe() {
         NodeInt n = new NodeInt(42);
-        assertThat(n.scribe()).isEqualTo("42");
+        try {
+            assertThat(n.scribe()).isEqualTo("42");
+        } catch (Node.ScribeException e) {
+            assertThat(false).isEqualTo(true);
+        }
+
     }
 
     @Test

@@ -81,18 +81,25 @@ public class NodeListTest {
 
     @Test
     public void testScribe() {
-        NodeList m = new NodeList();
-        m.addChild(new NodeFloat(82.0f));
-        m.addChild(new NodeFloat(38.0f));
 
-        assertThat(m.scribe()).isEqualTo("(82.0 38.0)");
+        try {
+            NodeList m = new NodeList();
+            m.addChild(new NodeFloat(82.0f));
+            m.addChild(new NodeFloat(38.0f));
 
-        NodeList n = new NodeList();
-        n.addChild(new NodeFloat(23.0f));
-        n.addChild(new NodeFloat(73.0f));
+            assertThat(m.scribe()).isEqualTo("(82.0 38.0)");
 
-        n.addChild(m);
-        assertThat(n.scribe()).isEqualTo("(23.0 73.0 (82.0 38.0))");
+            NodeList n = new NodeList();
+            n.addChild(new NodeFloat(23.0f));
+            n.addChild(new NodeFloat(73.0f));
+
+            n.addChild(m);
+            assertThat(n.scribe()).isEqualTo("(23.0 73.0 (82.0 38.0))");
+
+        } catch (Node.ScribeException e) {
+            assertThat(false).isEqualTo(true);
+        }
+
     }
 
     @Test

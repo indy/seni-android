@@ -38,7 +38,17 @@ public class NodeName extends Node {
         return ((NodeName)n).mName.equals(mName);
     }
 
-    public String scribe() {
+    public String scribe() throws ScribeException {
         return mName;
     }
+
+    public String toString() {
+        try {
+            return "" + getType() + ": " + scribe();
+        } catch (ScribeException e) {
+            e.printStackTrace();
+        }
+        return "" + getType() + ": toString ERROR";
+    }
+
 }

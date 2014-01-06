@@ -51,7 +51,8 @@ public class NodeSpecial extends Node {
         return true; // todo: fix this
     }
 
-    public String scribe() {
-        return "";
+    public String scribe() throws ScribeException {
+        throw new ScribeException(this.toString());
     }
+
 }

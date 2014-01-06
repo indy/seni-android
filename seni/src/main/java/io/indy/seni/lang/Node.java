@@ -131,10 +131,16 @@ abstract public class Node {
         return mType;
     }
 
+    public static class ScribeException extends Exception {
+        public ScribeException(String message){
+            super(message);
+        }
+    }
+
     abstract public boolean eq(Node n);
-    abstract public String scribe();
+    abstract public String scribe() throws ScribeException;
 
     public String toString() {
-        return "" + getType() + ": " + scribe();
+        return "" + getType();
     }
 }

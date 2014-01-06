@@ -38,7 +38,17 @@ public class NodeFloat extends Node {
         return mFloat == ((NodeFloat)n).mFloat;
     }
 
-    public String scribe() {
+    public String scribe() throws ScribeException {
         return String.valueOf(mFloat);
     }
+
+    public String toString() {
+        try {
+            return "" + getType() + ": " + scribe();
+        } catch (ScribeException e) {
+            e.printStackTrace();
+        }
+        return "" + getType() + ": toString ERROR";
+    }
+
 }

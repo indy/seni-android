@@ -38,7 +38,17 @@ public class NodeInt extends Node {
         return mInteger == ((NodeInt)n).mInteger;
     }
 
-    public String scribe() {
+    public String scribe() throws ScribeException {
         return Integer.toString(mInteger);
     }
+
+    public String toString() {
+        try {
+            return "" + getType() + ": " + scribe();
+        } catch (ScribeException e) {
+            e.printStackTrace();
+        }
+        return "" + getType() + ": toString ERROR";
+    }
+
 }

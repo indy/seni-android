@@ -22,7 +22,6 @@ import org.junit.Test;
 import org.junit.Before;
 import static org.fest.assertions.api.Assertions.assertThat;
 
-
 abstract public class EvalTestBase {
 
     protected void assertBinding(String code, String name, String expected) {
@@ -65,21 +64,29 @@ abstract public class EvalTestBase {
         // assuming that code evals to a single node
         Node codeAST = asAST(code).get(0);
 
-        String scribed = codeAST.scribe();
+        try {
+            String scribed = codeAST.scribe();
 
-        String errorMsg = "code: `" + code + "` incorrectly scribed to: `" + scribed + "`";
-        assertThat(scribed).overridingErrorMessage(errorMsg).isEqualTo(code);
+            String errorMsg = "code: `" + code + "` incorrectly scribed to: `" + scribed + "`";
+            assertThat(scribed).overridingErrorMessage(errorMsg).isEqualTo(code);
+        } catch (Node.ScribeException e) {
+            assertThat(true).overridingErrorMessage(e.getMessage()).isEqualTo(false);
+        }
     }
 
     protected void assertScribe(String code, String expected) {
         // assuming that code evals to a single node
         Node codeAST = asAST(code).get(0);
-
-        String scribed = codeAST.scribe();
-
-        String errorMsg = "code: `" + code + "` scribed to: `" + scribed + "` expected: `" + expected + "`";
-        assertThat(scribed).overridingErrorMessage(errorMsg).isEqualTo(expected);
         
+        try {
+            String scribed = codeAST.scribe();
+
+            String errorMsg = "code: `" + code + "` scribed to: `" + scribed + "` expected: `" + expected + "`";
+        assertThat(scribed).overridingErrorMessage(errorMsg).isEqualTo(expected);
+        } catch (Node.ScribeException e) {
+            assertThat(true).overridingErrorMessage(e.getMessage()).isEqualTo(false);
+        }
+
     }
 
     protected List<Node> asAST(String code) {

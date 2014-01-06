@@ -49,8 +49,12 @@ public class NodeBooleanTest {
     public void testScribe() {
         NodeBoolean t = new NodeBoolean(true);
         NodeBoolean f = new NodeBoolean(false);
-        assertThat(t.scribe()).isEqualTo("true");
-        assertThat(f.scribe()).isEqualTo("false");
+        try {
+            assertThat(t.scribe()).isEqualTo("true");
+            assertThat(f.scribe()).isEqualTo("false");
+        } catch (Node.ScribeException e) {
+            assertThat(false).isEqualTo(true);
+        }
     }
 
     @Test

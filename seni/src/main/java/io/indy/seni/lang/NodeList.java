@@ -71,11 +71,21 @@ public class NodeList extends Node {
         return true;
     }
 
-    public String scribe() {
+    public String scribe() throws ScribeException {
         String res = "(";
         for(Node n : mChildren) {
             res += n.scribe() + " ";
         }
         return res.substring(0, res.length() - 1) + ")";
     }
+
+    public String toString() {
+        try {
+            return "" + getType() + ": " + scribe();
+        } catch (ScribeException e) {
+            e.printStackTrace();
+        }
+        return "" + getType() + ": toString ERROR";
+    }
+
 }

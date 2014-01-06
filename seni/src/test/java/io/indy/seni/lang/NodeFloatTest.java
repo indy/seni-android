@@ -55,7 +55,12 @@ public class NodeFloatTest {
     @Test
     public void testScribe() {
         NodeFloat n = new NodeFloat(12.34f);
-        assertThat(n.scribe()).isEqualTo("12.34");
+        try {
+            assertThat(n.scribe()).isEqualTo("12.34");
+        } catch (Node.ScribeException e) {
+            assertThat(false).isEqualTo(true);
+        }
+
     }
 
     @Test

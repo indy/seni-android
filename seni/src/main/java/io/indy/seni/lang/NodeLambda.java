@@ -95,14 +95,7 @@ public class NodeLambda extends Node {
         return true; // todo: fix this
     }
 
-
-    public String scribe() {
-        String res = "(lambda (";
-        for (String a : mArgs) {
-            res += a + " ";
-        };
-        res = res.substring(0, res.length() - 1) + ")";
-        res += " " + mBody.scribe() + ")"; 
-        return res;
+    public String scribe() throws ScribeException {
+        throw new ScribeException(this.toString());
     }
 }

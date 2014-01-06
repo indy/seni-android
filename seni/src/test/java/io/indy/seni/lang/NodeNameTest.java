@@ -44,7 +44,12 @@ public class NodeNameTest {
     @Test
     public void testScribe() {
         NodeName n = new NodeName("cons");
-        assertThat(n.scribe()).isEqualTo("cons");
+        try {
+            assertThat(n.scribe()).isEqualTo("cons");
+        } catch (Node.ScribeException e) {
+            assertThat(false).isEqualTo(true);
+        }
+
     }
 
     @Test

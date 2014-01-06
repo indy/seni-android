@@ -44,7 +44,12 @@ public class NodeStringTest {
     @Test
     public void testScribe() {
         NodeString n = new NodeString("cons");
-        assertThat(n.scribe()).isEqualTo("cons");
+        try {
+            assertThat(n.scribe()).isEqualTo("cons");
+        } catch (Node.ScribeException e) {
+            assertThat(false).isEqualTo(true);
+        }
+
     }
 
     @Test

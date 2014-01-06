@@ -35,8 +35,8 @@ public class NodeNull extends Node {
         return (n.mType == Node.Type.NULL);
     }
 
-    public String scribe() {
-        // sssert an error?
-        return "<null>";
+
+    public String scribe() throws ScribeException {
+        throw new ScribeException("NodeNull");
     }
 }

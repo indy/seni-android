@@ -77,6 +77,12 @@ public class Lexer {
             case LIST_END :
                 p = consumeListEnd(s);
                 break;
+            case BRACKET_START :
+                p = consumeBracketStart(s);
+                break;
+            case BRACKET_END :
+                p = consumeBracketEnd(s);
+                break;
             case STRING :
                 p = consumeString(s);
                 break;
@@ -175,6 +181,20 @@ public class Lexer {
         return p;
     }
 
+    private static Pair consumeBracketStart(String s) {
+        Pair p = new Pair();
+        p.mToken = new Token(Token.Type.BRACKET_START);
+        p.mRemaining = s.substring(1);
+        return p;
+    }
+
+    private static Pair consumeBracketEnd(String s) {
+        Pair p = new Pair();
+        p.mToken = new Token(Token.Type.BRACKET_END);
+        p.mRemaining = s.substring(1);
+        return p;
+    }
+
     private static Pair consumeString(String s) {
 
         String val = s.substring(1); // skip first \"
@@ -232,6 +252,14 @@ public class Lexer {
         if(isListEnd(c)) {
             return Token.Type.LIST_END;
         }
+
+        if(isBracketStart(c)) {
+            return Token.Type.BRACKET_START;
+        }
+
+        if(isBracketEnd(c)) {
+            return Token.Type.BRACKET_END;
+        }
         
         if(isQuotedString(c)) {
             return Token.Type.STRING;
@@ -288,6 +316,14 @@ public class Lexer {
 
     private static boolean isListEnd(Character c) {
         return c == ')';
+    }
+
+    private static boolean isBracketStart(Character c) {
+        return c == '[';
+    }
+
+    private static boolean isBracketEnd(Character c) {
+        return c == ']';
     }
 
     private static boolean isQuotedString(Character c) {

@@ -89,6 +89,22 @@ public class LexerTest {
             assertThat(t.getType()).isEqualTo(Token.Type.NAME);
             assertThat(t.getStringValue()).isEqualTo("bob");
 
+            q = Lexer.tokenise("[]");
+            t = q.remove();
+            assertThat(t.getType()).isEqualTo(Token.Type.BRACKET_START);
+            t = q.remove();
+            assertThat(t.getType()).isEqualTo(Token.Type.BRACKET_END);
+
+            q = Lexer.tokenise("[bob]");
+            t = q.remove();
+            assertThat(t.getType()).isEqualTo(Token.Type.BRACKET_START);
+            t = q.remove();
+            assertThat(t.getType()).isEqualTo(Token.Type.NAME);
+            assertThat(t.getStringValue()).isEqualTo("bob");
+            t = q.remove();
+            assertThat(t.getType()).isEqualTo(Token.Type.BRACKET_END);
+
+
         } catch (LangException exception) {
             assertThat(true).overridingErrorMessage(exception.toString()).isFalse();
         }

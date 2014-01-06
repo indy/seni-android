@@ -22,6 +22,8 @@ public class Token {
         UNKNOWN,
         LIST_START,
         LIST_END,
+        BRACKET_START,
+        BRACKET_END,
         // COMMENT, // remove comments
         INT,
         FLOAT,

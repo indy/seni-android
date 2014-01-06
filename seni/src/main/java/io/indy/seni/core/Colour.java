@@ -103,13 +103,6 @@ public abstract class Colour {
         return mFormat + ": " + mVal[0] + ", " + mVal[1] + ", "+ mVal[2] + ", " + mVal[3];
     }
 
-    public String scribe() {
-        if(mVal[ALPHA] == 1.0f) {
-            return "" + mVal[0] + " " + mVal[1] + " " + mVal[2];
-        }
-        return "" + mVal[0] + " " + mVal[1] + " " + mVal[2] + " " + mVal[3];
-    }
-
     public boolean compare(Colour c) {
         if (c.mFormat != this.mFormat) {
             return false;

@@ -48,6 +48,6 @@ public class NodeColour extends Node {
 
     public String toString() {
         Colour rgb = mColour.as(Colour.Format.RGB);
-        return "" + getType() + ": (colour " + rgb.scribe() + ")";
+        return "" + getType() + ": [" + rgb.toString() + "]";
     }
 }

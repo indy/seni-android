@@ -18,7 +18,7 @@ package io.indy.seni.lang;
 
 import io.indy.seni.core.Colour;
 
-public class NodeColour extends Node {
+public class NodeColour extends NodeInternal {
 
     private Colour mColour;
 
@@ -40,10 +40,6 @@ public class NodeColour extends Node {
 
         NodeColour nodeColour = (NodeColour)n;
         return mColour.compare(nodeColour.mColour);
-    }
-
-    public String scribe() throws ScribeException {
-        throw new ScribeException(this.toString());
     }
 
     public String toString() {

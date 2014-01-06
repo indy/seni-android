@@ -16,22 +16,13 @@
 
 package io.indy.seni.lang;
 
-// NodeNull is returned in the following cases:
-//
-// (if false 1)   ;  conditional eval's to false but there's no false clause
-// (begin)        ;  empty begin
+/**
+   Nodes derived from NodeInternal are created by the 
+   interpreter not the parser. They won't be scribed.
+ */
+abstract public class NodeInternal extends Node {
 
-// TODO: deal with the above cases and remove concept of NULL from seni
-
-public class NodeNull extends NodeInternal {
-
-    public NodeNull() {
-        super();
-
-        mType = Node.Type.NULL;
-    }
-
-    public boolean eq(Node n) {
-        return (n.mType == Node.Type.NULL);
+    public String scribe() throws ScribeException {
+        throw new ScribeException(this.toString());
     }
 }

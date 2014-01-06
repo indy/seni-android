@@ -16,7 +16,7 @@
 
 package io.indy.seni.lang;
 
-public class NodeSpecial extends Node {
+public class NodeSpecial extends NodeInternal {
 
     private String mKeyword;
 
@@ -50,9 +50,4 @@ public class NodeSpecial extends Node {
         }
         return true; // todo: fix this
     }
-
-    public String scribe() throws ScribeException {
-        throw new ScribeException(this.toString());
-    }
-
 }

@@ -19,7 +19,7 @@ package io.indy.seni.lang;
 import java.util.Iterator;
 import java.util.List;
 
-public class NodeLambda extends Node {
+public class NodeLambda extends NodeInternal {
 
     protected List<String> mArgs;
     protected Node mBody;
@@ -93,9 +93,5 @@ public class NodeLambda extends Node {
             return false;
         }
         return true; // todo: fix this
-    }
-
-    public String scribe() throws ScribeException {
-        throw new ScribeException(this.toString());
     }
 }

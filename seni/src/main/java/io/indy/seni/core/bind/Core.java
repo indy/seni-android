@@ -56,6 +56,62 @@ public class Core extends Binder {
                 }
             });
 
+        e.addBinding(new NodeFn("interpolate-lab") {
+            public Node execute(Env env, List<Node> params)
+                    throws LangException {
+
+                Binder.checkArity(params, 3, keyword());
+
+                Colour a = Node.asColourValue(params.get(0));
+                Colour b = Node.asColourValue(params.get(1));
+                float t = Node.asFloatValue(params.get(2));
+
+                return new NodeColour(Colour.interpolate(a, b, t, Colour.Format.LAB));
+            }
+        });
+
+        e.addBinding(new NodeFn("interpolate-rgb") {
+            public Node execute(Env env, List<Node> params)
+                    throws LangException {
+
+                Binder.checkArity(params, 3, keyword());
+
+                Colour a = Node.asColourValue(params.get(0));
+                Colour b = Node.asColourValue(params.get(1));
+                float t = Node.asFloatValue(params.get(2));
+
+                return new NodeColour(Colour.interpolate(a, b, t, Colour.Format.RGB));
+            }
+        });
+
+
+        e.addBinding(new NodeFn("interpolate-hsl") {
+            public Node execute(Env env, List<Node> params)
+                    throws LangException {
+
+                Binder.checkArity(params, 3, keyword());
+
+                Colour a = Node.asColourValue(params.get(0));
+                Colour b = Node.asColourValue(params.get(1));
+                float t = Node.asFloatValue(params.get(2));
+
+                return new NodeColour(Colour.interpolate(a, b, t, Colour.Format.HSL));
+            }
+        });
+
+        e.addBinding(new NodeFn("interpolate-hsv") {
+            public Node execute(Env env, List<Node> params)
+                    throws LangException {
+
+                Binder.checkArity(params, 3, keyword());
+
+                Colour a = Node.asColourValue(params.get(0));
+                Colour b = Node.asColourValue(params.get(1));
+                float t = Node.asFloatValue(params.get(2));
+
+                return new NodeColour(Colour.interpolate(a, b, t, Colour.Format.HSV));
+            }
+        });
 
         e.addBinding(new NodeFn("complementary") {
                 public Node execute(Env env, List<Node> params) 

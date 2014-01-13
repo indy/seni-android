@@ -11,6 +11,8 @@ import io.indy.seni.lang.Env;
 import io.indy.seni.lang.Interpreter;
 import io.indy.seni.lang.LangException;
 import io.indy.seni.lang.Node;
+import io.indy.seni.lang.NodeFloat;
+import io.indy.seni.lang.NodeInt;
 import io.indy.seni.runtime.Runtime;
 import io.indy.seni.runtime.SeniContext;
 
@@ -34,40 +36,79 @@ public class Art1403 {
         ifd("width " + width);
         ifd("height " + height);
 
-        String code3 = ""
-                + "(define squ "
-                + "  (lambda (angle colour box-radius)"
-                + "    (begin (set-colour colour)"
-                + "        (scope (rotate angle)"
-                + "               (translate 0.0 200.0)"
-                + "               (rect (* -1.0 box-radius) (* -1.0 box-radius) box-radius box-radius))"
-                + "      (let ((br2 box-radius)"
-                + "            (ang 20.0)"
-                + "            (to-center-factor 15.0)"
-                + "            (shrink-factor 0.9)"
-                + "            (ang-delta 8.0))"
-                + "        (do-times i 10"
-                + "                  (set! br2 (* br2 shrink-factor))"
-                + "                  (set! ang (+ ang ang-delta))"
-                + "                  (scope (rotate (- angle ang))"
-                + "                         (translate 0.0 (- 200.0 (* (as-float i) to-center-factor)))"
-                + "                         (rect (* -1.0 br2) (* -1.0 br2) br2 br2))"
-                + "                  (scope (rotate (+ angle ang))"
-                + "                         (translate 0.0 (- 200.0 (* (as-float i) to-center-factor)))"
-                + "                         (rect (* -1.0 br2) (* -1.0 br2) br2 br2)))))))"
+        String code = ""
+                + "(define piece"
+                + "  (lambda (primary secondary box-radius interp-fn)"
+                + "    (let ((comp-primary (complementary primary))"
+                + "          (comp-secondary (complementary secondary))"
+                + "          (box-colour (colour 1.0 1.0 1.0 1.0)))"
+                + "      (scope (set-colour box-colour)"
+                + "             (rect (* -1.0 box-radius) (* -1.0 box-radius)"
+                + "                   (*  1.0 box-radius) (*  1.0 box-radius))"
+                + "             (set-colour primary)"
+                + "             (rect (* -1.0  box-radius) (* -1.0  box-radius)"
+                + "                   (*  1.0 box-radius) (* -7.0 box-radius))"
+                + "             (set-colour comp-primary)"
+                + "             (rect (*  -1.0  box-radius) (* 1.0  box-radius)"
+                + "                   (*  1.0 box-radius) (* 7.0 box-radius))"
+                + "             (set-colour secondary)"
+                + "             (rect (*  -1.0 box-radius) (* -1.0 box-radius)"
+                + "                   (*  -5.0 box-radius) (*  1.0 box-radius))"
+                + "             (set-colour comp-secondary)"
+                + "             (rect (*  1.0 box-radius) (* -1.0 box-radius)"
+                + "                   (*  5.0 box-radius) (*  1.0 box-radius))"
+                + "             (set-colour (interp-fn primary secondary 0.5))"
+                + "             (rect (*  -1.0 box-radius) (* -1.0 box-radius)"
+                + "                   (*  -5.0 box-radius) (* -7.0 box-radius))"
+                + "             (set-colour (interp-fn comp-primary secondary 0.5))"
+                + "             (rect (*  -1.0 box-radius) (*  1.0 box-radius)"
+                + "                   (*  -5.0 box-radius) (*  7.0 box-radius))"
+                + "             (set-colour (interp-fn primary comp-secondary 0.5))"
+                + "             (rect (*  1.0 box-radius) (* -1.0 box-radius)"
+                + "                   (*  5.0 box-radius) (* -7.0 box-radius))"
+                + "             (set-colour (interp-fn comp-primary comp-secondary 0.5))"
+                + "             (rect (*  1.0 box-radius) (*  1.0 box-radius)"
+                + "                   (*  5.0 box-radius) (*  7.0 box-radius))))))"
                 + ""
-                + "(let ((canvas-width 768.0)"
-                + "      (canvas-height 1038.0)"
-                + "      (primary (colour 0.1 0.6 0.8 0.3))"
-                + "      (triads (triad primary))"
+                + "(let ((primary (colour 0.1 0.6 0.8 1.0))"
+                + "      (secondary (colour 1.0 0.0 0.8 1.0))"
                 + "      (box-radius (/ canvas-width 12.0))"
                 + "      (focal-x (/ canvas-width 2.0))"
                 + "      (focal-y (/ canvas-height 2.0))"
-                + "      (angle 0.0))"
-                + "  (do-times i 3"
-                + "            (scope (translate focal-x focal-y)"
-                + "                   (squ angle (nth triads i) box-radius)"
-                + "                   (set! angle (+ angle (/ 360.0 3.0))))))";
+                + "      (angle 38.0))"
+                + "  (scope (translate (* canvas-width 0.25) (* canvas-height 0.25))"
+                + "         (rotate angle)"
+                + "         (scale 0.25 0.25)"
+                + "         (piece (colour 0.1 0.6 0.8 1.0) (colour 1.0 0.0 0.8 1.0)"
+                + "                box-radius interpolate-lab))"
+                + "  (scope (translate (* canvas-width 0.75) (* canvas-height 0.25))"
+                + "         (rotate angle)"
+                + "         (scale 0.25 0.25)"
+                + "         (piece (colour 0.5 0.1 0.8 1.0) (colour 1.0 0.0 0.8 1.0)"
+                + "                box-radius interpolate-lab))"
+                + ""
+                + "  (scope (translate (* canvas-width 0.25) (* canvas-height 0.5))"
+                + "         (rotate angle)"
+                + "         (scale 0.25 0.25)"
+                + "         (piece (colour 0.1 0.6 0.8 1.0) (colour 0.2 0.8 0.8 1.0)"
+                + "                box-radius interpolate-lab))"
+                + "  (scope (translate (* canvas-width 0.75) (* canvas-height 0.5))"
+                + "         (rotate angle)"
+                + "         (scale 0.25 0.25)"
+                + "         (piece (colour 0.1 0.6 0.0 1.0) (colour 0.5 0.5 0.8 1.0)"
+                + "                box-radius interpolate-lab))"
+                + ""
+                + "  (scope (translate (* canvas-width 0.25) (* canvas-height 0.75))"
+                + "         (rotate angle)"
+                + "         (scale 0.25 0.25)"
+                + "         (piece (colour 0.1 0.6 0.1 1.0) (colour 0.8 0.2 0.4 1.0)"
+                + "                box-radius interpolate-lab))"
+                + "  (scope (translate (* canvas-width 0.75) (* canvas-height 0.75))"
+                + "         (rotate angle)"
+                + "         (scale 0.25 0.25)"
+                + "         (piece (colour 0.6 0.2 0.3 1.0) (colour 0.7 0.2 0.8 1.0)"
+                + "                box-radius interpolate-lab)))"
+                + "";
 
         Runtime rt = new Runtime();
 
@@ -75,7 +116,10 @@ public class Art1403 {
         env = rt.bindCoreFunctions(env);
         env = rt.bindPlatformFunctions(env, sc);
 
-        List<Node> ast = rt.asAst(code3);
+        env = env.addBinding("canvas-width", new NodeFloat((float)width));
+        env = env.addBinding("canvas-height", new NodeFloat((float)height));
+
+        List<Node> ast = rt.asAst(code);
 
         try {
             for (Node node : ast) {
@@ -89,3 +133,5 @@ public class Art1403 {
         //canvas.drawRect(50.0f, 50.0f, 300.0f, 300.f, sc.getPaint());
     }
 }
+
+

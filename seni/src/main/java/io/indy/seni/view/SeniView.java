@@ -13,7 +13,7 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
 import io.indy.seni.AppConfig;
-import io.indy.seni.dummy.Art1352;
+import io.indy.seni.dummy.Art1403;
 
 public class SeniView extends SurfaceView implements SurfaceHolder.Callback {
 
@@ -108,7 +108,7 @@ public class SeniView extends SurfaceView implements SurfaceHolder.Callback {
         private void doDraw(Canvas canvas) {
 //            SimpleBenchmark sb = new SimpleBenchmark();
 //            sb.go(canvas);
-            Art1352.Draw(canvas, mCanvasWidth, mCanvasHeight);
+            Art1403.Draw(canvas, mCanvasWidth, mCanvasHeight);
         }
     }
 

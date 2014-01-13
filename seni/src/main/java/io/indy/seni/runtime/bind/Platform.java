@@ -84,7 +84,22 @@ public class Platform extends Binder {
                 float x = Node.asFloatValue(params.get(0));
                 float y = Node.asFloatValue(params.get(1));
 
-                mSeniContext.getCanvas().translate(x,y);
+                mSeniContext.getCanvas().translate(x, y);
+
+                return Interpreter.NODE_NULL;
+            }
+        });
+
+        e.addBinding(new NodeSeniContext("scale", sc) {
+            public Node execute(Env env, List<Node> params)
+                    throws LangException {
+
+                Binder.checkArity(params, 2, keyword());
+
+                float sx = Node.asFloatValue(params.get(0));
+                float sy = Node.asFloatValue(params.get(1));
+
+                mSeniContext.getCanvas().scale(sx, sy);
 
                 return Interpreter.NODE_NULL;
             }

@@ -68,6 +68,38 @@ public abstract class Colour {
         return new ColourXYZ(x, y, z, alpha);
     }
 
+    private static Colour fromSpace(Format space, float a, float b, float c) {
+        switch(space) {
+            case HSL: return fromHSL(a, b, c);
+            case HSV: return fromHSV(a, b, c);
+            case LAB: return fromLAB(a, b, c);
+            case RGB: return fromRGB(a, b, c);
+        }
+        return fromRGB(a, b, c);
+    }
+
+    private static Colour fromSpace(Format space, float a, float b, float c, float alpha) {
+        switch(space) {
+            case HSL: return fromHSL(a, b, c, alpha);
+            case HSV: return fromHSV(a, b, c, alpha);
+            case LAB: return fromLAB(a, b, c, alpha);
+            case RGB: return fromRGB(a, b, c, alpha);
+        }
+        return fromRGB(a, b, c, alpha);
+    }
+
+    public static Colour interpolate(Colour a, Colour b, float t, Format space) {
+
+        float[] aLab = a.as(space).getVals();
+        float[] bLab = b.as(space).getVals();
+
+        return Colour.fromSpace(space,
+                MathUtils.interpolate(aLab[0], bLab[0], t),
+                MathUtils.interpolate(aLab[1], bLab[1], t),
+                MathUtils.interpolate(aLab[2], bLab[2], t),
+                MathUtils.interpolate(aLab[3], bLab[3], t));
+    }
+
     public static final int RED = 0;
     public static final int GREEN = 1;
     public static final int BLUE = 2;

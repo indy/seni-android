@@ -22,27 +22,24 @@ import java.util.Queue;
 
 public class Parser {
 
-    private static Queue<Token> mTokens;
-
     public static List<Node> parse(Queue<Token> tokens) {
 
         List<Node> nodes = new ArrayList<Node>();
-        mTokens = tokens;
 
-        while(mTokens.peek() != null) {
-            nodes.add(consumeItem());
+        while(tokens.peek() != null) {
+            nodes.add(consumeItem(tokens));
         }
         
         return nodes;
     }
 
-    private static Node consumeItem() {
+    private static Node consumeItem(Queue<Token> tokens) {
 
-        Token token = mTokens.remove();
+        Token token = tokens.remove();
         Token.Type type = token.getType();
 
         if(type == Token.Type.LIST_START) {
-            return consumeList();
+            return consumeList(tokens);
         } else if(type == Token.Type.INT) {
             return new NodeInt(token.getIntValue());
         } else if(type == Token.Type.FLOAT) {
@@ -59,9 +56,9 @@ public class Parser {
         } else if(type == Token.Type.STRING) {
             return new NodeString(token.getStringValue());
         } else if(type == Token.Type.QUOTE_ABBREVIATION) {
-            return consumeQuotedForm();
+            return consumeQuotedForm(tokens);
         } else if(type == Token.Type.BRACKET_START) {
-            return consumeBracketForm();
+            return consumeBracketForm(tokens);
         } else {
             // throw an error
         }
@@ -69,18 +66,18 @@ public class Parser {
         return null;
     }
 
-    private static Node consumeBracketForm() {
+    private static Node consumeBracketForm(Queue<Token> tokens) {
         // [4] -> 4
         // [(foo bar)] -> (foo bar)
 
         // should only be one form in-between square brackets
-        Node node = consumeItem();
+        Node node = consumeItem(tokens);
         
         // mark node as having been surrounded by square brackets
         node.setAlterable(true);
 
         // after consuming it we should be on the end bracket
-        Token token = mTokens.remove();
+        Token token = tokens.remove();
         if(token.getType() != Token.Type.BRACKET_END) {
             // throw an error - only one form allowed in-between brackets
         }
@@ -88,30 +85,30 @@ public class Parser {
         return node;
     }
 
-    private static Node consumeQuotedForm() {
+    private static Node consumeQuotedForm(Queue<Token> tokens) {
         // '(2 3 4) -> (quote (2 3 4))
         
         NodeList node = new NodeList();
 
         node.addChild(new NodeName("quote"));
-        node.addChild(consumeItem());
+        node.addChild(consumeItem(tokens));
         
         return node;
     }
 
-    private static Node consumeList() {
+    private static Node consumeList(Queue<Token> tokens) {
         // LIST_START has already been consumed
 
         NodeList node = new NodeList();
         Token token;
 
         while(true) {
-            token = mTokens.element();
+            token = tokens.element();
             if(token.getType() == Token.Type.LIST_END) {
-                mTokens.remove();
+                tokens.remove();
                 return node;
             } else {
-                node.addChild(consumeItem());
+                node.addChild(consumeItem(tokens));
             }
         }
 

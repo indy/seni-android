@@ -25,9 +25,8 @@ public class Art1403 {
     static void ifd(final String message) {
         if (AppConfig.DEBUG && D) Log.d(TAG, message);
     }
-
-    public static void Draw(Canvas canvas, int width, int height) {
-        ifd("Draw");
+    public void draw(Canvas canvas, int width, int height) {
+        ifd("draw");
 
         SeniContext sc = new SeniContext(canvas);
         Paint paint = sc.getPaint();

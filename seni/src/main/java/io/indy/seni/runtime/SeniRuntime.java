@@ -1,5 +1,7 @@
 package io.indy.seni.runtime;
 
+import android.graphics.Canvas;
+import android.graphics.Paint;
 import android.util.Log;
 
 import java.util.List;
@@ -11,20 +13,52 @@ import io.indy.seni.lang.Interpreter;
 import io.indy.seni.lang.LangException;
 import io.indy.seni.lang.Lexer;
 import io.indy.seni.lang.Node;
+import io.indy.seni.lang.NodeFloat;
 import io.indy.seni.lang.Parser;
 import io.indy.seni.lang.Token;
 import io.indy.seni.runtime.bind.Platform;
 
-public class Runtime {
+public class SeniRuntime {
 
-    private static final String TAG = "Runtime";
+    private static final String TAG = "SeniRuntime";
     private static final boolean D = true;
 
     static void ifd(final String message) {
         if (AppConfig.DEBUG && D) Log.d(TAG, message);
     }
 
-    public Runtime() {
+
+    public static void render(String script, Canvas canvas, int width, int height) {
+
+        SeniContext sc = new SeniContext(canvas);
+        Paint paint = sc.getPaint();
+        paint.setARGB(250, 250, 0, 0);
+
+        ifd("width " + width);
+        ifd("height " + height);
+
+        SeniRuntime rt = new SeniRuntime();
+
+        Env env = new Env();
+        env = rt.bindCoreFunctions(env);
+        env = rt.bindPlatformFunctions(env, sc);
+
+        env = env.addBinding("canvas-width", new NodeFloat((float)width));
+        env = env.addBinding("canvas-height", new NodeFloat((float)height));
+
+        List<Node> ast = rt.asAst(script);
+
+        try {
+            for (Node node : ast) {
+                Interpreter.eval(env, node);
+            }
+        } catch(LangException e) {
+            ifd("exception: " + e);
+            e.printStackTrace();
+        }
+    }
+
+    public SeniRuntime() {
 
     }
 

@@ -2,12 +2,30 @@
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:orientation="horizontal"
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content">
+              android:focusable="false"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
 
     <io.indy.seni.view.SeniView
+            android:focusable="false"
             android:id="@+id/seniView"
             android:layout_margin="8dp"
             android:layout_width="96dp"
             android:layout_height="96dp"/>
+
+    <TextView
+            android:focusable="false"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/hello_world"/>
+
+    <TextView xmlns:android="http://schemas.android.com/apk/res/android"
+              android:id="@+id/bar"
+              android:focusable="false"
+              android:layout_width="wrap_content"
+              android:layout_height="32dp"
+              android:textAppearance="?android:attr/textAppearanceListItemSmall"
+              android:gravity="center_vertical"
+            />
+
 </LinearLayout>

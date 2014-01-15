@@ -3,6 +3,7 @@ package io.indy.seni;
 import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.GridView;
 import android.widget.ListView;
 
 import io.indy.seni.adapter.ScriptAdapter;
@@ -23,14 +24,13 @@ public class TempListActivity extends Activity {
         setContentView(R.layout.activity_templist);
 
 
-        /*
         GridView gridView = (GridView)findViewById(R.id.grid);
         gridView.setAdapter(new ScriptAdapter(this));
-        gridView.setOnItemClickListener(this);
-        */
-
+//        gridView.setOnItemClickListener(this);
+/*
         ListView listView = (ListView)findViewById(R.id.listy);
         listView.setAdapter(new ScriptAdapter(this));
+        */
     }
 
 

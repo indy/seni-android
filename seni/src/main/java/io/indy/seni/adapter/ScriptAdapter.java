@@ -73,10 +73,10 @@ public class ScriptAdapter extends BaseAdapter {
         View view;
         TextView text;
 
-        boolean usingCellView = false;
+        int numColumns = mContext.getResources().getInteger(R.integer.num_columns);
 
         if (convertView == null) {
-            if(usingCellView) {
+            if(numColumns > 1) {
                 view = mInflater.inflate(R.layout.cell_templist, parent, false);
             } else {
                 view = mInflater.inflate(R.layout.row_templist, parent, false);
@@ -90,7 +90,10 @@ public class ScriptAdapter extends BaseAdapter {
         SeniView seniView = (SeniView) view.findViewById(R.id.seniView);
         seniView.setScript(getScript(position));
 
-        if(!usingCellView) {
+        if(numColumns > 1) {
+            text = (TextView) view.findViewById(R.id.bar);
+            text.setText("shabba " + (CharSequence)getItem(position));
+        } else {
             text = (TextView) view.findViewById(R.id.foo);
             text.setText((CharSequence)getItem(position));
         }

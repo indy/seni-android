@@ -11,8 +11,9 @@ import io.indy.seni.lang.Env;
 import io.indy.seni.lang.Interpreter;
 import io.indy.seni.lang.LangException;
 import io.indy.seni.lang.Node;
-import io.indy.seni.runtime.Runtime;
+import io.indy.seni.lang.NodeFloat;
 import io.indy.seni.runtime.SeniContext;
+import io.indy.seni.runtime.SeniRuntime;
 
 
 public class Art1352 {
@@ -22,6 +23,43 @@ public class Art1352 {
 
     static void ifd(final String message) {
         if (AppConfig.DEBUG && D) Log.d(TAG, message);
+    }
+
+    public static String script() {
+        String code3 = ""
+                + "(define squ "
+                + "  (lambda (angle colour box-radius)"
+                + "    (begin (set-colour colour)"
+                + "        (scope (rotate angle)"
+                + "               (translate 0.0 (/ canvas-height 5))"
+                + "               (rect (* -1.0 box-radius) (* -1.0 box-radius) box-radius box-radius))"
+                + "      (let ((br2 box-radius)"
+                + "            (ang 20.0)"
+                + "            (to-center-factor (/ (/ canvas-height 5) 13.3333))"
+                + "            (shrink-factor 0.9)"
+                + "            (ang-delta 8.0))"
+                + "        (do-times i 10"
+                + "                  (set! br2 (* br2 shrink-factor))"
+                + "                  (set! ang (+ ang ang-delta))"
+                + "                  (scope (rotate (- angle ang))"
+                + "                         (translate 0.0 (- (/ canvas-height 5) (* (as-float i) to-center-factor)))"
+                + "                         (rect (* -1.0 br2) (* -1.0 br2) br2 br2))"
+                + "                  (scope (rotate (+ angle ang))"
+                + "                         (translate 0.0 (- (/ canvas-height 5) (* (as-float i) to-center-factor)))"
+                + "                         (rect (* -1.0 br2) (* -1.0 br2) br2 br2)))))))"
+                + ""
+                + "(let ((primary (colour 0.1 0.6 0.8 0.3))"
+                + "      (triads (triad primary))"
+                + "      (box-radius (/ canvas-width 12.0))"
+                + "      (focal-x (/ canvas-width 2.0))"
+                + "      (focal-y (/ canvas-height 2.0))"
+                + "      (angle 0.0))"
+                + "  (do-times i 3"
+                + "            (scope (translate focal-x focal-y)"
+                + "                   (squ angle (nth triads i) box-radius)"
+                + "                   (set! angle (+ angle (/ 360.0 3.0))))))";
+
+        return code3;
     }
 
     public static void Draw(Canvas canvas, int width, int height) {
@@ -56,9 +94,7 @@ public class Art1352 {
                 + "                         (translate 0.0 (- 200.0 (* (as-float i) to-center-factor)))"
                 + "                         (rect (* -1.0 br2) (* -1.0 br2) br2 br2)))))))"
                 + ""
-                + "(let ((canvas-width 768.0)"
-                + "      (canvas-height 1038.0)"
-                + "      (primary (colour 0.1 0.6 0.8 0.3))"
+                + "(let ((primary (colour 0.1 0.6 0.8 0.3))"
                 + "      (triads (triad primary))"
                 + "      (box-radius (/ canvas-width 12.0))"
                 + "      (focal-x (/ canvas-width 2.0))"
@@ -68,12 +104,16 @@ public class Art1352 {
                 + "            (scope (translate focal-x focal-y)"
                 + "                   (squ angle (nth triads i) box-radius)"
                 + "                   (set! angle (+ angle (/ 360.0 3.0))))))";
-
-        Runtime rt = new Runtime();
+// nexus 4: 768.0, 1038.0
+// nexus 7: 1200.0, 1662.0
+        SeniRuntime rt = new SeniRuntime();
 
         Env env = new Env();
         env = rt.bindCoreFunctions(env);
         env = rt.bindPlatformFunctions(env, sc);
+
+        env = env.addBinding("canvas-width", new NodeFloat((float)width));
+        env = env.addBinding("canvas-height", new NodeFloat((float)height));
 
         List<Node> ast = rt.asAst(code3);
 
@@ -93,7 +133,7 @@ public class Art1352 {
     public static void DrawSketch(Canvas canvas, int width, int height) {
         ifd("Draw");
 
-        Runtime rt = new Runtime();
+        SeniRuntime rt = new SeniRuntime();
 
         String code = "(+ 1 1)";
         List<Node> ast = rt.asAst(code);

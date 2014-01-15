@@ -12,7 +12,6 @@ import io.indy.seni.lang.Interpreter;
 import io.indy.seni.lang.LangException;
 import io.indy.seni.lang.Node;
 import io.indy.seni.lang.NodeList;
-import io.indy.seni.lang.NodeNull;
 import io.indy.seni.runtime.CoreBridge;
 import io.indy.seni.runtime.NodeSeniContext;
 import io.indy.seni.runtime.NodeSpecialSeniContext;

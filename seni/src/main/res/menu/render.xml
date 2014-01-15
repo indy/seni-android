@@ -1,9 +1,15 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="io.indy.seni.RenderActivity" >
-    
+
+    <!-- temporary activity for working with lists of scripts -->
+    <item android:id="@+id/action_templist"
+          android:title="@string/action_templist"
+          android:orderInCategory="10"
+          android:showAsAction="never" />
+
     <item android:id="@+id/action_settings"
-        android:title="@string/action_settings"
-        android:orderInCategory="100"
-        android:showAsAction="never" />
+          android:title="@string/action_settings"
+          android:orderInCategory="100"
+          android:showAsAction="never" />
 </menu>

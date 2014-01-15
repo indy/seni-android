@@ -1,9 +1,11 @@
 package io.indy.seni;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 
 import io.indy.seni.view.SeniView;
@@ -17,6 +19,8 @@ public class RenderActivity extends Activity {
     static void ifd(final String message) {
         if (AppConfig.DEBUG && D) Log.d(TAG, message);
     }
+
+    public static final String SCRIPT_NAME = "script_name";
 
 
     /** A handle to the thread that's actually running the animation. */
@@ -33,6 +37,10 @@ public class RenderActivity extends Activity {
      */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.render, menu);
+
         super.onCreateOptionsMenu(menu);
         return true;
     }
@@ -46,7 +54,18 @@ public class RenderActivity extends Activity {
      */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        return false;
+
+        switch(item.getItemId()) {
+            case R.id.action_settings:
+                ifd("settings clicked");
+                return true;
+            case R.id.action_templist:
+                Intent intent = new Intent(this, TempListActivity.class);
+                startActivity(intent);
+                return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     /**
@@ -66,16 +85,16 @@ public class RenderActivity extends Activity {
         mSeniView = (SeniView) findViewById(R.id.lunar);
         mSeniViewThread = mSeniView.getThread();
 
-        // give the SeniView a handle to the TextView used for messages
-//        mSeniView.setTextView((TextView) findViewById(R.id.text));
-
         if (savedInstanceState == null) {
-            // we were just launched: set up a new game
-//            mSeniViewThread.setState(SeniView.SeniViewThread.STATE_READY);
+            mSeniView.setScript(getIntent().getStringExtra(SCRIPT_NAME));
+
         } else {
             // we are being restored: resume a previous game
             mSeniViewThread.restoreState(savedInstanceState);
         }
+
+
+
     }
 
     /**

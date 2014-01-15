@@ -13,7 +13,7 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
 import io.indy.seni.AppConfig;
-import io.indy.seni.dummy.Art1403;
+import io.indy.seni.runtime.SeniRuntime;
 
 public class SeniView extends SurfaceView implements SurfaceHolder.Callback {
 
@@ -102,13 +102,21 @@ public class SeniView extends SurfaceView implements SurfaceHolder.Callback {
         }
 
         /**
-         * Draws the ship, fuel/speed bars, and background to the provided
-         * Canvas.
+         * Draw on the provided Canvas.
          */
         private void doDraw(Canvas canvas) {
 //            SimpleBenchmark sb = new SimpleBenchmark();
 //            sb.go(canvas);
-            Art1403.Draw(canvas, mCanvasWidth, mCanvasHeight);
+            if(mScript.isEmpty()) {
+                ifd("mScript is empty");
+            } else {
+                SeniRuntime.render(mScript, canvas, mCanvasWidth, mCanvasHeight);
+            }
+            //Art1403 a = new Art1403();
+            //a.draw(canvas, mCanvasWidth, mCanvasHeight);
+
+
+
         }
     }
 
@@ -117,6 +125,9 @@ public class SeniView extends SurfaceView implements SurfaceHolder.Callback {
 
     /** The mThread that actually draws the animation */
     private SeniViewThread mThread;
+
+    /** the seni script that this view renders */
+    private String mScript;
 
     public SeniView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -134,7 +145,14 @@ public class SeniView extends SurfaceView implements SurfaceHolder.Callback {
             }
         });
 
+        mScript = "";
+
         setFocusable(true); // make sure we get key events
+    }
+
+    public void setScript(String script) {
+
+        mScript = script;
     }
 
     /**

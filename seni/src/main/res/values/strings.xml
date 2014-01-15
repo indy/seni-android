@@ -1,8 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">seni</string>
+
     <string name="title_script_detail">Script Detail</string>
     <string name="title_activity_render">RenderActivity</string>
-    <string name="hello_world">Hello world!</string>
+    <string name="title_activity_templist">TempListActivity</string>
+
     <string name="action_settings">Settings</string>
+    <string name="action_templist">Temp List</string>
+
+    <!-- delete these eventually -->
+    <string name="temp_position">position</string>
+    <string name="hello_world">Hello world!</string>
 </resources>

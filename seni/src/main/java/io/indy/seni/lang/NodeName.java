@@ -22,7 +22,15 @@ public class NodeName extends Node {
 
     public NodeName(String value) {
         super();
+        init(value);
+    }
 
+    public NodeName(String value, boolean alterable) {
+        super(alterable);
+        init(value);
+    }
+
+    private void init(String value) {
         mType = Node.Type.NAME;
         mName = value;
     }

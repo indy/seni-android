@@ -22,7 +22,15 @@ public class NodeFloat extends Node {
 
     public NodeFloat(float value) {
         super();
+        init(value);
+    }
 
+    public NodeFloat(float value, boolean alterable) {
+        super(alterable);
+        init(value);
+    }
+    
+    private void init(float value) {
         mType = Node.Type.FLOAT;
         mFloat = value;
     }

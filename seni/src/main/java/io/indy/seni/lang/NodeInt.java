@@ -22,7 +22,15 @@ public class NodeInt extends Node {
 
     public NodeInt(int value) {
         super();
+        init(value);
+    }
 
+    public NodeInt(int value, boolean alterable) {
+        super(alterable);
+        init(value);
+    }
+
+    private void init(int value) {
         mType = Node.Type.INT;
         mInteger = value;
     }

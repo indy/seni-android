@@ -22,7 +22,15 @@ public class NodeBoolean extends Node {
 
     public NodeBoolean(boolean value) {
         super();
+        init(value);
+    }
 
+    public NodeBoolean(boolean value, boolean alterable) {
+        super(alterable);
+        init(value);
+    }
+
+    private void init(boolean value) {
         mType = Node.Type.BOOLEAN;
         mBoolean = value;
     }

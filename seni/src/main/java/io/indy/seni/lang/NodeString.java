@@ -22,7 +22,15 @@ public class NodeString extends Node {
 
     public NodeString(String value) {
         super();
+        init(value);
+    }
 
+    public NodeString(String value, boolean alterable) {
+        super(alterable);
+        init(value);
+    }
+
+    private void init(String value) {
         mType = Node.Type.STRING;
         mString = value;
     }

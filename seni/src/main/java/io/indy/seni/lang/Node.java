@@ -40,7 +40,7 @@ abstract public class Node {
         mAlterable = false;
     }
 
-    public void setAlterable(boolean alterable) {
+    public Node(boolean alterable) {
         mAlterable = alterable;
     }
 

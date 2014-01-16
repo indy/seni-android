@@ -22,7 +22,7 @@ package io.indy.seni.lang;
  */
 abstract public class NodeInternal extends Node {
 
-    public String scribe() throws ScribeException {
+    protected String scribeValue() throws ScribeException {
         throw new ScribeException(this.toString());
     }
 }

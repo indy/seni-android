@@ -38,7 +38,7 @@ public class NodeBoolean extends Node {
         return mBoolean == ((NodeBoolean)n).mBoolean;
     }
 
-    public String scribe() throws ScribeException {
+    protected String scribeValue() throws ScribeException {
         return mBoolean ? "true" : "false";
     }
 

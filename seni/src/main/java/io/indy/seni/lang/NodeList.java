@@ -71,7 +71,7 @@ public class NodeList extends Node {
         return true;
     }
 
-    public String scribe() throws ScribeException {
+    protected String scribeValue() throws ScribeException {
         String res = "(";
         for(Node n : mChildren) {
             res += n.scribe() + " ";

@@ -151,7 +151,15 @@ abstract public class Node {
     }
 
     abstract public boolean eq(Node n);
-    abstract public String scribe() throws ScribeException;
+    abstract protected String scribeValue() throws ScribeException;
+
+    public String scribe() throws ScribeException {
+        if(isAlterable()) {
+            return "[" + scribeValue() + "]";
+        } else {
+            return scribeValue();
+        }
+    }
 
     public String toString() {
         return "" + getType();

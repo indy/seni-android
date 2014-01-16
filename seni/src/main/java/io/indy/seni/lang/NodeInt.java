@@ -38,7 +38,7 @@ public class NodeInt extends Node {
         return mInteger == ((NodeInt)n).mInteger;
     }
 
-    public String scribe() throws ScribeException {
+    protected String scribeValue() throws ScribeException {
         return Integer.toString(mInteger);
     }
 

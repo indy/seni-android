@@ -21,7 +21,7 @@ import java.util.List;
 import org.junit.Test;
 import static org.fest.assertions.api.Assertions.assertThat;
 
-public class NodeNameTest {
+public class NodeNameTest extends EvalTestBase {
 
     @Test
     public void testNodeName() {
@@ -43,13 +43,8 @@ public class NodeNameTest {
 
     @Test
     public void testScribe() {
-        NodeName n = new NodeName("cons");
-        try {
-            assertThat(n.scribe()).isEqualTo("cons");
-        } catch (Node.ScribeException e) {
-            assertThat(false).isEqualTo(true);
-        }
-
+        assertNodeScribe(new NodeName("cons"), "cons");
+        assertNodeScribe(new NodeName("[cons]"), "[cons]");
     }
 
     @Test

@@ -24,6 +24,14 @@ import static org.fest.assertions.api.Assertions.assertThat;
 
 abstract public class EvalTestBase {
 
+    protected void assertNodeScribe(Node n, String expected) {
+        try {
+            assertThat(n.scribe()).isEqualTo(expected);
+        } catch (Node.ScribeException e) {
+            assertThat(false).isEqualTo(true);
+        }
+    }
+
     protected void assertBinding(String code, String name, String expected) {
         Node expectedAST = asAST(expected).get(0);
 

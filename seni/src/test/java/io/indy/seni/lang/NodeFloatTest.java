@@ -21,7 +21,7 @@ import java.util.List;
 import org.junit.Test;
 import static org.fest.assertions.api.Assertions.assertThat;
 
-public class NodeFloatTest {
+public class NodeFloatTest extends EvalTestBase {
 
     @Test
     public void testNodeFloat() {
@@ -54,13 +54,8 @@ public class NodeFloatTest {
 
     @Test
     public void testScribe() {
-        NodeFloat n = new NodeFloat(12.34f);
-        try {
-            assertThat(n.scribe()).isEqualTo("12.34");
-        } catch (Node.ScribeException e) {
-            assertThat(false).isEqualTo(true);
-        }
-
+        assertNodeScribe(new NodeFloat(12.34f), "12.34");
+        assertNodeScribe(new NodeFloat(12.34f, true), "[12.34]");
     }
 
     @Test

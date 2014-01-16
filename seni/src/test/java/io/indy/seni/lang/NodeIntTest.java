@@ -20,7 +20,7 @@ import java.util.List;
 import org.junit.Test;
 import static org.fest.assertions.api.Assertions.assertThat;
 
-public class NodeIntTest extends NodeTestBase {
+public class NodeIntTest extends EvalTestBase {
 
     @Test
     public void testNodeInt() {
@@ -44,6 +44,9 @@ public class NodeIntTest extends NodeTestBase {
     public void testScribe() {
         assertNodeScribe(new NodeInt(42), "42");
         assertNodeScribe(new NodeInt(42, true), "[42]");
+
+        assertScribe("42");
+        assertScribe("[42]");
     }
 
     @Test

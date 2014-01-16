@@ -17,11 +17,10 @@
 package io.indy.seni.lang;
 
 import java.util.List;
-
 import org.junit.Test;
 import static org.fest.assertions.api.Assertions.assertThat;
 
-public class NodeIntTest {
+public class NodeIntTest extends NodeTestBase {
 
     @Test
     public void testNodeInt() {
@@ -43,13 +42,8 @@ public class NodeIntTest {
 
     @Test
     public void testScribe() {
-        NodeInt n = new NodeInt(42);
-        try {
-            assertThat(n.scribe()).isEqualTo("42");
-        } catch (Node.ScribeException e) {
-            assertThat(false).isEqualTo(true);
-        }
-
+        assertNodeScribe(new NodeInt(42), "42");
+        assertNodeScribe(new NodeInt(42, true), "[42]");
     }
 
     @Test

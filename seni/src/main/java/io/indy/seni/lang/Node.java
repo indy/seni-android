@@ -34,7 +34,9 @@ abstract public class Node {
     }
 
     protected Type mType;
+
     protected boolean mAlterable;
+    protected String mGenSym;
 
     public Node() {
         mAlterable = false;
@@ -46,6 +48,14 @@ abstract public class Node {
 
     public boolean isAlterable() {
         return mAlterable;
+    }
+
+    public void setGenSym(String genSym) {
+        mGenSym = genSym;
+    }
+
+    public String getGenSym() {
+        return mGenSym;
     }
 
     public static NodeBoolean asBoolean(Node n) throws LangException {

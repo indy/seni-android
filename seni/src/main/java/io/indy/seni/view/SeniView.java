@@ -110,7 +110,8 @@ public class SeniView extends SurfaceView implements SurfaceHolder.Callback {
             if(mScript.isEmpty()) {
                 ifd("mScript is empty");
             } else {
-                SeniRuntime.render(mScript, canvas, mCanvasWidth, mCanvasHeight);
+                // SeniRuntime.render(mScript, canvas, mCanvasWidth, mCanvasHeight);
+                SeniRuntime.render(canvas, mScript);
             }
             //Art1403 a = new Art1403();
             //a.draw(canvas, mCanvasWidth, mCanvasHeight);

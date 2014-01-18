@@ -42,14 +42,18 @@ public class AstHolder {
     // list of alterable nodes and their values for this instance
     private Genotype mGenotype;
 
-    public AstHolder(String code) {
-        mAst = buildAst(code);
+    public AstHolder(String script) {
+        mAst = buildAst(script);
         // traverse the mAst for alterable nodes, add them into mAlterable
     }
 
     public AstHolder(AstHolder astHolder) {
         mAst = astHolder.mAst;
         // create a copy of mAlterable
+    }
+
+    public List<Node> getAst() {
+        return mAst;
     }
 
     public Genotype getGenotype() {

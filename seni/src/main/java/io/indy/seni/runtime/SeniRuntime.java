@@ -8,7 +8,9 @@ import java.util.List;
 import java.util.Queue;
 
 import io.indy.seni.AppConfig;
+import io.indy.seni.lang.AstHolder;
 import io.indy.seni.lang.Env;
+import io.indy.seni.lang.Genotype;
 import io.indy.seni.lang.Interpreter;
 import io.indy.seni.lang.LangException;
 import io.indy.seni.lang.Lexer;
@@ -28,25 +30,35 @@ public class SeniRuntime {
     }
 
 
-    public static void render(String script, Canvas canvas, int width, int height) {
-
+    public static void render(Canvas canvas, String script) {
         SeniContext sc = new SeniContext(canvas);
         Paint paint = sc.getPaint();
         paint.setARGB(250, 250, 0, 0);
 
-        ifd("width " + width);
-        ifd("height " + height);
+        //ifd("width " + width);
+        //ifd("canvas width: " + canvas.getWidth());
+        //ifd("height " + height);
+        //ifd("canvas height: " + canvas.getHeight());
 
         SeniRuntime rt = new SeniRuntime();
 
         Env env = new Env();
+        // bind essential functions/values to the environment
+        //
         env = rt.bindCoreFunctions(env);
         env = rt.bindPlatformFunctions(env, sc);
+        env = env.addBinding("canvas-width", new NodeFloat((float)canvas.getWidth()));
+        env = env.addBinding("canvas-height", new NodeFloat((float)canvas.getHeight()));
 
-        env = env.addBinding("canvas-width", new NodeFloat((float)width));
-        env = env.addBinding("canvas-height", new NodeFloat((float)height));
+        // generate ast from script
+        //
+        AstHolder astHolder = new AstHolder(script);
+        List<Node> ast = astHolder.getAst();
 
-        List<Node> ast = rt.asAst(script);
+        // bind alterable node values
+        //
+        Genotype genotype = astHolder.getGenotype();
+        env = genotype.bind(env);
 
         try {
             for (Node node : ast) {
@@ -62,22 +74,6 @@ public class SeniRuntime {
 
     }
 
-
-    public List<Node> asAst(String code) {
-
-        Queue<Token> tokens;
-
-        try {
-            tokens = Lexer.tokenise(code);
-            return Parser.parse(tokens);
-        } catch (LangException e) {
-            ifd("exception: asAST " + e);
-            e.printStackTrace();
-        }
-
-        return null;
-    }
-
     public Env bindCoreFunctions(Env env) {
         return Env.bindCoreFuns(env);
     }
@@ -91,26 +87,5 @@ public class SeniRuntime {
         return Platform.bind(env, sc);
     }
 
-    // runs single s-expressions
-    public Node run(String code) {
-
-        try {
-            List<Node> ast = asAst(code);
-            Env e = Env.bindCoreFuns(new Env());
-
-            Node res = null;
-
-            for (Node node : ast) {
-                res = Interpreter.eval(e, node);
-            }
-
-            return res;
-
-        } catch (LangException exception) {
-//            assertThat(true).overridingErrorMessage(exception.toString()).isFalse();
-        }
-
-        return null;
-    }
 
 }

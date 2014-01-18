@@ -25,32 +25,31 @@ public class NodeStringTest extends EvalTestBase {
 
     @Test
     public void testNodeString() {
-        NodeString n = new NodeString("cons");
+        NodeString n = new NodeString("hello world");
 
         assertThat(n.getType()).isEqualTo(Node.Type.STRING);
-        assertThat(n.getString()).isEqualTo("cons");
+        assertThat(n.getString()).isEqualTo("hello world");
     }
 
     @Test
     public void testEq() {
-        NodeString n = new NodeString("cons");
+        NodeString n = new NodeString("hello world");
 
         assertThat(n.eq(n)).isTrue();
-        assertThat(n.eq(new NodeString("cons"))).isTrue();
+        assertThat(n.eq(new NodeString("hello world"))).isTrue();
 
         assertThat(n.eq(new NodeString("car"))).isFalse();
     }
 
     @Test
     public void testScribe() {
-        assertNodeScribe(new NodeString("cons"), "cons");
-        assertNodeScribe(new NodeString("[cons]"), "[cons]");
+        assertNodeScribe(new NodeString("hello world"), "\"hello world\"");
     }
 
     @Test
     public void testToString() {
-        NodeString n = new NodeString("cons");
-        assertThat(n.toString()).isEqualTo("STRING: cons");
+        NodeString n = new NodeString("hello world");
+        assertThat(n.toString()).isEqualTo("STRING: \"hello world\"");
     }
 
 }

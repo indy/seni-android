@@ -47,7 +47,7 @@ public class NodeString extends Node {
     }
 
     protected String scribeValue() throws ScribeException {
-        return mString;
+        return "\"" + mString + "\"";
     }
 
     public String toString() {

@@ -29,7 +29,9 @@ public class AstHolderTest {
     public void parseAlterableInt() {
 
         AstHolder astHolder = new AstHolder("(+ [4] [5])");
-        List<Node> alterable = astHolder.getAlterable();
+        Genotype genotype = astHolder.getGenotype();
+
+        List<Node> alterable = genotype.getAlterable();
 
         assertThat(alterable.size()).isEqualTo(2);
         Node n;
@@ -57,7 +59,10 @@ public class AstHolderTest {
     public void parseNestedAlterableExpression() {
 
         AstHolder astHolder = new AstHolder("([rotate] (- [3.14] (+ [4] 5)))");
-        List<Node> alterable = astHolder.getAlterable();
+        Genotype genotype = astHolder.getGenotype();
+
+        List<Node> alterable = genotype.getAlterable();
+
 
         assertThat(alterable.size()).isEqualTo(3);
         Node n;
@@ -88,7 +93,9 @@ public class AstHolderTest {
         AstHolder astHolder = new AstHolder("(+ [4] [5])");
         Env env = new Env();
 
-        Env res = astHolder.addAlterableBindings(env);
+        Genotype genotype = astHolder.getGenotype();
+        Env res = genotype.bind(env);
+
         Node n;
 
         try {

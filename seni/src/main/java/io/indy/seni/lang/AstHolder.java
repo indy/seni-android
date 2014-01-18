@@ -38,7 +38,9 @@ import java.util.Queue;
 public class AstHolder {
 
     private List<Node> mAst;       // immutable and shared by multiple instances of astHolder
-    private List<Node> mAlterable; // list of alterable nodes and their values for this instance
+
+    // list of alterable nodes and their values for this instance
+    private Genotype mGenotype;
 
     public AstHolder(String code) {
         mAst = buildAst(code);
@@ -50,19 +52,8 @@ public class AstHolder {
         // create a copy of mAlterable
     }
 
-    public List<Node> getAlterable() {
-        return mAlterable;
-    }
-
-    // todo: rename alterable to something more genetically accurate
-    public Env addAlterableBindings(Env env) {
-        Env e = env.newScope();
-        
-        for(Node n : mAlterable) {
-            e.addBinding(n.getGenSym(), n);
-        }
-
-        return e;
+    public Genotype getGenotype() {
+        return mGenotype;
     }
 
     public static class UglyCopyException extends Exception {
@@ -110,6 +101,10 @@ public class AstHolder {
         throw new UglyCopyException(node.toString());
     }
 
+    /*
+      Assign gensym values to the alterable 
+      nodes and collect them in a genotype
+     */
     private void addGenSyms(Node node, SymbolGenerator sg) {
 
         try {
@@ -118,7 +113,7 @@ public class AstHolder {
                 node.setGenSym(genSym);
                 Node nodeCopy = uglyCopy(node);
                 nodeCopy.setGenSym(genSym);
-                mAlterable.add(nodeCopy);
+                mGenotype.add(nodeCopy);
             }
         } catch(UglyCopyException e) {
             e.printStackTrace();
@@ -144,7 +139,7 @@ public class AstHolder {
 
             // gensym alterable nodes in ast
             SymbolGenerator sg = new SymbolGenerator();
-            mAlterable = new ArrayList<Node>();
+            mGenotype = new Genotype();
             for(Node node : ast) {
                 addGenSyms(node, sg);
             }

@@ -65,6 +65,10 @@ abstract public class Node {
         return (NodeBoolean) n;
     }
 
+    public static boolean asBooleanValue(Node n) throws LangException {
+        return asBoolean(n).getBoolean();
+    }
+
     public static NodeInt asInt(Node n) throws LangException {
         if(n.getType() != Type.INT) {
             throw new LangException("cannot cast to INT from " + n);
@@ -93,12 +97,22 @@ abstract public class Node {
         if (n.getType() != Node.Type.NAME) {
             throw new LangException("cannot cast to NAME from " + n);
         }
-
         return (NodeName) n;
     }
 
     public static String asNameValue(Node n) throws LangException {
         return asName(n).getName();
+    }
+
+    public static NodeString asString(Node n) throws LangException {
+        if (n.getType() != Node.Type.STRING) {
+            throw new LangException("cannot cast to STRING from " + n);
+        }
+        return (NodeString) n;
+    }
+
+    public static String asStringValue(Node n) throws LangException {
+        return asString(n).getString();
     }
 
     public static NodeList asList(Node n) throws LangException {

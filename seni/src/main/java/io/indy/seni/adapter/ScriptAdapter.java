@@ -15,6 +15,9 @@ import io.indy.seni.RenderActivity;
 import io.indy.seni.dummy.Art1352;
 import io.indy.seni.dummy.Art1402;
 import io.indy.seni.dummy.Art1403;
+import io.indy.seni.dummy.Art1403b;
+import io.indy.seni.lang.AstHolder;
+import io.indy.seni.lang.Genotype;
 import io.indy.seni.view.SeniView;
 
 public class ScriptAdapter extends BaseAdapter {
@@ -33,14 +36,25 @@ public class ScriptAdapter extends BaseAdapter {
             "etiam", "vel", "erat", "placerat", "ante",
             "porttitor", "sodales", "pellentesque", "augue", "purus"};
 
+
+
     // private static final String[] items={"lorem", "ipsum"};
 
     private LayoutInflater mInflater;
     private Context mContext;
 
+    private AstHolder mAstHolder;
+    private Genotype[] mGenotypes;
+
     public ScriptAdapter(Context context) {
         mContext = context;
         mInflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+        mAstHolder = new AstHolder(Art1403b.script());
+        mGenotypes = new Genotype[3];
+        mGenotypes[0] = mAstHolder.getGenotype().mutate();
+        mGenotypes[1] = mAstHolder.getGenotype().mutate();
+        mGenotypes[2] = mAstHolder.getGenotype().mutate();
     }
 
     @Override
@@ -89,6 +103,8 @@ public class ScriptAdapter extends BaseAdapter {
 
         SeniView seniView = (SeniView) view.findViewById(R.id.seniView);
         seniView.setScript(getScript(position));
+        seniView.setAstHolder(mAstHolder);
+        seniView.setGenotype(mGenotypes[position % 3]);
 
         if(numColumns > 1) {
             text = (TextView) view.findViewById(R.id.bar);
@@ -110,7 +126,7 @@ public class ScriptAdapter extends BaseAdapter {
 
             int position = (int)v.getTag(R.string.temp_position);
             Intent intent = new Intent(mContext, RenderActivity.class);
-            intent.putExtra(RenderActivity.SCRIPT_NAME, getScript(position));
+            intent.putExtra(RenderActivity.SCRIPT_NAME, Art1403b.script());
             mContext.startActivity(intent);
         }
     };

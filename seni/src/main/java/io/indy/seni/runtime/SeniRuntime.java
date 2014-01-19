@@ -29,8 +29,12 @@ public class SeniRuntime {
         if (AppConfig.DEBUG && D) Log.d(TAG, message);
     }
 
-
     public static void render(Canvas canvas, String script) {
+        AstHolder astHolder = new AstHolder(script);
+        render(canvas, astHolder, astHolder.getGenotype());
+    }
+
+    public static void render(Canvas canvas, AstHolder astHolder, Genotype genotype) {
         SeniContext sc = new SeniContext(canvas);
         Paint paint = sc.getPaint();
         paint.setARGB(250, 250, 0, 0);
@@ -52,12 +56,10 @@ public class SeniRuntime {
 
         // generate ast from script
         //
-        AstHolder astHolder = new AstHolder(script);
         List<Node> ast = astHolder.getAst();
 
         // bind alterable node values
         //
-        Genotype genotype = astHolder.getGenotype();
         env = genotype.bind(env);
 
         try {

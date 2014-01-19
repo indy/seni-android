@@ -8,6 +8,8 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
+import io.indy.seni.lang.AstHolder;
+import io.indy.seni.lang.Genotype;
 import io.indy.seni.view.SeniView;
 
 public class RenderActivity extends Activity {
@@ -86,7 +88,12 @@ public class RenderActivity extends Activity {
         mSeniViewThread = mSeniView.getThread();
 
         if (savedInstanceState == null) {
-            mSeniView.setScript(getIntent().getStringExtra(SCRIPT_NAME));
+            String script = getIntent().getStringExtra(SCRIPT_NAME);
+            AstHolder astHolder = new AstHolder(script);
+            Genotype genotype = astHolder.getGenotype();
+            mSeniView.setAstHolder(astHolder);
+            mSeniView.setGenotype(genotype);
+            mSeniView.setScript(script);
 
         } else {
             // we are being restored: resume a previous game

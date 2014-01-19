@@ -13,6 +13,8 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
 import io.indy.seni.AppConfig;
+import io.indy.seni.lang.AstHolder;
+import io.indy.seni.lang.Genotype;
 import io.indy.seni.runtime.SeniRuntime;
 
 public class SeniView extends SurfaceView implements SurfaceHolder.Callback {
@@ -111,7 +113,8 @@ public class SeniView extends SurfaceView implements SurfaceHolder.Callback {
                 ifd("mScript is empty");
             } else {
                 // SeniRuntime.render(mScript, canvas, mCanvasWidth, mCanvasHeight);
-                SeniRuntime.render(canvas, mScript);
+                //SeniRuntime.render(canvas, mScript);
+                SeniRuntime.render(canvas, mAstHolder, mGenotype);
             }
             //Art1403 a = new Art1403();
             //a.draw(canvas, mCanvasWidth, mCanvasHeight);
@@ -129,6 +132,8 @@ public class SeniView extends SurfaceView implements SurfaceHolder.Callback {
 
     /** the seni script that this view renders */
     private String mScript;
+    private AstHolder mAstHolder;
+    private Genotype mGenotype;
 
     public SeniView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -152,8 +157,13 @@ public class SeniView extends SurfaceView implements SurfaceHolder.Callback {
     }
 
     public void setScript(String script) {
-
         mScript = script;
+    }
+    public void setAstHolder(AstHolder astHolder) {
+        mAstHolder = astHolder;
+    }
+    public void setGenotype(Genotype genotype) {
+        mGenotype = genotype;
     }
 
     /**

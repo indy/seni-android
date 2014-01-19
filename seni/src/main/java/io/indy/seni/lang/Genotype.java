@@ -47,7 +47,16 @@ public class Genotype {
     }
 
     public Genotype mutate() {
-        return this;
+        // temp
+        Genotype genotype = new Genotype();
+
+        for(Node n : mAlterable) {
+            NodeFloat nf = new NodeFloat((float)Math.random());
+            nf.setGenSym(n.getGenSym());
+            genotype.add(nf);
+        }
+
+        return genotype;
     }
 
     public static Genotype crossover(Genotype a, Genotype b) {

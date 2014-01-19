@@ -24,10 +24,6 @@ public class RenderActivity extends Activity {
 
     public static final String SCRIPT_NAME = "script_name";
 
-
-    /** A handle to the thread that's actually running the animation. */
-    private SeniView.SeniViewThread mSeniViewThread;
-
     /** A handle to the View in which the game is running. */
     private SeniView mSeniView;
 
@@ -85,7 +81,6 @@ public class RenderActivity extends Activity {
 
         // get handles to the SeniView from XML, and its SeniViewThread
         mSeniView = (SeniView) findViewById(R.id.lunar);
-        mSeniViewThread = mSeniView.getThread();
 
         if (savedInstanceState == null) {
             String script = getIntent().getStringExtra(SCRIPT_NAME);
@@ -93,11 +88,10 @@ public class RenderActivity extends Activity {
             Genotype genotype = astHolder.getGenotype();
             mSeniView.setAstHolder(astHolder);
             mSeniView.setGenotype(genotype);
-            mSeniView.setScript(script);
 
         } else {
             // we are being restored: resume a previous game
-            mSeniViewThread.restoreState(savedInstanceState);
+            //mSeniViewThread.restoreState(savedInstanceState);
         }
 
 
@@ -109,7 +103,6 @@ public class RenderActivity extends Activity {
      */
     @Override
     protected void onPause() {
- //       mSeniView.getThread().pause(); // pause game when Activity pauses
         super.onPause();
     }
 

@@ -18,6 +18,7 @@ import io.indy.seni.dummy.Art1403;
 import io.indy.seni.dummy.Art1403b;
 import io.indy.seni.lang.AstHolder;
 import io.indy.seni.lang.Genotype;
+import io.indy.seni.lang.Node;
 import io.indy.seni.view.SeniView;
 
 public class ScriptAdapter extends BaseAdapter {
@@ -45,16 +46,18 @@ public class ScriptAdapter extends BaseAdapter {
 
     private AstHolder mAstHolder;
     private Genotype[] mGenotypes;
+    private int mNumFucks;
 
     public ScriptAdapter(Context context) {
         mContext = context;
         mInflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         mAstHolder = new AstHolder(Art1403b.script());
-        mGenotypes = new Genotype[3];
-        mGenotypes[0] = mAstHolder.getGenotype().mutate();
-        mGenotypes[1] = mAstHolder.getGenotype().mutate();
-        mGenotypes[2] = mAstHolder.getGenotype().mutate();
+        mNumFucks = 32;
+        mGenotypes = new Genotype[mNumFucks];
+        for(int i=0;i<mNumFucks;i++) {
+            mGenotypes[i] = mAstHolder.getGenotype().mutate();
+        }
     }
 
     @Override
@@ -102,9 +105,8 @@ public class ScriptAdapter extends BaseAdapter {
         view.setTag(R.string.temp_position, position);
 
         SeniView seniView = (SeniView) view.findViewById(R.id.seniView);
-        seniView.setScript(getScript(position));
         seniView.setAstHolder(mAstHolder);
-        seniView.setGenotype(mGenotypes[position % 3]);
+        seniView.setGenotype(mGenotypes[position % mNumFucks]);
 
         if(numColumns > 1) {
             text = (TextView) view.findViewById(R.id.bar);
@@ -126,7 +128,18 @@ public class ScriptAdapter extends BaseAdapter {
 
             int position = (int)v.getTag(R.string.temp_position);
             Intent intent = new Intent(mContext, RenderActivity.class);
-            intent.putExtra(RenderActivity.SCRIPT_NAME, Art1403b.script());
+
+            Genotype genotype = mGenotypes[position % mNumFucks];
+            String script = "";
+
+            try {
+                script = mAstHolder.scribe(genotype);
+            } catch(Node.ScribeException e) {
+                e.printStackTrace();
+            }
+
+            intent.putExtra(RenderActivity.SCRIPT_NAME, script);
+
             mContext.startActivity(intent);
         }
     };

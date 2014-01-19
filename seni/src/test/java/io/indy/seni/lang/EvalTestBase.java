@@ -85,21 +85,12 @@ abstract public class EvalTestBase {
     }
 
     protected void assertScribe(AstHolder astHolder, Genotype genotype, String expected) {
-        Env env = genotype.bind(new Env());
-        List<Node> astList = astHolder.getAst();
-
-        String res = "";
-        for(Node ast : astList) {
-            try {
-                res += ast.scribe(env);
-                //assertThat(res).isEqualTo(expected);
-            } catch (Node.ScribeException e) {
-                e.printStackTrace();
-                assertThat(true).isEqualTo(false);
-            }
+        try {
+            assertThat(astHolder.scribe(genotype)).isEqualTo(expected);
+        } catch (Node.ScribeException e) {
+            e.printStackTrace();
+            assertThat(true).isEqualTo(false);
         }
-
-        assertThat(res).isEqualTo(expected);
     }
 
     protected void appendAlterable(Genotype genotype, Genotype derived, Node node) {

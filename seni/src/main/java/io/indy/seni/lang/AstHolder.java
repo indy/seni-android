@@ -59,6 +59,22 @@ public class AstHolder {
         // create a copy of mAlterable
     }
 
+    // scribe all of the nodes in mAst
+    public String scribe() throws Node.ScribeException {
+        return scribe(mGenotype);
+    }
+
+    // scribe all of the nodes in mAst
+    public String scribe(Genotype genotype) throws Node.ScribeException {
+        Env env = genotype.bind(new Env());
+
+        String res = "";
+        for(Node ast : mAst) {
+            res += ast.scribe(env);
+        }
+        return res;
+    }
+
     public List<Node> getAst() {
         return mAst;
     }

@@ -42,7 +42,14 @@ public class AstHolder {
     // list of alterable nodes and their values for this instance
     private Genotype mGenotype;
 
+    private int mGenSymStart; // the starting int for SymbolGenerator
+
     public AstHolder(String script) {
+        this(script, 42);
+    }
+
+    public AstHolder(String script, int genSymStart) {
+        mGenSymStart = genSymStart;
         mAst = buildAst(script);
         // traverse the mAst for alterable nodes, add them into mAlterable
     }
@@ -77,19 +84,19 @@ public class AstHolder {
             Node.Type type = node.getType();
 
             if(type == Node.Type.BOOLEAN) {
-                return new NodeBoolean(Node.asBooleanValue(node), true);
+                return new NodeBoolean(Node.asBooleanValue(node));
             }
             if(type == Node.Type.INT) {
-                return new NodeInt(Node.asIntValue(node), true);
+                return new NodeInt(Node.asIntValue(node));
             }
             if(type == Node.Type.FLOAT) {
-                return new NodeFloat(Node.asFloatValue(node), true);
+                return new NodeFloat(Node.asFloatValue(node));
             }
             if(type == Node.Type.NAME) {
-                return new NodeName(Node.asNameValue(node), true);
+                return new NodeName(Node.asNameValue(node));
             }
             if(type == Node.Type.STRING) {
-                return new NodeString(Node.asStringValue(node), true);
+                return new NodeString(Node.asStringValue(node));
             }
             if(type == Node.Type.LIST) {
                 NodeList nl = new NodeList(true);
@@ -142,7 +149,7 @@ public class AstHolder {
             List<Node> ast = Parser.parse(tokens);
 
             // gensym alterable nodes in ast
-            SymbolGenerator sg = new SymbolGenerator();
+            SymbolGenerator sg = new SymbolGenerator(mGenSymStart);
             mGenotype = new Genotype();
             for(Node node : ast) {
                 addGenSyms(node, sg);

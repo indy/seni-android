@@ -80,16 +80,22 @@ public class NodeList extends Node {
     }
 
     protected String scribeValue() throws ScribeException {
+        throw new ScribeException("WHO IS CALLING NodeList:scribeValue ??? " + this.toString());
+    }
+
+    public String scribe(Env env) throws ScribeException {
+
         String res = "(";
         for(Node n : mChildren) {
-            res += n.scribe() + " ";
+            res += n.scribe(env) + " ";
         }
         return res.substring(0, res.length() - 1) + ")";
     }
 
     public String toString() {
         try {
-            return "" + getType() + ": " + scribe();
+            String value = scribe(null);
+            return "" + getType() + ": " + value;
         } catch (ScribeException e) {
             e.printStackTrace();
         }

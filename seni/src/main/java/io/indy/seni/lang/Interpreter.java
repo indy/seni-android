@@ -40,15 +40,15 @@ public class Interpreter {
         Node.Type type = expr.getType();
 
         if(type == Node.Type.INT) {
-            return expr;
+            return expr.isAlterable() ? env.lookup(expr.getGenSym()) : expr;
         }
 
         if(type == Node.Type.FLOAT) {
-            return expr;
+            return expr.isAlterable() ? env.lookup(expr.getGenSym()) : expr;
         }
 
         if(type == Node.Type.BOOLEAN) {
-            return expr;
+            return expr.isAlterable() ? env.lookup(expr.getGenSym()) : expr;
         }
 
         if(type == Node.Type.COLOUR) {
@@ -56,7 +56,7 @@ public class Interpreter {
         }
 
         if(type == Node.Type.STRING) {
-            return expr;
+            return expr.isAlterable() ? env.lookup(expr.getGenSym()) : expr;
         }
 
         if(type == Node.Type.NULL) {
@@ -64,7 +64,13 @@ public class Interpreter {
         }
 
         if(type == Node.Type.NAME) {
-            return env.lookup(((NodeName)expr).getName());
+            String name;
+            if(expr.isAlterable()) {
+                name = ((NodeName)(env.lookup(expr.getGenSym()))).getName();
+            } else {
+                name = ((NodeName)expr).getName();
+            }
+            return env.lookup(name);
         }
 
         if(type == Node.Type.LIST) {

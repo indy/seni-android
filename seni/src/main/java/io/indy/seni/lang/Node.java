@@ -177,9 +177,19 @@ abstract public class Node {
     abstract public boolean eq(Node n);
     abstract protected String scribeValue() throws ScribeException;
 
-    public String scribe() throws ScribeException {
+    public String scribe(Env env) throws ScribeException {
         if(isAlterable()) {
-            return "[" + scribeValue() + "]";
+
+            Node n = this;
+            try {
+                if(env != null && env.hasBinding(mGenSym)) {
+                    n = env.lookup(mGenSym);
+                }
+            } catch (LangException e) {
+                throw new ScribeException("LangException->ScribeException " + e);
+            }
+
+            return "[" + n.scribeValue() + "]";
         } else {
             return scribeValue();
         }

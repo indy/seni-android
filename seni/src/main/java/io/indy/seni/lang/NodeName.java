@@ -52,7 +52,13 @@ public class NodeName extends Node {
 
     public String toString() {
         try {
-            return "" + getType() + ": " + scribe();
+            String value = "";
+            if(isAlterable()) {
+                value = "[" + scribeValue() + "]";
+            } else {
+                value = "" + scribeValue();
+            }
+            return "" + getType() + ": " + value;
         } catch (ScribeException e) {
             e.printStackTrace();
         }

@@ -26,7 +26,8 @@ abstract public class EvalTestBase {
 
     protected void assertNodeScribe(Node n, String expected) {
         try {
-            assertThat(n.scribe()).isEqualTo(expected);
+            Env env = new Env();
+            assertThat(n.scribe(env)).isEqualTo(expected);
         } catch (Node.ScribeException e) {
             assertThat(false).isEqualTo(true);
         }
@@ -73,7 +74,8 @@ abstract public class EvalTestBase {
         Node codeAST = asAST(code).get(0);
 
         try {
-            String scribed = codeAST.scribe();
+            Env env = new Env();
+            String scribed = codeAST.scribe(env);
 
             String errorMsg = "code: `" + code + "` incorrectly scribed to: `" + scribed + "`";
             assertThat(scribed).overridingErrorMessage(errorMsg).isEqualTo(code);
@@ -82,19 +84,28 @@ abstract public class EvalTestBase {
         }
     }
 
-    protected void assertScribe(String code, String expected) {
-        // assuming that code evals to a single node
-        Node codeAST = asAST(code).get(0);
-        
-        try {
-            String scribed = codeAST.scribe();
+    protected void assertScribe(AstHolder astHolder, Genotype genotype, String expected) {
+        Env env = genotype.bind(new Env());
+        List<Node> astList = astHolder.getAst();
 
-            String errorMsg = "code: `" + code + "` scribed to: `" + scribed + "` expected: `" + expected + "`";
-        assertThat(scribed).overridingErrorMessage(errorMsg).isEqualTo(expected);
-        } catch (Node.ScribeException e) {
-            assertThat(true).overridingErrorMessage(e.getMessage()).isEqualTo(false);
+        String res = "";
+        for(Node ast : astList) {
+            try {
+                res += ast.scribe(env);
+                //assertThat(res).isEqualTo(expected);
+            } catch (Node.ScribeException e) {
+                e.printStackTrace();
+                assertThat(true).isEqualTo(false);
+            }
         }
 
+        assertThat(res).isEqualTo(expected);
+    }
+
+    protected void appendAlterable(Genotype genotype, Genotype derived, Node node) {
+        int index = derived.getAlterable().size();
+        node.setGenSym((genotype.getAlterable().get(index)).getGenSym());
+        derived.add(node);
     }
 
     protected List<Node> asAST(String code) {

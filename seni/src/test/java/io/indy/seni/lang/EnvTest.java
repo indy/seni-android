@@ -22,6 +22,16 @@ import static org.fest.assertions.api.Assertions.assertThat;
 public class EnvTest {
 
     @Test
+    public void testHasBinding() {
+        Env env = new Env(null);
+        env.addBinding("foo", new NodeInt(42));
+        assertThat(env.hasBinding("foo")).isTrue();
+
+        Env scopedEnv = env.newScope();
+        assertThat(scopedEnv.hasBinding("foo")).isTrue();
+    }    
+
+    @Test
     public void testLocalLookup() {
         Env env = new Env(null);
         env.addBinding("foo", new NodeInt(42));

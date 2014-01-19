@@ -72,6 +72,17 @@ public class Env {
     }
 
     public boolean hasBinding(String key) {
+        Env e = this;
+        do {
+            if(e.hasBindingInThisScope(key)) {
+                return true;
+            }
+            e = e.mOuter;
+        } while(e != null);
+        return false;
+    }
+
+    private boolean hasBindingInThisScope(String key) {
         return mBindings.containsKey(key);
     }
 
@@ -79,7 +90,7 @@ public class Env {
 
         Env e = this;
         do {
-            if(e.mBindings.containsKey(key)) {
+            if(e.hasBindingInThisScope(key)) {
                 return e.mBindings.get(key);
             }
             e = e.mOuter;

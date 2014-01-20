@@ -18,6 +18,7 @@ package io.indy.seni.lang;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Iterator;
 
 public class Genotype {
 
@@ -59,7 +60,24 @@ public class Genotype {
         return genotype;
     }
 
-    public static Genotype crossover(Genotype a, Genotype b) {
-        return null;
+    public static Genotype crossover(Genotype a, Genotype b, int index) {
+        Genotype g = new Genotype();
+
+        if(a.mAlterable.size() != b.mAlterable.size()) {
+            // todo: throw an error
+            return null;
+        }
+
+        Iterator<Node> aIter = a.mAlterable.iterator();
+        Iterator<Node> bIter = b.mAlterable.iterator();
+        Node aNode, bNode;
+
+        int count = 0;
+        while(aIter.hasNext()) {
+            aNode = aIter.next();
+            bNode = bIter.next();
+            g.add(count++ < index ? aNode : bNode);
+        }
+        return g;
     }
 }

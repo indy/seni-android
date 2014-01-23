@@ -41,6 +41,15 @@ android {
   compileSdkVersion 19
   buildToolsVersion "19.0.1"
 
+  sourceSets {
+    main {
+      java {
+        // reference 'pure' java directory in addition to the defaults
+        srcDir 'src/pure/java'
+      }
+    }
+  }
+
   defaultConfig {
     minSdkVersion 19
     targetSdkVersion 19

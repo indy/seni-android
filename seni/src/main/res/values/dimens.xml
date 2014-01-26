@@ -8,4 +8,5 @@
     <dimen name="default_spacing_minor">8dp</dimen>
     <dimen name="default_spacing_micro">4dp</dimen>
     <dimen name="body_text_size">18sp</dimen>
+    <dimen name="body_line_spacing">1.0sp</dimen>
 </resources>

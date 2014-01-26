@@ -15,12 +15,12 @@ import android.view.MenuItem;
  * This activity is mostly just a 'shell' activity containing nothing
  * more than a {@link ScriptDetailFragment}.
  */
-public class ScriptDetailActivity extends FragmentActivity {
+public class BreederActivity extends FragmentActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_script_detail);
+        setContentView(R.layout.activity_breeder);
 
         // Show the Up button in the action bar.
         getActionBar().setDisplayHomeAsUpEnabled(true);
@@ -38,12 +38,12 @@ public class ScriptDetailActivity extends FragmentActivity {
             // Create the detail fragment and add it to the activity
             // using a fragment transaction.
             Bundle arguments = new Bundle();
-            arguments.putString(ScriptDetailFragment.ARG_ITEM_ID,
-                    getIntent().getStringExtra(ScriptDetailFragment.ARG_ITEM_ID));
-            ScriptDetailFragment fragment = new ScriptDetailFragment();
+            arguments.putString(BreederFragment.ARG_ITEM_ID,
+                    getIntent().getStringExtra(BreederFragment.ARG_ITEM_ID));
+            BreederFragment fragment = new BreederFragment();
             fragment.setArguments(arguments);
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.script_detail_container, fragment)
+                    .add(R.id.breeder_container, fragment)
                     .commit();
         }
     }
@@ -59,7 +59,7 @@ public class ScriptDetailActivity extends FragmentActivity {
                 //
                 // http://developer.android.com/design/patterns/navigation.html#up-vs-back
                 //
-                NavUtils.navigateUpTo(this, new Intent(this, ScriptListActivity.class));
+                NavUtils.navigateUpTo(this, new Intent(this, ScriptGridActivity.class));
                 return true;
         }
         return super.onOptionsItemSelected(item);

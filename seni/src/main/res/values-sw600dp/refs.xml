@@ -5,6 +5,6 @@
 
     For more on layout aliases, see:
     http://developer.android.com/training/multiscreen/screensizes.html#TaskUseAliasFilters
-    -->
     <item type="layout" name="activity_script_list">@layout/activity_script_twopane</item>
+    -->
 </resources>

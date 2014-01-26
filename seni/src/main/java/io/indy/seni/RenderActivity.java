@@ -58,7 +58,7 @@ public class RenderActivity extends Activity {
                 ifd("settings clicked");
                 return true;
             case R.id.action_templist:
-                Intent intent = new Intent(this, TempListActivity.class);
+                Intent intent = new Intent(this, ScriptGridActivity.class);
                 startActivity(intent);
                 return true;
         }

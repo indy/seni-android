@@ -1,24 +1,18 @@
 package io.indy.seni;
 
 import android.app.Activity;
+import android.app.Fragment;
 import android.os.Bundle;
-import android.support.v4.app.ListFragment;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.ArrayAdapter;
+import android.view.ViewGroup;
+import android.widget.GridView;
 import android.widget.ListView;
 
-import io.indy.seni.dummy.DummyContent;
+import io.indy.seni.adapter.ScriptAdapter;
 
-/**
- * A list fragment representing a list of Scripts. This fragment
- * also supports tablet devices by allowing list items to be given an
- * 'activated' state upon selection. This helps indicate which item is
- * currently being viewed in a {@link ScriptDetailFragment}.
- * <p>
- * Activities containing this fragment MUST implement the {@link Callbacks}
- * interface.
- */
-public class ScriptListFragment extends ListFragment {
+
+public class ScriptGridFragment extends Fragment {
 
     /**
      * The serialization (saved instance state) Bundle key representing the
@@ -36,6 +30,8 @@ public class ScriptListFragment extends ListFragment {
      * The current activated item position. Only used on tablets.
      */
     private int mActivatedPosition = ListView.INVALID_POSITION;
+
+    private ScriptAdapter mScriptAdapter;
 
     /**
      * A callback interface that all activities containing this fragment must
@@ -63,19 +59,43 @@ public class ScriptListFragment extends ListFragment {
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
      */
-    public ScriptListFragment() {
+    public ScriptGridFragment() {
     }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+
+        mScriptAdapter = new ScriptAdapter(activity);
+
+/*
+        // Activities containing this fragment must implement its callbacks.
+        if (!(activity instanceof Callbacks)) {
+            throw new IllegalStateException("Activity must implement fragment's callbacks.");
+        }
+*/
+//        mCallbacks = (Callbacks) activity;
+    }
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        /*
         // TODO: replace with a real list adapter.
         setListAdapter(new ArrayAdapter<DummyContent.DummyItem>(
                 getActivity(),
                 android.R.layout.simple_list_item_activated_1,
                 android.R.id.text1,
                 DummyContent.ITEMS));
+        */
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.fragment_script_grid, container, false);
     }
 
     @Override
@@ -85,21 +105,13 @@ public class ScriptListFragment extends ListFragment {
         // Restore the previously serialized activated item position.
         if (savedInstanceState != null
                 && savedInstanceState.containsKey(STATE_ACTIVATED_POSITION)) {
-            setActivatedPosition(savedInstanceState.getInt(STATE_ACTIVATED_POSITION));
-        }
-    }
-
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-
-        // Activities containing this fragment must implement its callbacks.
-        if (!(activity instanceof Callbacks)) {
-            throw new IllegalStateException("Activity must implement fragment's callbacks.");
+            //setActivatedPosition(savedInstanceState.getInt(STATE_ACTIVATED_POSITION));
         }
 
-        mCallbacks = (Callbacks) activity;
+        GridView gridView = (GridView)view.findViewById(R.id.grid);
+        gridView.setAdapter(mScriptAdapter);
     }
+
 
     @Override
     public void onDetach() {
@@ -109,6 +121,7 @@ public class ScriptListFragment extends ListFragment {
         mCallbacks = sDummyCallbacks;
     }
 
+    /*
     @Override
     public void onListItemClick(ListView listView, View view, int position, long id) {
         super.onListItemClick(listView, view, position, id);
@@ -116,7 +129,7 @@ public class ScriptListFragment extends ListFragment {
         // Notify the active callbacks interface (the activity, if the
         // fragment is attached to one) that an item has been selected.
         mCallbacks.onItemSelected(DummyContent.ITEMS.get(position).id);
-    }
+    }*/
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
@@ -131,6 +144,7 @@ public class ScriptListFragment extends ListFragment {
      * Turns on activate-on-click mode. When this mode is on, list items will be
      * given the 'activated' state when touched.
      */
+    /*
     public void setActivateOnItemClick(boolean activateOnItemClick) {
         // When setting CHOICE_MODE_SINGLE, ListView will automatically
         // give items the 'activated' state when touched.
@@ -148,4 +162,5 @@ public class ScriptListFragment extends ListFragment {
 
         mActivatedPosition = position;
     }
+    */
 }

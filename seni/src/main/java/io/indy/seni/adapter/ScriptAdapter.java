@@ -10,6 +10,8 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import io.indy.seni.AppConfig;
+import io.indy.seni.BreederActivity;
+import io.indy.seni.BreederFragment;
 import io.indy.seni.R;
 import io.indy.seni.RenderActivity;
 import io.indy.seni.dummy.Art1352;
@@ -127,7 +129,8 @@ public class ScriptAdapter extends BaseAdapter {
             ifd("clicked");
 
             int position = (int)v.getTag(R.string.temp_position);
-            Intent intent = new Intent(mContext, RenderActivity.class);
+            //Intent intent = new Intent(mContext, RenderActivity.class);
+            Intent intent2 = new Intent(mContext, BreederActivity.class);
 
             Genotype genotype = mGenotypes[position % mNumFucks];
             String script = "";
@@ -138,9 +141,10 @@ public class ScriptAdapter extends BaseAdapter {
                 e.printStackTrace();
             }
 
-            intent.putExtra(RenderActivity.SCRIPT_NAME, script);
+            //intent.putExtra(RenderActivity.SCRIPT_NAME, script);
+            intent2.putExtra(BreederFragment.GENESIS_SCRIPT, "2");
 
-            mContext.startActivity(intent);
+            mContext.startActivity(intent2);
         }
     };
 

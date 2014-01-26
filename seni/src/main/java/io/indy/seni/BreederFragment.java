@@ -1,7 +1,8 @@
 package io.indy.seni;
 
+import android.app.Fragment;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,10 +18,9 @@ import io.indy.seni.dummy.DummyContent;
  */
 public class BreederFragment extends Fragment {
     /**
-     * The fragment argument representing the item ID that this fragment
-     * represents.
+     * The original script that all other images are derived from
      */
-    public static final String ARG_ITEM_ID = "item_id";
+    public static final String GENESIS_SCRIPT = "genesis_script";
 
     /**
      * The dummy content this fragment is presenting.
@@ -38,11 +38,11 @@ public class BreederFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (getArguments().containsKey(ARG_ITEM_ID)) {
+        if (getArguments().containsKey(GENESIS_SCRIPT)) {
             // Load the dummy content specified by the fragment
             // arguments. In a real-world scenario, use a Loader
             // to load content from a content provider.
-            mItem = DummyContent.ITEM_MAP.get(getArguments().getString(ARG_ITEM_ID));
+            //mItem = DummyContent.ITEM_MAP.get(getArguments().getString(GENESIS_SCRIPT));
         }
     }
 
@@ -52,9 +52,9 @@ public class BreederFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_breeder, container, false);
 
         // Show the dummy content as text in a TextView.
-        if (mItem != null) {
-            ((TextView) rootView.findViewById(R.id.script_detail)).setText(mItem.content);
-        }
+//        if (mItem != null) {
+//            ((TextView) rootView.findViewById(R.id.script_detail)).setText(mItem.content);
+//        }
 
         return rootView;
     }

@@ -1,21 +1,12 @@
 package io.indy.seni;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.NavUtils;
 import android.view.MenuItem;
 
-/**
- * An activity representing a single Script detail screen. This
- * activity is only used on handset devices. On tablet-size devices,
- * item details are presented side-by-side with a list of items
- * in a {@link ScriptListActivity}.
- * <p>
- * This activity is mostly just a 'shell' activity containing nothing
- * more than a {@link ScriptDetailFragment}.
- */
-public class BreederActivity extends FragmentActivity {
+public class BreederActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,11 +29,11 @@ public class BreederActivity extends FragmentActivity {
             // Create the detail fragment and add it to the activity
             // using a fragment transaction.
             Bundle arguments = new Bundle();
-            arguments.putString(BreederFragment.ARG_ITEM_ID,
-                    getIntent().getStringExtra(BreederFragment.ARG_ITEM_ID));
+            arguments.putString(BreederFragment.GENESIS_SCRIPT,
+                    getIntent().getStringExtra(BreederFragment.GENESIS_SCRIPT));
             BreederFragment fragment = new BreederFragment();
             fragment.setArguments(arguments);
-            getSupportFragmentManager().beginTransaction()
+            getFragmentManager().beginTransaction()
                     .add(R.id.breeder_container, fragment)
                     .commit();
         }

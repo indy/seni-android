@@ -1,14 +1,15 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 buildscript {
-    repositories {
-        mavenCentral()
-        maven {
-          url 'https://oss.sonatype.org/content/repositories/snapshots/'
-        }
+  repositories {
+    mavenCentral()
+    maven {
+      url 'https://oss.sonatype.org/content/repositories/snapshots/'
     }
+  }
 
-    dependencies {
-        classpath 'com.android.tools.build:gradle:0.7.3'
-        classpath 'com.squareup.gradle:gradle-android-test-plugin:0.9.1-SNAPSHOT'
-    }
+  dependencies {
+    classpath 'com.android.tools.build:gradle:0.7.+'
+    classpath 'com.neenbedankt.gradle.plugins:android-apt:1.2'
+    classpath 'com.squareup.gradle:gradle-android-test-plugin:0.9.1-SNAPSHOT'
+  }
 }

@@ -10,10 +10,9 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import io.indy.seni.AppConfig;
-import io.indy.seni.BreederActivity;
-import io.indy.seni.BreederFragment;
+import io.indy.seni.EvolveActivity;
+import io.indy.seni.EvolveFragment;
 import io.indy.seni.R;
-import io.indy.seni.RenderActivity;
 import io.indy.seni.dummy.Art1352;
 import io.indy.seni.dummy.Art1402;
 import io.indy.seni.dummy.Art1403;
@@ -104,7 +103,7 @@ public class ScriptAdapter extends BaseAdapter {
             view = convertView;
         }
 
-        view.setTag(R.string.temp_position, position);
+        view.setTag(R.string.tag_position, position);
 
         SeniView seniView = (SeniView) view.findViewById(R.id.seniView);
         seniView.setAstHolder(mAstHolder);
@@ -128,9 +127,8 @@ public class ScriptAdapter extends BaseAdapter {
         public void onClick(View v) {
             ifd("clicked");
 
-            int position = (int)v.getTag(R.string.temp_position);
-            //Intent intent = new Intent(mContext, RenderActivity.class);
-            Intent intent2 = new Intent(mContext, BreederActivity.class);
+            int position = (int)v.getTag(R.string.tag_position);
+            Intent intent = new Intent(mContext, EvolveActivity.class);
 
             Genotype genotype = mGenotypes[position % mNumFucks];
             String script = "";
@@ -141,10 +139,9 @@ public class ScriptAdapter extends BaseAdapter {
                 e.printStackTrace();
             }
 
-            //intent.putExtra(RenderActivity.SCRIPT_NAME, script);
-            intent2.putExtra(BreederFragment.GENESIS_SCRIPT, "2");
+            intent.putExtra(EvolveFragment.GENESIS_SCRIPT, "2");
 
-            mContext.startActivity(intent2);
+            mContext.startActivity(intent);
         }
     };
 

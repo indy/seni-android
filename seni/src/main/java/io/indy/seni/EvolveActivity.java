@@ -6,12 +6,12 @@ import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.view.MenuItem;
 
-public class BreederActivity extends Activity {
+public class EvolveActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_breeder);
+        setContentView(R.layout.activity_evolve);
 
         // Show the Up button in the action bar.
         getActionBar().setDisplayHomeAsUpEnabled(true);
@@ -29,12 +29,12 @@ public class BreederActivity extends Activity {
             // Create the detail fragment and add it to the activity
             // using a fragment transaction.
             Bundle arguments = new Bundle();
-            arguments.putString(BreederFragment.GENESIS_SCRIPT,
-                    getIntent().getStringExtra(BreederFragment.GENESIS_SCRIPT));
-            BreederFragment fragment = new BreederFragment();
+            arguments.putString(EvolveFragment.GENESIS_SCRIPT,
+                    getIntent().getStringExtra(EvolveFragment.GENESIS_SCRIPT));
+            EvolveFragment fragment = new EvolveFragment();
             fragment.setArguments(arguments);
             getFragmentManager().beginTransaction()
-                    .add(R.id.breeder_container, fragment)
+                    .add(R.id.evolve_container, fragment)
                     .commit();
         }
     }

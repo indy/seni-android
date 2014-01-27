@@ -44,8 +44,8 @@
         </activity>
 
         <activity
-                android:name="io.indy.seni.BreederActivity"
-                android:label="@string/title_activity_breeder"
+                android:name=".EvolveActivity"
+                android:label="@string/title_activity_evolve"
                 android:parentActivityName=".ScriptGridActivity" >
             <meta-data
                     android:name="android.support.PARENT_ACTIVITY"

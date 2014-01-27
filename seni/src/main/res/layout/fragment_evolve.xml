@@ -8,4 +8,4 @@
           android:horizontalSpacing="5dip"
           android:numColumns="@integer/num_columns"
           android:gravity="center"
-          tools:context=".BreederFragment"/>
+          tools:context=".EvolveFragment"/>

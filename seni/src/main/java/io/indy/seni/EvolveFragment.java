@@ -16,7 +16,7 @@ import io.indy.seni.dummy.DummyContent;
  * in two-pane mode (on tablets) or a {@link ScriptDetailActivity}
  * on handsets.
  */
-public class BreederFragment extends Fragment {
+public class EvolveFragment extends Fragment {
     /**
      * The original script that all other images are derived from
      */
@@ -31,7 +31,7 @@ public class BreederFragment extends Fragment {
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
      */
-    public BreederFragment() {
+    public EvolveFragment() {
     }
 
     @Override
@@ -49,7 +49,7 @@ public class BreederFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_breeder, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_evolve, container, false);
 
         // Show the dummy content as text in a TextView.
 //        if (mItem != null) {

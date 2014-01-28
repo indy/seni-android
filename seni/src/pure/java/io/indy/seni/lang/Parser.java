@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 Inderjit Gill
+ * Copyright 2014 Inderjit Gill
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,10 +26,10 @@ public class Parser {
 
         List<Node> nodes = new ArrayList<Node>();
 
-        while(tokens.peek() != null) {
+        while (tokens.peek() != null) {
             nodes.add(consumeItem(tokens, false));
         }
-        
+
         return nodes;
     }
 
@@ -38,13 +38,13 @@ public class Parser {
         Token token = tokens.remove();
         Token.Type type = token.getType();
 
-        if(type == Token.Type.LIST_START) {
+        if (type == Token.Type.LIST_START) {
             return consumeList(tokens, alterable);
-        } else if(type == Token.Type.INT) {
+        } else if (type == Token.Type.INT) {
             return new NodeInt(token.getIntValue(), alterable);
-        } else if(type == Token.Type.FLOAT) {
+        } else if (type == Token.Type.FLOAT) {
             return new NodeFloat(token.getFloatValue(), alterable);
-        } else if(type == Token.Type.NAME) {
+        } else if (type == Token.Type.NAME) {
             String val = token.getStringValue();
             if (val.equals("true")) {
                 return new NodeBoolean(true, alterable);
@@ -53,11 +53,11 @@ public class Parser {
             } else {
                 return new NodeName(token.getStringValue(), alterable);
             }
-        } else if(type == Token.Type.STRING) {
+        } else if (type == Token.Type.STRING) {
             return new NodeString(token.getStringValue(), alterable);
-        } else if(type == Token.Type.QUOTE_ABBREVIATION) {
+        } else if (type == Token.Type.QUOTE_ABBREVIATION) {
             return consumeQuotedForm(tokens);
-        } else if(type == Token.Type.BRACKET_START) {
+        } else if (type == Token.Type.BRACKET_START) {
             return consumeBracketForm(tokens);
         } else {
             // throw an error
@@ -75,7 +75,7 @@ public class Parser {
 
         // after consuming it we should be on the end bracket
         Token token = tokens.remove();
-        if(token.getType() != Token.Type.BRACKET_END) {
+        if (token.getType() != Token.Type.BRACKET_END) {
             // throw an error - only one form allowed in-between brackets
         }
 
@@ -84,12 +84,12 @@ public class Parser {
 
     private static Node consumeQuotedForm(Queue<Token> tokens) {
         // '(2 3 4) -> (quote (2 3 4))
-        
+
         NodeList node = new NodeList();
 
         node.addChild(new NodeName("quote"));
         node.addChild(consumeItem(tokens, false));
-        
+
         return node;
     }
 
@@ -99,9 +99,9 @@ public class Parser {
         NodeList node = new NodeList(alterable);
         Token token;
 
-        while(true) {
+        while (true) {
             token = tokens.element();
-            if(token.getType() == Token.Type.LIST_END) {
+            if (token.getType() == Token.Type.LIST_END) {
                 tokens.remove();
                 return node;
             } else {

@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 Inderjit Gill
+ * Copyright 2014 Inderjit Gill
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -36,25 +36,25 @@ public class Lexer {
     static {
         String whitespaces = " \t\n";
         sWhitespaceSet = new HashSet<Character>();
-        for(char c :  whitespaces.toCharArray()) {
+        for (char c : whitespaces.toCharArray()) {
             sWhitespaceSet.add(c);
         }
 
         String digits = "0123456789";
         sDigitSet = new HashSet<Character>();
-        for(char c :  digits.toCharArray()) {
+        for (char c : digits.toCharArray()) {
             sDigitSet.add(c);
         }
 
         String alpha = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ+-*/<>=";
         sAlphaSet = new HashSet<Character>();
-        for(char c :  alpha.toCharArray()) {
+        for (char c : alpha.toCharArray()) {
             sAlphaSet.add(c);
         }
 
         String sym = "-!@#$%^&*<>?";
         sSymbolSet = new HashSet<Character>();
-        for(char c :  sym.toCharArray()) {
+        for (char c : sym.toCharArray()) {
             sSymbolSet.add(c);
         }
     }
@@ -69,38 +69,38 @@ public class Lexer {
 
         String s = skipWhitespace(input);
 
-        while(s.length() > 0) {
-            switch(nextTokenType(s)) {
-            case LIST_START :
-                p = consumeListStart(s);
-                break;
-            case LIST_END :
-                p = consumeListEnd(s);
-                break;
-            case BRACKET_START :
-                p = consumeBracketStart(s);
-                break;
-            case BRACKET_END :
-                p = consumeBracketEnd(s);
-                break;
-            case STRING :
-                p = consumeString(s);
-                break;
-            case NAME :
-                p = consumeName(s);
-                break;
-            case INT :
-                p = consumeInt(s);
-                break;
-            case FLOAT :
-                p = consumeFloat(s);
-                break;
-            case QUOTE_ABBREVIATION :
-                p = consumeQuoteAbbreviation(s);
-                break;
+        while (s.length() > 0) {
+            switch (nextTokenType(s)) {
+                case LIST_START:
+                    p = consumeListStart(s);
+                    break;
+                case LIST_END:
+                    p = consumeListEnd(s);
+                    break;
+                case BRACKET_START:
+                    p = consumeBracketStart(s);
+                    break;
+                case BRACKET_END:
+                    p = consumeBracketEnd(s);
+                    break;
+                case STRING:
+                    p = consumeString(s);
+                    break;
+                case NAME:
+                    p = consumeName(s);
+                    break;
+                case INT:
+                    p = consumeInt(s);
+                    break;
+                case FLOAT:
+                    p = consumeFloat(s);
+                    break;
+                case QUOTE_ABBREVIATION:
+                    p = consumeQuoteAbbreviation(s);
+                    break;
 
-            default :
-                throw new LangException("unknown token type: " + s.charAt(0));
+                default:
+                    throw new LangException("unknown token type: " + s.charAt(0));
             }
 
             q.add(p.mToken);
@@ -112,8 +112,8 @@ public class Lexer {
 
     private static String skipWhitespace(String s) {
         int len = s.length();
-        for(int i = 0; i < len; i++) {
-            if(!isWhitespace(s.charAt(i))) {
+        for (int i = 0; i < len; i++) {
+            if (!isWhitespace(s.charAt(i))) {
                 return s.substring(i);
             }
         }
@@ -123,22 +123,22 @@ public class Lexer {
     private static Pair consumeInt(String s) {
 
         int i = 0;
-        for(i=0;i<s.length();i++) {
+        for (i = 0; i < s.length(); i++) {
             char c = s.charAt(i);
-            if(!isDigit(c) && c != MINUS) {
+            if (!isDigit(c) && c != MINUS) {
                 break;
             }
-            if(!isDigit(c) && !(i == 0 && c == MINUS)) {
+            if (!isDigit(c) && !(i == 0 && c == MINUS)) {
                 break;
             }
         }
-        
+
         Pair p = new Pair();
         int val = Integer.parseInt(s.substring(0, i));
 
         try {
             p.mToken = new Token(Token.Type.INT, val);
-        } catch(Token.TokenException e) {
+        } catch (Token.TokenException e) {
             e.printStackTrace();
         }
 
@@ -149,18 +149,18 @@ public class Lexer {
 
     private static Pair consumeFloat(String s) {
         int i = 0;
-        for(i=0;i<s.length();i++) {
+        for (i = 0; i < s.length(); i++) {
             char c = s.charAt(i);
-            if(!isDigit(c) && !(i == 0 && c == MINUS) && c != PERIOD) {
+            if (!isDigit(c) && !(i == 0 && c == MINUS) && c != PERIOD) {
                 break;
             }
         }
-        
+
         Pair p = new Pair();
         float val = (float) Double.parseDouble(s.substring(0, i));
         try {
             p.mToken = new Token(Token.Type.FLOAT, val);
-        } catch(Token.TokenException e) {
+        } catch (Token.TokenException e) {
             e.printStackTrace();
         }
         p.mRemaining = s.substring(i, s.length());
@@ -209,13 +209,13 @@ public class Lexer {
 
     private static Pair consumeName(String s) {
         int i = 0;
-        for(i=0;i<s.length();i++) {
+        for (i = 0; i < s.length(); i++) {
             char c = s.charAt(i);
-            if(!isAlpha(c) && !isDigit(c) && !isSymbol(c)) {
+            if (!isAlpha(c) && !isDigit(c) && !isSymbol(c)) {
                 break;
             }
         }
-        
+
         Pair p = new Pair();
         p.mToken = new Token(Token.Type.NAME, s.substring(0, i));
         p.mRemaining = s.substring(i, s.length());
@@ -230,8 +230,8 @@ public class Lexer {
     }
 
     private static int indexOfNext(String s, Character c) {
-        for(int i=0;i<s.length();i++) {
-            if(s.charAt(i) == c) {
+        for (int i = 0; i < s.length(); i++) {
+            if (s.charAt(i) == c) {
                 return i;
             }
         }
@@ -241,31 +241,31 @@ public class Lexer {
     private static Token.Type nextTokenType(String s) {
         char c = s.charAt(0);
 
-        if(isQuoteAbbreviation(c)) {
+        if (isQuoteAbbreviation(c)) {
             return Token.Type.QUOTE_ABBREVIATION;
         }
 
-        if(isListStart(c)) {
+        if (isListStart(c)) {
             return Token.Type.LIST_START;
         }
 
-        if(isListEnd(c)) {
+        if (isListEnd(c)) {
             return Token.Type.LIST_END;
         }
 
-        if(isBracketStart(c)) {
+        if (isBracketStart(c)) {
             return Token.Type.BRACKET_START;
         }
 
-        if(isBracketEnd(c)) {
+        if (isBracketEnd(c)) {
             return Token.Type.BRACKET_END;
         }
-        
-        if(isQuotedString(c)) {
+
+        if (isQuotedString(c)) {
             return Token.Type.STRING;
         }
 
-        if(isName(c)) {
+        if (isName(c)) {
             if (c == MINUS && s.length() > 1 && isDigit(s.charAt(1))) {
                 // don't treat negative numbers as NAMEs
             } else {
@@ -273,7 +273,7 @@ public class Lexer {
             }
         }
 
-        if(isDigit(c) || c == MINUS || c == PERIOD) {
+        if (isDigit(c) || c == MINUS || c == PERIOD) {
             return hasPeriod(s) ? Token.Type.FLOAT : Token.Type.INT;
         }
 
@@ -282,12 +282,12 @@ public class Lexer {
 
     // is there a period in the stream of characters before we get to whitespace
     private static boolean hasPeriod(String s) {
-        for(int i=0;i<s.length();i++) {
+        for (int i = 0; i < s.length(); i++) {
             char c = s.charAt(i);
-            if(c == PERIOD) {
+            if (c == PERIOD) {
                 return true;
             }
-            if(isWhitespace(c)) {
+            if (isWhitespace(c)) {
                 return false;
             }
         }

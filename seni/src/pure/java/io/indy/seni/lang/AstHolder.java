@@ -16,7 +16,6 @@
 
 package io.indy.seni.lang;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Queue;
 
@@ -69,7 +68,7 @@ public class AstHolder {
         Env env = genotype.bind(new Env());
 
         String res = "";
-        for(Node ast : mAst) {
+        for (Node ast : mAst) {
             res += ast.scribe(env);
         }
         return res;
@@ -84,10 +83,11 @@ public class AstHolder {
     }
 
     public static class UglyCopyException extends Exception {
-        public UglyCopyException(String message){
+        public UglyCopyException(String message) {
             super(message);
         }
     }
+
     /*
       TEMP: replace this with per-node class copy constructors
      */
@@ -99,29 +99,29 @@ public class AstHolder {
         try {
             Node.Type type = node.getType();
 
-            if(type == Node.Type.BOOLEAN) {
+            if (type == Node.Type.BOOLEAN) {
                 return new NodeBoolean(Node.asBooleanValue(node));
             }
-            if(type == Node.Type.INT) {
+            if (type == Node.Type.INT) {
                 return new NodeInt(Node.asIntValue(node));
             }
-            if(type == Node.Type.FLOAT) {
+            if (type == Node.Type.FLOAT) {
                 return new NodeFloat(Node.asFloatValue(node));
             }
-            if(type == Node.Type.NAME) {
+            if (type == Node.Type.NAME) {
                 return new NodeName(Node.asNameValue(node));
             }
-            if(type == Node.Type.STRING) {
+            if (type == Node.Type.STRING) {
                 return new NodeString(Node.asStringValue(node));
             }
-            if(type == Node.Type.LIST) {
+            if (type == Node.Type.LIST) {
                 NodeList nl = new NodeList(true);
-                for(Node n : Node.asList(node).getChildren()) {
+                for (Node n : Node.asList(node).getChildren()) {
                     nl.addChild(uglyCopy(n));
                 }
                 return nl;
             }
-        } catch(LangException e) {
+        } catch (LangException e) {
             e.printStackTrace();
         }
 
@@ -135,21 +135,22 @@ public class AstHolder {
     private void addGenSyms(Node node, SymbolGenerator sg) {
 
         try {
-            if(node.isAlterable()) {
+            if (node.isAlterable()) {
                 String genSym = sg.gen();
                 node.setGenSym(genSym);
                 Node nodeCopy = uglyCopy(node);
                 nodeCopy.setGenSym(genSym);
                 mGenotype.add(nodeCopy);
             }
-        } catch(UglyCopyException e) {
+        } catch (UglyCopyException e) {
             e.printStackTrace();
         }
-        
+
         try {
-            if(node.getType() == Node.Type.LIST) {
-                List<Node> children = Node.asList(node).getChildren();;
-                for(Node n : children) {
+            if (node.getType() == Node.Type.LIST) {
+                List<Node> children = Node.asList(node).getChildren();
+                ;
+                for (Node n : children) {
                     addGenSyms(n, sg);
                 }
             }
@@ -167,10 +168,10 @@ public class AstHolder {
             // gensym alterable nodes in ast
             SymbolGenerator sg = new SymbolGenerator(mGenSymStart);
             mGenotype = new Genotype();
-            for(Node node : ast) {
+            for (Node node : ast) {
                 addGenSyms(node, sg);
             }
-            
+
             return ast;
         } catch (LangException e) {
             e.printStackTrace();

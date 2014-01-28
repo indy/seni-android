@@ -16,8 +16,9 @@
 
 package io.indy.seni.lang;
 
-import org.junit.Test;
 import org.junit.Before;
+import org.junit.Test;
+
 import static org.fest.assertions.api.Assertions.assertThat;
 
 
@@ -37,17 +38,17 @@ public class InterpreterTest {
 
         try {
             NodeInt nInt = new NodeInt(42);
-            assertThat(Interpreter.eval(null, nInt)).isEqualTo(nInt);        
+            assertThat(Interpreter.eval(null, nInt)).isEqualTo(nInt);
 
             NodeFloat nFloat = new NodeFloat(3.14f);
-            assertThat(Interpreter.eval(null, nFloat)).isEqualTo(nFloat);        
+            assertThat(Interpreter.eval(null, nFloat)).isEqualTo(nFloat);
 
             NodeString nString = new NodeString("pish");
-            assertThat(Interpreter.eval(null, nString)).isEqualTo(nString);        
+            assertThat(Interpreter.eval(null, nString)).isEqualTo(nString);
 
             NodeBoolean nBoolean = new NodeBoolean(true);
             assertThat(Interpreter.eval(null, nBoolean)).isEqualTo(nBoolean);
-        } catch(LangException e) {
+        } catch (LangException e) {
             assertThat(true).overridingErrorMessage(e.toString()).isFalse();
         }
     }
@@ -60,14 +61,14 @@ public class InterpreterTest {
 
             mEnv.addBinding(var, nInt);
             assertThat(Interpreter.eval(mEnv, new NodeName(var))).isEqualTo(nInt);
-        } catch(LangException e) {
+        } catch (LangException e) {
             assertThat(true).overridingErrorMessage(e.toString()).isFalse();
         }
     }
 
     @Test
     public void testSpecialFormQuote() {
-        try {        
+        try {
             // (quote foo) => foo
             NodeList nList = new NodeList();
 
@@ -77,7 +78,7 @@ public class InterpreterTest {
             nList.addChild(nName);
 
             assertThat(Interpreter.eval(mEnv, nList)).isEqualTo(nName);
-        } catch(LangException e) {
+        } catch (LangException e) {
             assertThat(true).overridingErrorMessage(e.toString()).isFalse();
         }
     }
@@ -107,7 +108,7 @@ public class InterpreterTest {
             nList.addChild(four);
 
             assertThat(Interpreter.eval(mEnv, nList)).isEqualTo(four);
-        } catch(LangException e) {
+        } catch (LangException e) {
             assertThat(true).overridingErrorMessage(e.toString()).isFalse();
         }
     }
@@ -128,8 +129,8 @@ public class InterpreterTest {
 
             Node n = mEnv.lookup("foo");
             assertThat(n.getType()).isEqualTo(Node.Type.INT);
-            assertThat(((NodeInt)n).getInt()).isEqualTo(45);
-        } catch(LangException e) {
+            assertThat(((NodeInt) n).getInt()).isEqualTo(45);
+        } catch (LangException e) {
             assertThat(true).overridingErrorMessage(e.toString()).isFalse();
         }
     }
@@ -147,8 +148,8 @@ public class InterpreterTest {
 
             Node n = mEnv.lookup("bar");
             assertThat(n.getType()).isEqualTo(Node.Type.INT);
-            assertThat(((NodeInt)n).getInt()).isEqualTo(99);
-        } catch(LangException e) {
+            assertThat(((NodeInt) n).getInt()).isEqualTo(99);
+        } catch (LangException e) {
             assertThat(true).overridingErrorMessage(e.toString()).isFalse();
         }
     }
@@ -185,12 +186,12 @@ public class InterpreterTest {
 
             Node n = mEnv.lookup("bar");
             assertThat(n.getType()).isEqualTo(Node.Type.INT);
-            assertThat(((NodeInt)n).getInt()).isEqualTo(42);
+            assertThat(((NodeInt) n).getInt()).isEqualTo(42);
 
             n = mEnv.lookup("foo");
             assertThat(n.getType()).isEqualTo(Node.Type.INT);
-            assertThat(((NodeInt)n).getInt()).isEqualTo(11);
-        } catch(LangException e) {
+            assertThat(((NodeInt) n).getInt()).isEqualTo(11);
+        } catch (LangException e) {
             assertThat(true).overridingErrorMessage(e.toString()).isFalse();
         }
     }
@@ -208,7 +209,7 @@ public class InterpreterTest {
 
             Node n = Interpreter.eval(e, nList);
             assertThat(n.getType()).isEqualTo(Node.Type.INT);
-            assertThat(((NodeInt)n).getInt()).isEqualTo(7);
+            assertThat(((NodeInt) n).getInt()).isEqualTo(7);
 
 
             // (+ 3 4 5 6)
@@ -217,8 +218,8 @@ public class InterpreterTest {
 
             n = Interpreter.eval(e, nList);
             assertThat(n.getType()).isEqualTo(Node.Type.INT);
-            assertThat(((NodeInt)n).getInt()).isEqualTo(18);
-        } catch(LangException e) {
+            assertThat(((NodeInt) n).getInt()).isEqualTo(18);
+        } catch (LangException e) {
             assertThat(true).overridingErrorMessage(e.toString()).isFalse();
         }
     }
@@ -236,7 +237,7 @@ public class InterpreterTest {
 
             Node n = Interpreter.eval(e, nList);
             assertThat(n.getType()).isEqualTo(Node.Type.FLOAT);
-            assertThat(((NodeFloat)n).getFloat()).isEqualTo(7.0f);
+            assertThat(((NodeFloat) n).getFloat()).isEqualTo(7.0f);
 
 
             // (+ 3.0 4.0 5.0 6.0)
@@ -245,8 +246,8 @@ public class InterpreterTest {
 
             n = Interpreter.eval(e, nList);
             assertThat(n.getType()).isEqualTo(Node.Type.FLOAT);
-            assertThat(((NodeFloat)n).getFloat()).isEqualTo(18.0f);
-        } catch(LangException e) {
+            assertThat(((NodeFloat) n).getFloat()).isEqualTo(18.0f);
+        } catch (LangException e) {
             assertThat(true).overridingErrorMessage(e.toString()).isFalse();
         }
     }
@@ -264,7 +265,7 @@ public class InterpreterTest {
 
             Node n = Interpreter.eval(e, nList);
             assertThat(n.getType()).isEqualTo(Node.Type.INT);
-            assertThat(((NodeInt)n).getInt()).isEqualTo(-1);
+            assertThat(((NodeInt) n).getInt()).isEqualTo(-1);
 
             // (- 3 4 5 6)
             nList.addChild(new NodeInt(5));
@@ -272,8 +273,8 @@ public class InterpreterTest {
 
             n = Interpreter.eval(e, nList);
             assertThat(n.getType()).isEqualTo(Node.Type.INT);
-            assertThat(((NodeInt)n).getInt()).isEqualTo(-12);
-        } catch(LangException e) {
+            assertThat(((NodeInt) n).getInt()).isEqualTo(-12);
+        } catch (LangException e) {
             assertThat(true).overridingErrorMessage(e.toString()).isFalse();
         }
     }
@@ -291,7 +292,7 @@ public class InterpreterTest {
 
             Node n = Interpreter.eval(e, nList);
             assertThat(n.getType()).isEqualTo(Node.Type.FLOAT);
-            assertThat(((NodeFloat)n).getFloat()).isEqualTo(-1.0f);
+            assertThat(((NodeFloat) n).getFloat()).isEqualTo(-1.0f);
 
             // (- 3.0 4.0 5.0 6.0)
             nList.addChild(new NodeFloat(5.0f));
@@ -299,8 +300,8 @@ public class InterpreterTest {
 
             n = Interpreter.eval(e, nList);
             assertThat(n.getType()).isEqualTo(Node.Type.FLOAT);
-            assertThat(((NodeFloat)n).getFloat()).isEqualTo(-12.0f);
-        } catch(LangException e) {
+            assertThat(((NodeFloat) n).getFloat()).isEqualTo(-12.0f);
+        } catch (LangException e) {
             assertThat(true).overridingErrorMessage(e.toString()).isFalse();
         }
     }
@@ -318,15 +319,15 @@ public class InterpreterTest {
 
             Node n = Interpreter.eval(e, nList);
             assertThat(n.getType()).isEqualTo(Node.Type.INT);
-            assertThat(((NodeInt)n).getInt()).isEqualTo(12);
+            assertThat(((NodeInt) n).getInt()).isEqualTo(12);
 
             // (/ 24 2 2)
             nList.addChild(new NodeInt(2));
 
             n = Interpreter.eval(e, nList);
             assertThat(n.getType()).isEqualTo(Node.Type.INT);
-            assertThat(((NodeInt)n).getInt()).isEqualTo(6);
-        } catch(LangException e) {
+            assertThat(((NodeInt) n).getInt()).isEqualTo(6);
+        } catch (LangException e) {
             assertThat(true).overridingErrorMessage(e.toString()).isFalse();
         }
     }
@@ -344,15 +345,15 @@ public class InterpreterTest {
 
             Node n = Interpreter.eval(e, nList);
             assertThat(n.getType()).isEqualTo(Node.Type.FLOAT);
-            assertThat(((NodeFloat)n).getFloat()).isEqualTo(12.0f);
+            assertThat(((NodeFloat) n).getFloat()).isEqualTo(12.0f);
 
             // (/ 24 2 2)
             nList.addChild(new NodeFloat(2.0f));
 
             n = Interpreter.eval(e, nList);
             assertThat(n.getType()).isEqualTo(Node.Type.FLOAT);
-            assertThat(((NodeFloat)n).getFloat()).isEqualTo(6.0f);
-        } catch(LangException e) {
+            assertThat(((NodeFloat) n).getFloat()).isEqualTo(6.0f);
+        } catch (LangException e) {
             assertThat(true).overridingErrorMessage(e.toString()).isFalse();
         }
     }
@@ -370,15 +371,15 @@ public class InterpreterTest {
 
             Node n = Interpreter.eval(e, nList);
             assertThat(n.getType()).isEqualTo(Node.Type.INT);
-            assertThat(((NodeInt)n).getInt()).isEqualTo(48);
+            assertThat(((NodeInt) n).getInt()).isEqualTo(48);
 
             // (* 24 2 2)
             nList.addChild(new NodeInt(2));
 
             n = Interpreter.eval(e, nList);
             assertThat(n.getType()).isEqualTo(Node.Type.INT);
-            assertThat(((NodeInt)n).getInt()).isEqualTo(96);
-        } catch(LangException e) {
+            assertThat(((NodeInt) n).getInt()).isEqualTo(96);
+        } catch (LangException e) {
             assertThat(true).overridingErrorMessage(e.toString()).isFalse();
         }
     }
@@ -396,19 +397,18 @@ public class InterpreterTest {
 
             Node n = Interpreter.eval(e, nList);
             assertThat(n.getType()).isEqualTo(Node.Type.FLOAT);
-            assertThat(((NodeFloat)n).getFloat()).isEqualTo(48.0f);
+            assertThat(((NodeFloat) n).getFloat()).isEqualTo(48.0f);
 
             // (* 24 2 2)
             nList.addChild(new NodeFloat(2.0f));
 
             n = Interpreter.eval(e, nList);
             assertThat(n.getType()).isEqualTo(Node.Type.FLOAT);
-            assertThat(((NodeFloat)n).getFloat()).isEqualTo(96.0f);
-        } catch(LangException e) {
+            assertThat(((NodeFloat) n).getFloat()).isEqualTo(96.0f);
+        } catch (LangException e) {
             assertThat(true).overridingErrorMessage(e.toString()).isFalse();
         }
     }
-
 
 
     @Test
@@ -424,7 +424,7 @@ public class InterpreterTest {
 
             Node n = Interpreter.eval(e, nList);
             assertThat(n.getType()).isEqualTo(Node.Type.BOOLEAN);
-            assertThat(((NodeBoolean)n).getBoolean()).isTrue();
+            assertThat(((NodeBoolean) n).getBoolean()).isTrue();
 
 
             // (< 5 4) -> false
@@ -435,9 +435,9 @@ public class InterpreterTest {
 
             n = Interpreter.eval(e, nList);
             assertThat(n.getType()).isEqualTo(Node.Type.BOOLEAN);
-            assertThat(((NodeBoolean)n).getBoolean()).isFalse();
+            assertThat(((NodeBoolean) n).getBoolean()).isFalse();
 
-        } catch(LangException e) {
+        } catch (LangException e) {
             assertThat(true).overridingErrorMessage(e.toString()).isFalse();
         }
     }
@@ -455,7 +455,7 @@ public class InterpreterTest {
 
             Node n = Interpreter.eval(e, nList);
             assertThat(n.getType()).isEqualTo(Node.Type.BOOLEAN);
-            assertThat(((NodeBoolean)n).getBoolean()).isTrue();
+            assertThat(((NodeBoolean) n).getBoolean()).isTrue();
 
             nList = new NodeList();
             nList.addChild(new NodeName("<"));
@@ -464,9 +464,9 @@ public class InterpreterTest {
 
             n = Interpreter.eval(e, nList);
             assertThat(n.getType()).isEqualTo(Node.Type.BOOLEAN);
-            assertThat(((NodeBoolean)n).getBoolean()).isFalse();
+            assertThat(((NodeBoolean) n).getBoolean()).isFalse();
 
-        } catch(LangException e) {
+        } catch (LangException e) {
             assertThat(true).overridingErrorMessage(e.toString()).isFalse();
         }
     }
@@ -485,9 +485,9 @@ public class InterpreterTest {
 
             Node n = Interpreter.eval(e, nList);
             assertThat(n.getType()).isEqualTo(Node.Type.BOOLEAN);
-            assertThat(((NodeBoolean)n).getBoolean()).isTrue();
+            assertThat(((NodeBoolean) n).getBoolean()).isTrue();
 
-        } catch(LangException e) {
+        } catch (LangException e) {
             assertThat(true).overridingErrorMessage(e.toString()).isFalse();
         }
     }
@@ -505,9 +505,9 @@ public class InterpreterTest {
 
             Node n = Interpreter.eval(e, nList);
             assertThat(n.getType()).isEqualTo(Node.Type.BOOLEAN);
-            assertThat(((NodeBoolean)n).getBoolean()).isTrue();
+            assertThat(((NodeBoolean) n).getBoolean()).isTrue();
 
-        } catch(LangException e) {
+        } catch (LangException e) {
             assertThat(true).overridingErrorMessage(e.toString()).isFalse();
         }
     }
@@ -526,7 +526,7 @@ public class InterpreterTest {
 
             Node n = Interpreter.eval(e, nList);
             assertThat(n.getType()).isEqualTo(Node.Type.BOOLEAN);
-            assertThat(((NodeBoolean)n).getBoolean()).isTrue();
+            assertThat(((NodeBoolean) n).getBoolean()).isTrue();
 
 
             nList = new NodeList();
@@ -536,9 +536,9 @@ public class InterpreterTest {
 
             n = Interpreter.eval(e, nList);
             assertThat(n.getType()).isEqualTo(Node.Type.BOOLEAN);
-            assertThat(((NodeBoolean)n).getBoolean()).isFalse();
+            assertThat(((NodeBoolean) n).getBoolean()).isFalse();
 
-        } catch(LangException e) {
+        } catch (LangException e) {
             assertThat(true).overridingErrorMessage(e.toString()).isFalse();
         }
     }
@@ -556,9 +556,9 @@ public class InterpreterTest {
 
             Node n = Interpreter.eval(e, nList);
             assertThat(n.getType()).isEqualTo(Node.Type.BOOLEAN);
-            assertThat(((NodeBoolean)n).getBoolean()).isTrue();
+            assertThat(((NodeBoolean) n).getBoolean()).isTrue();
 
-        } catch(LangException e) {
+        } catch (LangException e) {
             assertThat(true).overridingErrorMessage(e.toString()).isFalse();
         }
     }

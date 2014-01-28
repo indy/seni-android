@@ -1,3 +1,19 @@
+/*
+ * Copyright 2014 Inderjit Gill
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package io.indy.seni.runtime.bind;
 
 import android.util.Log;
@@ -30,14 +46,14 @@ public class Platform extends Binder {
 
         e.addBinding(new NodeSpecialSeniContext("scope", sc) {
             public Node executeSpecial(Env env, NodeList listExpr)
-                throws LangException {
-                
+                    throws LangException {
+
                 mSeniContext.getCanvas().save();
-                
+
                 List<Node> children = listExpr.getChildren();
                 Iterator<Node> iter = children.iterator();
                 iter.next(); // 'scope' name
-                while(iter.hasNext()) {
+                while (iter.hasNext()) {
                     Interpreter.eval(env, iter.next());
                 }
 
@@ -54,7 +70,7 @@ public class Platform extends Binder {
                 Binder.checkArity(params, 1, keyword());
 
                 CoreBridge.setColour(mSeniContext.getPaint(),
-                                     Node.asColourValue(params.get(0)));
+                        Node.asColourValue(params.get(0)));
 
                 return Interpreter.NODE_NULL;
             }

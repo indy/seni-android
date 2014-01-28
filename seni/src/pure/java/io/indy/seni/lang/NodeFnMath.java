@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 Inderjit Gill
+ * Copyright 2014 Inderjit Gill
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -32,7 +32,7 @@ public abstract class NodeFnMath extends NodeFn {
         Iterator<Node> iter = params.iterator();
         Node n;
 
-        if(iter.hasNext()) {
+        if (iter.hasNext()) {
             n = iter.next();
         } else {
             // throw an error: no args for +
@@ -41,9 +41,9 @@ public abstract class NodeFnMath extends NodeFn {
 
         try {
 
-            if(n.getType() == Node.Type.INT) {
+            if (n.getType() == Node.Type.INT) {
                 return executeInt(Node.asIntValue(n), iter);
-            } else if(n.getType() == Node.Type.FLOAT) {
+            } else if (n.getType() == Node.Type.FLOAT) {
                 return executeFloat(Node.asFloatValue(n), iter);
             } else {
                 // throw an error: + only works with int or float
@@ -55,7 +55,8 @@ public abstract class NodeFnMath extends NodeFn {
 
         return null;
     }
-    
-    abstract protected Node executeInt(int first, Iterator<Node> iter) throws LangException; 
+
+    abstract protected Node executeInt(int first, Iterator<Node> iter) throws LangException;
+
     abstract protected Node executeFloat(float first, Iterator<Node> iter) throws LangException;
 }

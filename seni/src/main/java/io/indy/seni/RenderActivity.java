@@ -1,3 +1,19 @@
+/*
+ * Copyright 2014 Inderjit Gill
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package io.indy.seni;
 
 import android.app.Activity;
@@ -24,7 +40,9 @@ public class RenderActivity extends Activity {
 
     public static final String SCRIPT_NAME = "script_name";
 
-    /** A handle to the View in which the game is running. */
+    /**
+     * A handle to the View in which the game is running.
+     */
     private SeniView mSeniView;
 
     /**
@@ -48,12 +66,12 @@ public class RenderActivity extends Activity {
      *
      * @param item the Menu entry which was selected
      * @return true if the Menu item was legit (and we consumed it), false
-     *         otherwise
+     * otherwise
      */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-        switch(item.getItemId()) {
+        switch (item.getItemId()) {
             case R.id.action_settings:
                 ifd("settings clicked");
                 return true;
@@ -70,7 +88,7 @@ public class RenderActivity extends Activity {
      * Invoked when the Activity is created.
      *
      * @param savedInstanceState a Bundle containing state saved from a previous
-     *        execution, or null if this is a new execution
+     *                           execution, or null if this is a new execution
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,7 +111,6 @@ public class RenderActivity extends Activity {
             // we are being restored: resume a previous game
             //mSeniViewThread.restoreState(savedInstanceState);
         }
-
 
 
     }

@@ -16,12 +16,12 @@
 
 package io.indy.seni.lang;
 
-import java.util.ArrayList;
+import org.junit.Test;
+
+import java.util.ArrayDeque;
 import java.util.List;
 import java.util.Queue;
-import java.util.ArrayDeque;
 
-import org.junit.Test;
 import static org.fest.assertions.api.Assertions.assertThat;
 
 public class ParserTest {
@@ -32,10 +32,10 @@ public class ParserTest {
 
         List<Node> nodes = Parser.parse(tokens);
         assertThat(nodes.size()).isEqualTo(1);
-        
+
         Node n = nodes.get(0);
         assertThat(n.getType()).isEqualTo(Node.Type.INT);
-        NodeInt ni = (NodeInt)n;
+        NodeInt ni = (NodeInt) n;
         assertThat(ni.getInt()).isEqualTo(42);
     }
 
@@ -50,7 +50,7 @@ public class ParserTest {
 
         Node n = nodes.get(0);
         assertThat(n.getType()).isEqualTo(Node.Type.FLOAT);
-        NodeFloat node = (NodeFloat)n;
+        NodeFloat node = (NodeFloat) n;
         assertThat(node.getFloat()).isEqualTo(val);
     }
 
@@ -65,7 +65,7 @@ public class ParserTest {
 
         Node n = nodes.get(0);
         assertThat(n.getType()).isEqualTo(Node.Type.STRING);
-        NodeString node = (NodeString)n;
+        NodeString node = (NodeString) n;
         assertThat(node.getString()).isEqualTo(val);
     }
 
@@ -80,7 +80,7 @@ public class ParserTest {
 
         Node n = nodes.get(0);
         assertThat(n.getType()).isEqualTo(Node.Type.NAME);
-        NodeName node = (NodeName)n;
+        NodeName node = (NodeName) n;
         assertThat(node.getName()).isEqualTo(val);
     }
 
@@ -95,7 +95,7 @@ public class ParserTest {
 
         Node n = nodes.get(0);
         assertThat(n.getType()).isEqualTo(Node.Type.BOOLEAN);
-        NodeBoolean node = (NodeBoolean)n;
+        NodeBoolean node = (NodeBoolean) n;
         assertThat(node.getBoolean()).isEqualTo(true);
 
 
@@ -108,7 +108,7 @@ public class ParserTest {
 
         n = nodes.get(0);
         assertThat(n.getType()).isEqualTo(Node.Type.BOOLEAN);
-        node = (NodeBoolean)n;
+        node = (NodeBoolean) n;
         assertThat(node.getBoolean()).isEqualTo(false);
     }
 
@@ -126,7 +126,7 @@ public class ParserTest {
 
         Node n = nodes.get(0);
         assertThat(n.getType()).isEqualTo(Node.Type.LIST);
-        NodeList nl = (NodeList)n;
+        NodeList nl = (NodeList) n;
         assertThat(nl.getChildren().size()).isEqualTo(2);
 
         n = nodes.get(1);
@@ -153,7 +153,7 @@ public class ParserTest {
 
         Node n = nodes.get(0);
         assertThat(n.getType()).isEqualTo(Node.Type.LIST);
-        NodeList nl = (NodeList)n;
+        NodeList nl = (NodeList) n;
         assertThat(nl.getChildren().size()).isEqualTo(3);
     }
 
@@ -173,26 +173,26 @@ public class ParserTest {
         Node n = nodes.get(0);
         assertThat(n.getType()).isEqualTo(Node.Type.LIST);
 
-        NodeList nl = (NodeList)n;
+        NodeList nl = (NodeList) n;
         assertThat(nl.getChildren().size()).isEqualTo(2);
 
         n = nl.getChild(0);
         assertThat(n.getType()).isEqualTo(Node.Type.NAME);
-        NodeName nn = (NodeName)n;
+        NodeName nn = (NodeName) n;
         assertThat(nn.getName()).isEqualTo("quote");
 
         n = nl.getChild(1);
         assertThat(n.getType()).isEqualTo(Node.Type.LIST);
-        nl = (NodeList)n;
+        nl = (NodeList) n;
 
         n = nl.getChild(0);
         assertThat(n.getType()).isEqualTo(Node.Type.INT);
-        NodeInt ni = (NodeInt)n;
+        NodeInt ni = (NodeInt) n;
         assertThat(ni.getInt()).isEqualTo(42);
 
         n = nl.getChild(1);
         assertThat(n.getType()).isEqualTo(Node.Type.INT);
-        ni = (NodeInt)n;
+        ni = (NodeInt) n;
         assertThat(ni.getInt()).isEqualTo(38);
     }
 
@@ -209,13 +209,13 @@ public class ParserTest {
 
         Node n = nodes.get(0);
         assertThat(n.getType()).isEqualTo(Node.Type.INT);
-        NodeInt ni = (NodeInt)n;
+        NodeInt ni = (NodeInt) n;
         assertThat(ni.getInt()).isEqualTo(16);
         assertThat(ni.isAlterable()).isTrue();
 
         n = nodes.get(1);
         assertThat(n.getType()).isEqualTo(Node.Type.INT);
-        ni = (NodeInt)n;
+        ni = (NodeInt) n;
         assertThat(ni.getInt()).isEqualTo(99);
         assertThat(ni.isAlterable()).isFalse();
     }
@@ -223,7 +223,7 @@ public class ParserTest {
     private Token makeToken(int val) {
         try {
             return new Token(Token.Type.INT, val);
-        } catch(Token.TokenException e) {
+        } catch (Token.TokenException e) {
             e.printStackTrace();
         }
         return null;
@@ -232,7 +232,7 @@ public class ParserTest {
     private Token makeToken(float val) {
         try {
             return new Token(Token.Type.FLOAT, val);
-        } catch(Token.TokenException e) {
+        } catch (Token.TokenException e) {
             e.printStackTrace();
         }
         return null;

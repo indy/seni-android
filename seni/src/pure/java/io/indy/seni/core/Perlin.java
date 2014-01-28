@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 Inderjit Gill
+ * Copyright 2014 Inderjit Gill
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,17 +23,17 @@ public class Perlin {
     }
 
     public double noiseRepeatingX(double x, double y, double z, double period) {
-        return (((period - x) * noise(x, y, z)) + 
+        return (((period - x) * noise(x, y, z)) +
                 (x * noise((x - period), y, z))) / period;
     }
 
     public double noiseRepeatingY(double x, double y, double z, double period) {
-        return (((period - y) * noise(x, y, z)) + 
+        return (((period - y) * noise(x, y, z)) +
                 (y * noise(x, (y - period), z))) / period;
     }
 
     public double noiseRepeatingZ(double x, double y, double z, double period) {
-        return (((period - z) * noise(x, y, z)) + 
+        return (((period - z) * noise(x, y, z)) +
                 (z * noise(x, y, (z - period)))) / period;
     }
 }

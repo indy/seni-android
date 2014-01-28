@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 Inderjit Gill
+ * Copyright 2014 Inderjit Gill
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -69,21 +69,29 @@ public abstract class Colour {
     }
 
     private static Colour fromSpace(Format space, float a, float b, float c) {
-        switch(space) {
-            case HSL: return fromHSL(a, b, c);
-            case HSV: return fromHSV(a, b, c);
-            case LAB: return fromLAB(a, b, c);
-            case RGB: return fromRGB(a, b, c);
+        switch (space) {
+            case HSL:
+                return fromHSL(a, b, c);
+            case HSV:
+                return fromHSV(a, b, c);
+            case LAB:
+                return fromLAB(a, b, c);
+            case RGB:
+                return fromRGB(a, b, c);
         }
         return fromRGB(a, b, c);
     }
 
     private static Colour fromSpace(Format space, float a, float b, float c, float alpha) {
-        switch(space) {
-            case HSL: return fromHSL(a, b, c, alpha);
-            case HSV: return fromHSV(a, b, c, alpha);
-            case LAB: return fromLAB(a, b, c, alpha);
-            case RGB: return fromRGB(a, b, c, alpha);
+        switch (space) {
+            case HSL:
+                return fromHSL(a, b, c, alpha);
+            case HSV:
+                return fromHSV(a, b, c, alpha);
+            case LAB:
+                return fromLAB(a, b, c, alpha);
+            case RGB:
+                return fromRGB(a, b, c, alpha);
         }
         return fromRGB(a, b, c, alpha);
     }
@@ -122,7 +130,7 @@ public abstract class Colour {
 
     private Colour(Format fmt, float v1, float v2, float v3, float v4) {
         mFormat = fmt;
-        mVal = new float[] {v1, v2, v3, v4};
+        mVal = new float[]{v1, v2, v3, v4};
     }
 
     public abstract Colour as(Format f);
@@ -132,17 +140,17 @@ public abstract class Colour {
     }
 
     public String toString() {
-        return mFormat + ": " + mVal[0] + ", " + mVal[1] + ", "+ mVal[2] + ", " + mVal[3];
+        return mFormat + ": " + mVal[0] + ", " + mVal[1] + ", " + mVal[2] + ", " + mVal[3];
     }
 
     public boolean compare(Colour c) {
         if (c.mFormat != this.mFormat) {
             return false;
         }
-        
+
         float tolerance = 0.05f;
 
-        for (int i=0;i<4;i++) {
+        for (int i = 0; i < 4; i++) {
             if (Math.abs(c.mVal[i] - this.mVal[i]) > tolerance) {
                 return false;
             }
@@ -159,7 +167,7 @@ public abstract class Colour {
     private Colour addAngleToHSL(float delta) {
 
         // c is be a copy of this, but in HSL format
-        ColourHSL c = (ColourHSL)(this.as(Format.HSL));
+        ColourHSL c = (ColourHSL) (this.as(Format.HSL));
 
         // rotate the hue by the given delta
         c.mVal[H] = (c.mVal[H] + delta) % 360.0f;
@@ -214,7 +222,7 @@ public abstract class Colour {
     protected float colourToAxis(float c) {
         float temp;
         if (c > 0.04045f) {
-            temp = (float) Math.pow((c + 0.055f) / 1.055f , 2.4f);
+            temp = (float) Math.pow((c + 0.055f) / 1.055f, 2.4f);
         } else {
             temp = c / 12.92f;
         }
@@ -228,9 +236,9 @@ public abstract class Colour {
         float bb = colourToAxis(mVal[BLUE]);
 
         return Colour.fromXYZ((rr * 0.4124f) + (gg * 0.3576f) + (bb * 0.1805f),
-                              (rr * 0.2126f) + (gg * 0.7152f) + (bb * 0.0722f),
-                              (rr * 0.0193f) + (gg * 0.1192f) + (bb * 0.9505f),
-                              mVal[ALPHA]);
+                (rr * 0.2126f) + (gg * 0.7152f) + (bb * 0.0722f),
+                (rr * 0.0193f) + (gg * 0.1192f) + (bb * 0.9505f),
+                mVal[ALPHA]);
     }
 
     protected float axisToLABComponent(float a) {
@@ -248,14 +256,14 @@ public abstract class Colour {
         float zz = axisToLABComponent(mVal[Z] / 108.883f);
 
         return Colour.fromLAB((116.0f * yy) - 16.0f,
-                              500.0f * (xx - yy),
-                              200.0f * (yy - zz),
-                              mVal[ALPHA]);
+                500.0f * (xx - yy),
+                200.0f * (yy - zz),
+                mVal[ALPHA]);
     }
 
     protected float AxisToColour(float a) {
         if (a > 0.0031308f) {
-            return (1.055f * (float)Math.pow(a, 1.0f / 2.4f)) - 0.055f;
+            return (1.055f * (float) Math.pow(a, 1.0f / 2.4f)) - 0.055f;
         } else {
             return a * 12.92f;
         }
@@ -271,9 +279,9 @@ public abstract class Colour {
         float b = (xx * 0.0557f) + (yy * -0.2040f) + (zz * 1.0570f);
 
         return Colour.fromRGB(AxisToColour(r),
-                              AxisToColour(g),
-                              AxisToColour(b),
-                              mVal[ALPHA]);
+                AxisToColour(g),
+                AxisToColour(b),
+                mVal[ALPHA]);
     }
 
     protected int maxChannel() {
@@ -289,15 +297,16 @@ public abstract class Colour {
     protected float hue(int maxChan, float chroma) {
         if (chroma == 0.0f) {
             return 0.0f;        // invalid hue
-        } 
-        switch(maxChan) {
-        case RED: 
-            return 60.0f * (((mVal[GREEN] - mVal[BLUE]) / chroma) % 6);
-        case GREEN:
-            return 60.0f * (((mVal[BLUE] - mVal[RED]) / chroma) + 2.0f);
-        case BLUE: 
-            return 60.0f * (((mVal[RED] - mVal[GREEN]) / chroma) + 4.0f);
-        };
+        }
+        switch (maxChan) {
+            case RED:
+                return 60.0f * (((mVal[GREEN] - mVal[BLUE]) / chroma) % 6);
+            case GREEN:
+                return 60.0f * (((mVal[BLUE] - mVal[RED]) / chroma) + 2.0f);
+            case BLUE:
+                return 60.0f * (((mVal[RED] - mVal[GREEN]) / chroma) + 4.0f);
+        }
+        ;
         return 0.0f;            // should never get here
     }
 
@@ -314,7 +323,7 @@ public abstract class Colour {
 
         float lightness = 0.5f * (minVal + maxVal);
         float saturation;
-        if(chroma == 0.0f) {
+        if (chroma == 0.0f) {
             saturation = 0.0f;
         } else {
             saturation = chroma / (1.0f - Math.abs((2.0f * lightness) - 1.0f));
@@ -341,7 +350,7 @@ public abstract class Colour {
         float value = maxVal;
 
         float saturation;
-        if(chroma == 0.0f) {
+        if (chroma == 0.0f) {
             saturation = 0.0f;
         } else {
             saturation = chroma / value;
@@ -363,20 +372,32 @@ public abstract class Colour {
         float g = 0.0f;
         float b = 0.0f;
 
-        if (hprime  < 1.0f) {
-            r = chroma; g = x; b = 0.0f;
+        if (hprime < 1.0f) {
+            r = chroma;
+            g = x;
+            b = 0.0f;
         } else if (hprime < 2.0f) {
-            r = x; g = chroma; b = 0.0f;
+            r = x;
+            g = chroma;
+            b = 0.0f;
         } else if (hprime < 3.0f) {
-            r = 0.0f; g = chroma; b = x;
+            r = 0.0f;
+            g = chroma;
+            b = x;
         } else if (hprime < 4.0f) {
-            r = 0.0f; g = x; b = chroma;
+            r = 0.0f;
+            g = x;
+            b = chroma;
         } else if (hprime < 5.0f) {
-            r = x; g = 0.0f; b = chroma;
+            r = x;
+            g = 0.0f;
+            b = chroma;
         } else if (hprime < 6.0f) {
-            r = chroma; g = 0.0f; b = x;
-        } 
-        
+            r = chroma;
+            g = 0.0f;
+            b = x;
+        }
+
         return Colour.fromRGB(r + m, g + m, b + m, mVal[ALPHA]);
     }
 
@@ -391,8 +412,8 @@ public abstract class Colour {
 
 
     protected float LABComponentToAxis(float l) {
-        if((float)Math.pow(l, 3.0f) > 0.008856) {
-            return (float)Math.pow(l, 3.0f);
+        if ((float) Math.pow(l, 3.0f) > 0.008856) {
+            return (float) Math.pow(l, 3.0f);
         } else {
             return (l - (16.0f / 116.0f)) / 7.787f;
         }
@@ -410,11 +431,11 @@ public abstract class Colour {
         float xx = LABComponentToAxis(x);
         float yy = LABComponentToAxis(y);
         float zz = LABComponentToAxis(z);
-        
-        return Colour.fromXYZ(refX * xx, 
-                              refY * yy, 
-                              refZ * zz,
-                              mVal[ALPHA]);
+
+        return Colour.fromXYZ(refX * xx,
+                refY * yy,
+                refZ * zz,
+                mVal[ALPHA]);
     }
 
     protected Colour HSVToRGB(boolean validHue) {
@@ -435,13 +456,13 @@ public abstract class Colour {
 
         public Colour as(Format f) {
 
-            if(f == Format.RGB) {
+            if (f == Format.RGB) {
                 return LABToXYZ().XYZToRGB();
-            } else if(f == Format.HSV) {
+            } else if (f == Format.HSV) {
                 return LABToXYZ().XYZToRGB().RGBToHSV();
-            } else if(f == Format.HSL) {
+            } else if (f == Format.HSL) {
                 return LABToXYZ().XYZToRGB().RGBToHSL();
-            } else if(f == Format.LAB) {
+            } else if (f == Format.LAB) {
                 return Colour.fromLAB(mVal[0], mVal[1], mVal[2], mVal[3]);
             }
 
@@ -465,13 +486,13 @@ public abstract class Colour {
 
         public Colour as(Format f) {
 
-            if(f == Format.RGB) {
+            if (f == Format.RGB) {
                 return HSVToRGB(mValidHue);
-            } else if(f == Format.HSV) {
+            } else if (f == Format.HSV) {
                 return Colour.fromHSV(mVal[0], mVal[1], mVal[2], mVal[3]);
-            } else if(f == Format.HSL) {
+            } else if (f == Format.HSL) {
                 return HSVToRGB(mValidHue).RGBToHSL();
-            } else if(f == Format.LAB) {
+            } else if (f == Format.LAB) {
                 return HSVToRGB(mValidHue).RGBToXYZ().XYZToLAB();
             }
 
@@ -481,7 +502,7 @@ public abstract class Colour {
     }
 
     private static class ColourHSL extends Colour {
-        
+
         private boolean mValidHue;
 
         public ColourHSL(float h, float s, float l, float alpha) {
@@ -495,13 +516,13 @@ public abstract class Colour {
 
         public Colour as(Format f) {
 
-            if(f == Format.RGB) {
+            if (f == Format.RGB) {
                 return HSLToRGB(mValidHue);
-            } else if(f == Format.HSV) {
+            } else if (f == Format.HSV) {
                 return HSLToRGB(mValidHue).RGBToHSV();
-            } else if(f == Format.HSL) {
+            } else if (f == Format.HSL) {
                 return Colour.fromHSL(mVal[0], mVal[1], mVal[2], mVal[3]);
-            } else if(f == Format.LAB) {
+            } else if (f == Format.LAB) {
                 return HSLToRGB(mValidHue).RGBToXYZ().XYZToLAB();
             }
 
@@ -518,13 +539,13 @@ public abstract class Colour {
 
         public Colour as(Format f) {
 
-            if(f == Format.RGB) {
+            if (f == Format.RGB) {
                 return Colour.fromRGB(mVal[0], mVal[1], mVal[2], mVal[3]);
-            } else if(f == Format.HSV) {
+            } else if (f == Format.HSV) {
                 return RGBToHSV();
-            } else if(f == Format.HSL) {
+            } else if (f == Format.HSL) {
                 return RGBToHSL();
-            } else if(f == Format.LAB) {
+            } else if (f == Format.LAB) {
                 return RGBToXYZ().XYZToLAB();
             }
 

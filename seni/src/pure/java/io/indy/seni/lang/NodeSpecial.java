@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 Inderjit Gill
+ * Copyright 2014 Inderjit Gill
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,15 +26,13 @@ public class NodeSpecial extends NodeInternal {
         Interpreter.registerSpecial(keyword);
 
         mKeyword = keyword;
-        
+
         mType = Type.SPECIAL;
     }
 
     public Node executeSpecial(Env env, NodeList listExpr) throws LangException {
 
         // nothing has been eval'd
-
-
 
 
         return null;//Interpreter.eval(scoped, mBody);

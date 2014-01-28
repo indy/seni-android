@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 Inderjit Gill
+ * Copyright 2014 Inderjit Gill
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -35,26 +35,26 @@ public class Core extends Binder {
 
         // create a colour node
         e.addBinding(new NodeFn("colour") {
-                public Node execute(Env env, List<Node> params)
+            public Node execute(Env env, List<Node> params)
                     throws LangException {
 
-                    // currently just rgb
-                    // TODO: accept hsl etc
+                // currently just rgb
+                // TODO: accept hsl etc
 
-                    Binder.checkArityAtLeast(params, 3, keyword());
+                Binder.checkArityAtLeast(params, 3, keyword());
 
-                    int numArgs = params.size();
+                int numArgs = params.size();
 
 
-                    float r = Node.asFloatValue(params.get(0));
-                    float g = Node.asFloatValue(params.get(1));
-                    float b = Node.asFloatValue(params.get(2));
+                float r = Node.asFloatValue(params.get(0));
+                float g = Node.asFloatValue(params.get(1));
+                float b = Node.asFloatValue(params.get(2));
 
-                    float a = numArgs == 3 ? 1.0f : Node.asFloatValue(params.get(3));
+                float a = numArgs == 3 ? 1.0f : Node.asFloatValue(params.get(3));
 
-                    return new NodeColour(Colour.fromRGB(r, g, b, a));
-                }
-            });
+                return new NodeColour(Colour.fromRGB(r, g, b, a));
+            }
+        });
 
         e.addBinding(new NodeFn("interpolate-lab") {
             public Node execute(Env env, List<Node> params)
@@ -114,67 +114,67 @@ public class Core extends Binder {
         });
 
         e.addBinding(new NodeFn("complementary") {
-                public Node execute(Env env, List<Node> params) 
+            public Node execute(Env env, List<Node> params)
                     throws LangException {
 
-                    Binder.checkArity(params, 1, keyword());
+                Binder.checkArity(params, 1, keyword());
 
-                    Colour c = Node.asColourValue(params.get(0));
+                Colour c = Node.asColourValue(params.get(0));
 
-                    return new NodeColour(c.complementary());
-                }
-            });
+                return new NodeColour(c.complementary());
+            }
+        });
 
         e.addBinding(new NodeFn("split-complementary") {
-                public Node execute(Env env, List<Node> params) 
+            public Node execute(Env env, List<Node> params)
                     throws LangException {
 
-                    Binder.checkArity(params, 1, keyword());
+                Binder.checkArity(params, 1, keyword());
 
-                    Colour c = Node.asColourValue(params.get(0));
-                    Colour cols[] = c.splitComplementary();
+                Colour c = Node.asColourValue(params.get(0));
+                Colour cols[] = c.splitComplementary();
 
-                    NodeList res = new NodeList();
-                    res.addChild(new NodeColour(c));
-                    res.addChild(new NodeColour(cols[0]));
-                    res.addChild(new NodeColour(cols[1]));
-                    return res;
-                }
-            });
+                NodeList res = new NodeList();
+                res.addChild(new NodeColour(c));
+                res.addChild(new NodeColour(cols[0]));
+                res.addChild(new NodeColour(cols[1]));
+                return res;
+            }
+        });
 
         e.addBinding(new NodeFn("analagous") {
-                public Node execute(Env env, List<Node> params) 
+            public Node execute(Env env, List<Node> params)
                     throws LangException {
 
-                    Binder.checkArity(params, 1, keyword());
+                Binder.checkArity(params, 1, keyword());
 
-                    Colour c = Node.asColourValue(params.get(0));
-                    Colour cols[] = c.analagous();
+                Colour c = Node.asColourValue(params.get(0));
+                Colour cols[] = c.analagous();
 
-                    NodeList res = new NodeList();
-                    res.addChild(new NodeColour(c));
-                    res.addChild(new NodeColour(cols[0]));
-                    res.addChild(new NodeColour(cols[1]));
-                    return res;
-                }
-            });
+                NodeList res = new NodeList();
+                res.addChild(new NodeColour(c));
+                res.addChild(new NodeColour(cols[0]));
+                res.addChild(new NodeColour(cols[1]));
+                return res;
+            }
+        });
 
         e.addBinding(new NodeFn("triad") {
-                public Node execute(Env env, List<Node> params) 
+            public Node execute(Env env, List<Node> params)
                     throws LangException {
 
-                    Binder.checkArity(params, 1, keyword());
+                Binder.checkArity(params, 1, keyword());
 
-                    Colour c = Node.asColourValue(params.get(0));
-                    Colour cols[] = c.triad();
+                Colour c = Node.asColourValue(params.get(0));
+                Colour cols[] = c.triad();
 
-                    NodeList res = new NodeList();
-                    res.addChild(new NodeColour(c));
-                    res.addChild(new NodeColour(cols[0]));
-                    res.addChild(new NodeColour(cols[1]));
-                    return res;
-                }
-            });
+                NodeList res = new NodeList();
+                res.addChild(new NodeColour(c));
+                res.addChild(new NodeColour(cols[0]));
+                res.addChild(new NodeColour(cols[1]));
+                return res;
+            }
+        });
 
         return e;
     }

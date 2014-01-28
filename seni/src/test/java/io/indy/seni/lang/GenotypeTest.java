@@ -16,20 +16,17 @@
 
 package io.indy.seni.lang;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Queue;
-import java.util.ArrayDeque;
-import java.util.Iterator;
-
 import org.junit.Test;
+
+import java.util.List;
+
 import static org.fest.assertions.api.Assertions.assertThat;
 
 public class GenotypeTest {
 
     @Test
     public void parseAlterableInt() {
-        
+
         Genotype a = new Genotype();
         Genotype b = new Genotype();
         a.add(new NodeInt(1));
@@ -54,11 +51,10 @@ public class GenotypeTest {
             assertThat(Node.asIntValue(alt.get(1))).isEqualTo(2);
             assertThat(Node.asIntValue(alt.get(2))).isEqualTo(97);
             assertThat(Node.asIntValue(alt.get(3))).isEqualTo(96);
-        } catch(LangException e) {
+        } catch (LangException e) {
             e.printStackTrace();
             assertThat(true).isEqualTo(false);
         }
-
 
 
     }

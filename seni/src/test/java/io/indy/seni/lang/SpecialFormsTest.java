@@ -18,12 +18,6 @@ package io.indy.seni.lang;
 
 import org.junit.Test;
 
-
-import java.util.List;
-import java.util.Queue;
-import org.junit.Before;
-import static org.fest.assertions.api.Assertions.assertThat;
-
 public class SpecialFormsTest extends EvalTestBase {
 
     @Test
@@ -46,13 +40,13 @@ public class SpecialFormsTest extends EvalTestBase {
     public void testDoTimes() {
 
         assertEval("  (begin"
-                   + "  (set! sum 0)"
-                   + "  (do-times i 5"
-                   + "            (set! sum (+ sum i))))", 
-                   "10");
+                + "  (set! sum 0)"
+                + "  (do-times i 5"
+                + "            (set! sum (+ sum i))))",
+                "10");
 
         assertEval("(do-times j 5 (+ j j))",
-                   "8");
+                "8");
 
     }
 

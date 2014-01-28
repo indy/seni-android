@@ -1,3 +1,19 @@
+/*
+ * Copyright 2014 Inderjit Gill
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package io.indy.seni.lang.bind;
 
 import java.util.ArrayList;
@@ -42,7 +58,7 @@ public class Special extends Binder {
                 }
 
                 NodeBoolean cond = (NodeBoolean) conditional;
-                if(cond.getBoolean()) {
+                if (cond.getBoolean()) {
                     return Interpreter.eval(env, listExpr.getChildren().get(2));
                 } else {
                     if (listExpr.getChildren().size() == 4) {
@@ -60,19 +76,19 @@ public class Special extends Binder {
                     throws LangException {
                 // (let ((x 2) (y 3)) (+ x y) .... )
 
-                int i=0;
+                int i = 0;
                 List<Node> children = listExpr.getChildren();
 
-                if(children.size() < 2) {
+                if (children.size() < 2) {
                     // throw an error: malformed let
                 }
 
                 Env scopedEnv = env.newScope();
 
                 NodeList newVars = Node.asList(children.get(1));  // ((x 2) (y 3))
-                for (i=0;i<newVars.getChildren().size();i++) {
+                for (i = 0; i < newVars.getChildren().size(); i++) {
                     NodeList nl = Node.asList(newVars.getChild(i));
-                    if(nl.getChildren().size() != 2) {
+                    if (nl.getChildren().size() != 2) {
                         // throw an error: let binding not part of a pair
                     }
 
@@ -81,7 +97,7 @@ public class Special extends Binder {
                 }
 
                 Node res = Interpreter.NODE_NULL;
-                for (i=2;i<children.size();i++) {
+                for (i = 2; i < children.size(); i++) {
                     res = Interpreter.eval(scopedEnv, children.get(i));
                 }
 
@@ -97,7 +113,7 @@ public class Special extends Binder {
                 // (define bar 99)
 
                 List<Node> children = listExpr.getChildren();
-                if(children.size() != 3) {
+                if (children.size() != 3) {
                     // throw an error : define not in form: define name value
                 }
 
@@ -122,7 +138,7 @@ public class Special extends Binder {
                 // (set! foo 42)
 
                 List<Node> children = listExpr.getChildren();
-                if(children.size() != 3) {
+                if (children.size() != 3) {
                     // throw an error : set! not in form: set! name value
                 }
 
@@ -170,7 +186,7 @@ public class Special extends Binder {
 
                 Node res = Interpreter.NODE_NULL;
                 // todo: replace with the more efficient iterator
-                for (int i=1;i<childrenSize;i++) {
+                for (int i = 1; i < childrenSize; i++) {
                     res = Interpreter.eval(env, children.get(i));
                 }
                 return res;

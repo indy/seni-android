@@ -1,3 +1,19 @@
+/*
+ * Copyright 2014 Inderjit Gill
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package io.indy.seni.util;
 
 import android.graphics.Canvas;
@@ -51,11 +67,11 @@ public class SimpleBenchmark {
 
         int i;
         mStart = android.os.SystemClock.uptimeMillis();
-        for(i=0;i<10000;i++) {
+        for (i = 0; i < 10000; i++) {
             canvas.drawLine(350.0f, 250.0f, 450.0f, 350.0f, linePaint);
         }
         mEnd = android.os.SystemClock.uptimeMillis();
-        ifd("timedDrawLine time: " + (mEnd-mStart) + " ms");
+        ifd("timedDrawLine time: " + (mEnd - mStart) + " ms");
     }
 
     private void timedDrawThickLine(Canvas canvas) {
@@ -68,11 +84,11 @@ public class SimpleBenchmark {
         linePaint.setARGB(255, 255, 0, 0);
 
         mStart = android.os.SystemClock.uptimeMillis();
-        for(i=0;i<10000;i++) {
+        for (i = 0; i < 10000; i++) {
             canvas.drawLine(350.0f, 250.0f, 450.0f, 350.0f, linePaint);
         }
         mEnd = android.os.SystemClock.uptimeMillis();
-        ifd("timedDrawThickLine time: " + (mEnd-mStart) + " ms");
+        ifd("timedDrawThickLine time: " + (mEnd - mStart) + " ms");
     }
 
     private void timedDrawLineAlternatingPaint(Canvas canvas) {
@@ -85,29 +101,29 @@ public class SimpleBenchmark {
 
         int i;
         mStart = android.os.SystemClock.uptimeMillis();
-        for(i=0;i<10000;i++) {
-            if((i&1) == 0) {
+        for (i = 0; i < 10000; i++) {
+            if ((i & 1) == 0) {
                 canvas.drawLine(350.0f, 250.0f, 450.0f, 350.0f, linePaint);
             } else {
                 canvas.drawLine(450.0f, 250.0f, 550.0f, 350.0f, linePaint2);
             }
         }
         mEnd = android.os.SystemClock.uptimeMillis();
-        ifd("timedDrawLineAlternatingPaint time: " + (mEnd-mStart) + " ms");
+        ifd("timedDrawLineAlternatingPaint time: " + (mEnd - mStart) + " ms");
     }
 
     private void timedDrawLineNewPaint(Canvas canvas) {
 
         int i;
         mStart = android.os.SystemClock.uptimeMillis();
-        for(i=0;i<10000;i++) {
+        for (i = 0; i < 10000; i++) {
             Paint linePaint = new Paint();
             linePaint.setAntiAlias(true);
             linePaint.setARGB(255, 255, 0, 0);
             canvas.drawLine(350.0f, 250.0f, 450.0f, 350.0f, linePaint);
         }
         mEnd = android.os.SystemClock.uptimeMillis();
-        ifd("timedDrawLineNewPaint time: " + (mEnd-mStart) + " ms");
+        ifd("timedDrawLineNewPaint time: " + (mEnd - mStart) + " ms");
     }
 
     private void timedDrawBox(Canvas canvas) {
@@ -120,11 +136,11 @@ public class SimpleBenchmark {
         RectF scratchRect = new RectF(4, 4, 12, 12);
 
         mStart = android.os.SystemClock.uptimeMillis();
-        for(i=0;i<10000;i++) {
+        for (i = 0; i < 10000; i++) {
             canvas.drawRect(scratchRect, linePaint);
         }
         mEnd = android.os.SystemClock.uptimeMillis();
-        ifd("timedDrawBox time: " + (mEnd-mStart) + " ms");
+        ifd("timedDrawBox time: " + (mEnd - mStart) + " ms");
     }
 
 
@@ -138,11 +154,11 @@ public class SimpleBenchmark {
         RectF scratchRect = new RectF(4, 4, 512, 512);
 
         mStart = android.os.SystemClock.uptimeMillis();
-        for(i=0;i<10000;i++) {
+        for (i = 0; i < 10000; i++) {
             canvas.drawRect(scratchRect, linePaint);
         }
         mEnd = android.os.SystemClock.uptimeMillis();
-        ifd("timedDrawLargeBox time: " + (mEnd-mStart) + " ms");
+        ifd("timedDrawLargeBox time: " + (mEnd - mStart) + " ms");
     }
 
     private void timedDrawModifiedPaintBox(Canvas canvas) {
@@ -155,12 +171,12 @@ public class SimpleBenchmark {
         RectF scratchRect = new RectF(4, 4, 12, 12);
 
         mStart = android.os.SystemClock.uptimeMillis();
-        for(i=0;i<10000;i++) {
+        for (i = 0; i < 10000; i++) {
             linePaint.setARGB(i % 255, 255, 0, 0);
             canvas.drawRect(scratchRect, linePaint);
         }
         mEnd = android.os.SystemClock.uptimeMillis();
-        ifd("timedDrawModifiedPaintBox time: " + (mEnd-mStart) + " ms");
+        ifd("timedDrawModifiedPaintBox time: " + (mEnd - mStart) + " ms");
     }
 
     private void timedDrawThickBox(Canvas canvas) {
@@ -175,11 +191,11 @@ public class SimpleBenchmark {
         RectF scratchRect = new RectF(304, 304, 312, 312);
 
         mStart = android.os.SystemClock.uptimeMillis();
-        for(i=0;i<10000;i++) {
+        for (i = 0; i < 10000; i++) {
             canvas.drawRect(scratchRect, linePaint);
         }
         mEnd = android.os.SystemClock.uptimeMillis();
-        ifd("timedDrawThickBox time: " + (mEnd-mStart) + " ms");
+        ifd("timedDrawThickBox time: " + (mEnd - mStart) + " ms");
     }
 
 
@@ -192,11 +208,11 @@ public class SimpleBenchmark {
         int i;
 
         mStart = android.os.SystemClock.uptimeMillis();
-        for(i=0;i<10000;i++) {
+        for (i = 0; i < 10000; i++) {
             canvas.drawCircle(200, 200, 5, linePaint);
         }
         mEnd = android.os.SystemClock.uptimeMillis();
-        ifd("timedDrawSmallCircle time: " + (mEnd-mStart) + " ms");
+        ifd("timedDrawSmallCircle time: " + (mEnd - mStart) + " ms");
     }
 
 
@@ -209,11 +225,11 @@ public class SimpleBenchmark {
         int i;
 
         mStart = android.os.SystemClock.uptimeMillis();
-        for(i=0;i<10000;i++) {
+        for (i = 0; i < 10000; i++) {
             canvas.drawCircle(200, 200, 50, linePaint);
         }
         mEnd = android.os.SystemClock.uptimeMillis();
-        ifd("timedDrawLargeCircle time: " + (mEnd-mStart) + " ms");
+        ifd("timedDrawLargeCircle time: " + (mEnd - mStart) + " ms");
     }
 
     private void timedDrawThickCircle(Canvas canvas) {
@@ -227,13 +243,12 @@ public class SimpleBenchmark {
         int i;
 
         mStart = android.os.SystemClock.uptimeMillis();
-        for(i=0;i<10000;i++) {
+        for (i = 0; i < 10000; i++) {
             canvas.drawCircle(200, 200, 50, linePaint);
         }
         mEnd = android.os.SystemClock.uptimeMillis();
-        ifd("timedDrawThickCircle time: " + (mEnd-mStart) + " ms");
+        ifd("timedDrawThickCircle time: " + (mEnd - mStart) + " ms");
     }
-
 
 
     private void timedDrawMatrixLine(Canvas canvas) {
@@ -243,16 +258,15 @@ public class SimpleBenchmark {
 
         int i;
         mStart = android.os.SystemClock.uptimeMillis();
-        for(i=0;i<10000;i++) {
+        for (i = 0; i < 10000; i++) {
             canvas.save();
             canvas.rotate(34.0f, 60.0f, 350.0f);
             canvas.drawLine(350.0f, 250.0f, 450.0f, 350.0f, linePaint);
             canvas.restore();
         }
         mEnd = android.os.SystemClock.uptimeMillis();
-        ifd("timedDrawMatrixLine time: " + (mEnd-mStart) + " ms");
+        ifd("timedDrawMatrixLine time: " + (mEnd - mStart) + " ms");
     }
-
 
 
     private void timedDrawLargeAlphaMatrixCircle(Canvas canvas) {
@@ -264,14 +278,14 @@ public class SimpleBenchmark {
         int i;
 
         mStart = android.os.SystemClock.uptimeMillis();
-        for(i=0;i<10000;i++) {
+        for (i = 0; i < 10000; i++) {
             canvas.save();
             canvas.rotate(34.0f, 60.0f, 350.0f);
             canvas.drawCircle(i % 600, i % 600, 50, linePaint);
             canvas.restore();
         }
         mEnd = android.os.SystemClock.uptimeMillis();
-        ifd("timedDrawLargeAlphaMatrixCircle time: " + (mEnd-mStart) + " ms");
+        ifd("timedDrawLargeAlphaMatrixCircle time: " + (mEnd - mStart) + " ms");
     }
 
     private void timedDrawSmallAlphaMatrixBox(Canvas canvas) {
@@ -283,14 +297,14 @@ public class SimpleBenchmark {
         int i;
 
         mStart = android.os.SystemClock.uptimeMillis();
-        for(i=0;i<10000;i++) {
+        for (i = 0; i < 10000; i++) {
             canvas.save();
             canvas.rotate(64.0f, 260.0f, 150.0f);
             canvas.drawRect(i % 600, i % 600, (i % 600) + 8, (i % 600) + 8, linePaint);
             canvas.restore();
         }
         mEnd = android.os.SystemClock.uptimeMillis();
-        ifd("timedDrawSmallAlphaMatrixBox time: " + (mEnd-mStart) + " ms");
+        ifd("timedDrawSmallAlphaMatrixBox time: " + (mEnd - mStart) + " ms");
     }
 
     private void timedDrawLargeAlphaMatrixBox(Canvas canvas) {
@@ -302,14 +316,14 @@ public class SimpleBenchmark {
         int i;
 
         mStart = android.os.SystemClock.uptimeMillis();
-        for(i=0;i<10000;i++) {
+        for (i = 0; i < 10000; i++) {
             canvas.save();
             canvas.rotate(64.0f, 260.0f, 150.0f);
             canvas.drawRect(i % 600, i % 600, (i % 600) + 300, (i % 600) + 300, linePaint);
             canvas.restore();
         }
         mEnd = android.os.SystemClock.uptimeMillis();
-        ifd("timedDrawLargeAlphaMatrixBox time: " + (mEnd-mStart) + " ms");
+        ifd("timedDrawLargeAlphaMatrixBox time: " + (mEnd - mStart) + " ms");
     }
 
 

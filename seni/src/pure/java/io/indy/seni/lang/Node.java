@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 Inderjit Gill
+ * Copyright 2014 Inderjit Gill
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -59,7 +59,7 @@ abstract public class Node {
     }
 
     public static NodeBoolean asBoolean(Node n) throws LangException {
-        if(n.getType() != Type.BOOLEAN) {
+        if (n.getType() != Type.BOOLEAN) {
             throw new LangException("cannot cast to BOOLEAN from " + n);
         }
         return (NodeBoolean) n;
@@ -70,7 +70,7 @@ abstract public class Node {
     }
 
     public static NodeInt asInt(Node n) throws LangException {
-        if(n.getType() != Type.INT) {
+        if (n.getType() != Type.INT) {
             throw new LangException("cannot cast to INT from " + n);
         }
         return (NodeInt) n;
@@ -81,9 +81,9 @@ abstract public class Node {
     }
 
     public static NodeFloat asFloat(Node n) throws LangException {
-        if(n.getType() == Type.INT) {
-            return new NodeFloat((float)((NodeInt)n).getInt());
-        } else if(n.getType() != Type.FLOAT) {
+        if (n.getType() == Type.INT) {
+            return new NodeFloat((float) ((NodeInt) n).getInt());
+        } else if (n.getType() != Type.FLOAT) {
             throw new LangException("cannot cast to FLOAT from " + n);
         }
         return (NodeFloat) n;
@@ -138,7 +138,7 @@ abstract public class Node {
     }
 
     public static NodeColour asColour(Node n) throws LangException {
-        if(n.getType() != Type.COLOUR) {
+        if (n.getType() != Type.COLOUR) {
             throw new LangException("cannot cast to COLOUR from " + n);
         }
         return (NodeColour) n;
@@ -149,8 +149,8 @@ abstract public class Node {
     }
 
 
-    public static NodeLambda resolveLambda(Env env, Node n) 
-        throws LangException {
+    public static NodeLambda resolveLambda(Env env, Node n)
+            throws LangException {
         // n is expected to be either a lambda or a name referencing a lambda
         //
         if (n.getType() == Node.Type.NAME) {
@@ -169,20 +169,21 @@ abstract public class Node {
     }
 
     public static class ScribeException extends Exception {
-        public ScribeException(String message){
+        public ScribeException(String message) {
             super(message);
         }
     }
 
     abstract public boolean eq(Node n);
+
     abstract protected String scribeValue() throws ScribeException;
 
     public String scribe(Env env) throws ScribeException {
-        if(isAlterable()) {
+        if (isAlterable()) {
 
             Node n = this;
             try {
-                if(env != null && env.hasBinding(mGenSym)) {
+                if (env != null && env.hasBinding(mGenSym)) {
                     n = env.lookup(mGenSym);
                 }
             } catch (LangException e) {

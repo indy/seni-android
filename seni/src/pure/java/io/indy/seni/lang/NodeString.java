@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 Inderjit Gill
+ * Copyright 2014 Inderjit Gill
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -43,7 +43,7 @@ public class NodeString extends Node {
         if (n.mType != Node.Type.STRING) {
             return false;
         }
-        return ((NodeString)n).mString.equals(mString);
+        return ((NodeString) n).mString.equals(mString);
     }
 
     protected String scribeValue() throws ScribeException {
@@ -53,7 +53,7 @@ public class NodeString extends Node {
     public String toString() {
         try {
             String value = "";
-            if(isAlterable()) {
+            if (isAlterable()) {
                 value = "[" + scribeValue() + "]";
             } else {
                 value = "" + scribeValue();

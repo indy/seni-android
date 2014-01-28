@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 Inderjit Gill
+ * Copyright 2014 Inderjit Gill
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -38,7 +38,7 @@ public class NodeColour extends NodeInternal {
             return false;
         }
 
-        NodeColour nodeColour = (NodeColour)n;
+        NodeColour nodeColour = (NodeColour) n;
         return mColour.compare(nodeColour.mColour);
     }
 

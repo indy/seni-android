@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 Inderjit Gill
+ * Copyright 2014 Inderjit Gill
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -34,101 +34,101 @@ public class Functional extends Binder {
     public static Env bind(Env e) {
 
         e.addBinding(new NodeFn("apply") {
-                public Node execute(Env env, List<Node> params)
+            public Node execute(Env env, List<Node> params)
                     throws LangException {
 
-                    Binder.checkArity(params, 2, keyword());
+                Binder.checkArity(params, 2, keyword());
 
-                    NodeLambda fn = Node.resolveLambda(env, params.get(0));
-                    NodeList listExpr = Node.asList(params.get(1));
-                    List<Node> fnArgs = listExpr.getChildren();
+                NodeLambda fn = Node.resolveLambda(env, params.get(0));
+                NodeList listExpr = Node.asList(params.get(1));
+                List<Node> fnArgs = listExpr.getChildren();
 
-                    return fn.execute(env, fnArgs);
-                }
-            });
+                return fn.execute(env, fnArgs);
+            }
+        });
 
         e.addBinding(new NodeFn("map") {
-                public Node execute(Env env, List<Node> params) 
+            public Node execute(Env env, List<Node> params)
                     throws LangException {
 
-                    Binder.checkArity(params, 2, keyword());
+                Binder.checkArity(params, 2, keyword());
 
-                    NodeLambda fn = Node.resolveLambda(env, params.get(0));
+                NodeLambda fn = Node.resolveLambda(env, params.get(0));
 
-                    NodeList listExpr = Node.asList(params.get(1));
+                NodeList listExpr = Node.asList(params.get(1));
 
-                    NodeList res = new NodeList();
-                    for (Node child : listExpr.getChildren()) {
-                        res.addChild(fn.execute(env, child));
-                    }
-                    return res;
+                NodeList res = new NodeList();
+                for (Node child : listExpr.getChildren()) {
+                    res.addChild(fn.execute(env, child));
                 }
-            });
+                return res;
+            }
+        });
 
         e.addBinding(new NodeFn("filter") {
-                public Node execute(Env env, List<Node> params) 
+            public Node execute(Env env, List<Node> params)
                     throws LangException {
 
-                    Binder.checkArity(params, 2, keyword());
+                Binder.checkArity(params, 2, keyword());
 
-                    NodeLambda fn = Node.resolveLambda(env, params.get(0));
+                NodeLambda fn = Node.resolveLambda(env, params.get(0));
 
-                    NodeList listExpr = Node.asList(params.get(1));
-                    NodeBoolean nb;
-                    NodeList res = new NodeList();
-                    for (Node child : listExpr.getChildren()) {
-                        nb = Node.asBoolean((fn.execute(env, child)));
-                        if(nb.getBoolean()) {
-                            res.addChild(child);
-                        }
+                NodeList listExpr = Node.asList(params.get(1));
+                NodeBoolean nb;
+                NodeList res = new NodeList();
+                for (Node child : listExpr.getChildren()) {
+                    nb = Node.asBoolean((fn.execute(env, child)));
+                    if (nb.getBoolean()) {
+                        res.addChild(child);
                     }
-                    return res;
                 }
-            });
+                return res;
+            }
+        });
 
         e.addBinding(new NodeFn("reduce") {
-                public Node execute(Env env, List<Node> params) 
+            public Node execute(Env env, List<Node> params)
                     throws LangException {
 
-                    int numArgs = params.size();
-                    if (numArgs < 2 || numArgs > 3) {
-                        String msg = "wrong # of arguments for " + keyword();
-                        throw new LangException(msg);
-                    }
-
-                    NodeList coll;
-                    Iterator<Node> iter;
-                    Node total;
-
-                    if (numArgs == 2) {
-                        coll = Node.asList(params.get(1));
-                        iter = coll.getChildren().iterator();
-                        if (iter.hasNext()) {
-                            total = iter.next();
-                        } else {
-                            throw new LangException("empty list given to reduce");
-                        }
-                    } else {
-                        coll = Node.asList(params.get(2));
-                        iter = coll.getChildren().iterator();
-                        total = params.get(1);
-                    }
-
-                    NodeLambda fn = Node.resolveLambda(env, params.get(0));
-
-                    List<Node> args = new ArrayList<Node>();
-
-                    while (iter.hasNext()) {
-                        args.clear();
-                        args.add(total);
-                        args.add(iter.next());
-                        total = fn.execute(env, args);
-                    }
-
-                    return total;
+                int numArgs = params.size();
+                if (numArgs < 2 || numArgs > 3) {
+                    String msg = "wrong # of arguments for " + keyword();
+                    throw new LangException(msg);
                 }
-            });
+
+                NodeList coll;
+                Iterator<Node> iter;
+                Node total;
+
+                if (numArgs == 2) {
+                    coll = Node.asList(params.get(1));
+                    iter = coll.getChildren().iterator();
+                    if (iter.hasNext()) {
+                        total = iter.next();
+                    } else {
+                        throw new LangException("empty list given to reduce");
+                    }
+                } else {
+                    coll = Node.asList(params.get(2));
+                    iter = coll.getChildren().iterator();
+                    total = params.get(1);
+                }
+
+                NodeLambda fn = Node.resolveLambda(env, params.get(0));
+
+                List<Node> args = new ArrayList<Node>();
+
+                while (iter.hasNext()) {
+                    args.clear();
+                    args.add(total);
+                    args.add(iter.next());
+                    total = fn.execute(env, args);
+                }
+
+                return total;
+            }
+        });
 
         return e;
-    }    
+    }
 }

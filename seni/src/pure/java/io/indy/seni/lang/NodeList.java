@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 Inderjit Gill
+ * Copyright 2014 Inderjit Gill
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -61,7 +61,7 @@ public class NodeList extends Node {
             return false;
         }
 
-        NodeList nl = (NodeList)n;
+        NodeList nl = (NodeList) n;
 
         if (mChildren.size() != nl.mChildren.size()) {
             return false;
@@ -86,7 +86,7 @@ public class NodeList extends Node {
     public String scribe(Env env) throws ScribeException {
 
         String res = "(";
-        for(Node n : mChildren) {
+        for (Node n : mChildren) {
             res += n.scribe(env) + " ";
         }
         return res.substring(0, res.length() - 1) + ")";

@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 Inderjit Gill
+ * Copyright 2014 Inderjit Gill
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -74,11 +74,11 @@ public class Env {
     public boolean hasBinding(String key) {
         Env e = this;
         do {
-            if(e.hasBindingInThisScope(key)) {
+            if (e.hasBindingInThisScope(key)) {
                 return true;
             }
             e = e.mOuter;
-        } while(e != null);
+        } while (e != null);
         return false;
     }
 
@@ -90,12 +90,12 @@ public class Env {
 
         Env e = this;
         do {
-            if(e.hasBindingInThisScope(key)) {
+            if (e.hasBindingInThisScope(key)) {
                 return e.mBindings.get(key);
             }
             e = e.mOuter;
-        } while(e != null);
-        
+        } while (e != null);
+
         throw new LangException("unable to find value of key: " + key + " in env");
     }
 }

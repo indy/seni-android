@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 Inderjit Gill
+ * Copyright 2014 Inderjit Gill
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,7 +29,7 @@ public class NodeFloat extends Node {
         super(alterable);
         init(value);
     }
-    
+
     private void init(float value) {
         mType = Node.Type.FLOAT;
         mFloat = value;
@@ -43,7 +43,7 @@ public class NodeFloat extends Node {
         if (n.mType != Node.Type.FLOAT) {
             return false;
         }
-        return mFloat == ((NodeFloat)n).mFloat;
+        return mFloat == ((NodeFloat) n).mFloat;
     }
 
     protected String scribeValue() throws ScribeException {
@@ -53,7 +53,7 @@ public class NodeFloat extends Node {
     public String toString() {
         try {
             String value = "";
-            if(isAlterable()) {
+            if (isAlterable()) {
                 value = "[" + scribeValue() + "]";
             } else {
                 value = "" + scribeValue();

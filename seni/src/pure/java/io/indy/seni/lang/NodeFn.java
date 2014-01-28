@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 Inderjit Gill
+ * Copyright 2014 Inderjit Gill
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -33,20 +33,20 @@ abstract public class NodeFn extends NodeLambda {
         return mKeyword;
     }
 
-    abstract public Node execute(Env env, List<Node> params) 
-        throws LangException;
+    abstract public Node execute(Env env, List<Node> params)
+            throws LangException;
 
     public boolean eq(Node n) {
         if (n.mType != Node.Type.LAMBDA) {
             return false;
         }
 
-        NodeLambda nl = (NodeLambda)n;
+        NodeLambda nl = (NodeLambda) n;
         if (nl.mIsKeyworded == false) {
             return false;
         }
 
-        NodeFn nfn = (NodeFn)nl;
+        NodeFn nfn = (NodeFn) nl;
         return mKeyword.equals(nfn.mKeyword);
     }
 }

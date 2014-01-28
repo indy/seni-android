@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 Inderjit Gill
+ * Copyright 2014 Inderjit Gill
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,8 +17,8 @@
 package io.indy.seni.lang;
 
 /**
-   Nodes derived from NodeInternal are created by the 
-   interpreter not the parser. They won't be scribed.
+ * Nodes derived from NodeInternal are created by the
+ * interpreter not the parser. They won't be scribed.
  */
 abstract public class NodeInternal extends Node {
 

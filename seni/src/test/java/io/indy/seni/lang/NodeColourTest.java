@@ -16,9 +16,10 @@
 
 package io.indy.seni.lang;
 
-import io.indy.seni.core.Colour;
-import java.util.List;
 import org.junit.Test;
+
+import io.indy.seni.core.Colour;
+
 import static org.fest.assertions.api.Assertions.assertThat;
 
 public class NodeColourTest {

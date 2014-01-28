@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 Inderjit Gill
+ * Copyright 2014 Inderjit Gill
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -36,44 +36,44 @@ public class Interpreter {
     }
 
     public static Node eval(Env env, Node expr) throws LangException {
-        
+
         Node.Type type = expr.getType();
 
-        if(type == Node.Type.INT) {
+        if (type == Node.Type.INT) {
             return expr.isAlterable() ? env.lookup(expr.getGenSym()) : expr;
         }
 
-        if(type == Node.Type.FLOAT) {
+        if (type == Node.Type.FLOAT) {
             return expr.isAlterable() ? env.lookup(expr.getGenSym()) : expr;
         }
 
-        if(type == Node.Type.BOOLEAN) {
+        if (type == Node.Type.BOOLEAN) {
             return expr.isAlterable() ? env.lookup(expr.getGenSym()) : expr;
         }
 
-        if(type == Node.Type.COLOUR) {
+        if (type == Node.Type.COLOUR) {
             return expr;
         }
 
-        if(type == Node.Type.STRING) {
+        if (type == Node.Type.STRING) {
             return expr.isAlterable() ? env.lookup(expr.getGenSym()) : expr;
         }
 
-        if(type == Node.Type.NULL) {
+        if (type == Node.Type.NULL) {
             return expr;
         }
 
-        if(type == Node.Type.NAME) {
+        if (type == Node.Type.NAME) {
             String name;
-            if(expr.isAlterable()) {
-                name = ((NodeName)(env.lookup(expr.getGenSym()))).getName();
+            if (expr.isAlterable()) {
+                name = ((NodeName) (env.lookup(expr.getGenSym()))).getName();
             } else {
-                name = ((NodeName)expr).getName();
+                name = ((NodeName) expr).getName();
             }
             return env.lookup(name);
         }
 
-        if(type == Node.Type.LIST) {
+        if (type == Node.Type.LIST) {
             return funApplication(env, (NodeList) expr);
         }
         return null;
@@ -83,7 +83,7 @@ public class Interpreter {
 
         if (isSpecialForm(listExpr)) {
             return specialApplication(env, listExpr);
-        } 
+        }
 
         // general function application
         return generalApplication(env, listExpr);
@@ -100,14 +100,14 @@ public class Interpreter {
         Node fun = eval(env, iter.next());
 
         // fun is either a lambda or a name
-        if(fun.getType() == Node.Type.NAME) {
+        if (fun.getType() == Node.Type.NAME) {
             fun = env.lookup(Node.asNameValue(fun));
         }
 
         NodeLambda lambda = Node.asLambda(fun);
 
         List<Node> args = new ArrayList<Node>();
-        while(iter.hasNext()) {
+        while (iter.hasNext()) {
             args.add(eval(env, iter.next()));
         }
 
@@ -132,7 +132,7 @@ public class Interpreter {
 
         Node first = children.get(0);
 
-        if(first.getType() == Node.Type.LIST) {
+        if (first.getType() == Node.Type.LIST) {
             return false;
         }
 
@@ -150,7 +150,7 @@ public class Interpreter {
         }
 
         Node first = children.get(0);
-        
+
         return Node.asNameValue(first);
     }
 }

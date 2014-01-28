@@ -16,9 +16,7 @@
 
 package io.indy.seni.lang;
 
-import java.util.List;
 import org.junit.Test;
-import static org.fest.assertions.api.Assertions.assertThat;
 
 public class NodeLambdaTest extends EvalTestBase {
 

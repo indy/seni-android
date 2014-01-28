@@ -16,12 +16,10 @@
 
 package io.indy.seni.lang;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Queue;
-import java.util.ArrayDeque;
-
 import org.junit.Test;
+
+import java.util.List;
+
 import static org.fest.assertions.api.Assertions.assertThat;
 
 public class AstHolderTest {
@@ -40,7 +38,7 @@ public class AstHolderTest {
             n = alterable.get(0);
             assertThat(Node.asIntValue(n)).isEqualTo(4);
             assertThat(n.getGenSym()).isEqualTo("$_42");
-        } catch(LangException e) {
+        } catch (LangException e) {
             e.printStackTrace();
             assertThat(true).isEqualTo(false);
         }
@@ -49,7 +47,7 @@ public class AstHolderTest {
             n = alterable.get(1);
             assertThat(Node.asIntValue(n)).isEqualTo(5);
             assertThat(n.getGenSym()).isEqualTo("$_43");
-        } catch(LangException e) {
+        } catch (LangException e) {
             e.printStackTrace();
             assertThat(true).isEqualTo(false);
         }
@@ -81,7 +79,7 @@ public class AstHolderTest {
             assertThat(Node.asIntValue(n)).isEqualTo(4);
             assertThat(n.getGenSym()).isEqualTo("$_44");
 
-        } catch(LangException e) {
+        } catch (LangException e) {
             e.printStackTrace();
             assertThat(true).isEqualTo(false);
         }
@@ -104,7 +102,7 @@ public class AstHolderTest {
 
             n = res.lookup("$_43");
             assertThat(Node.asIntValue(n)).isEqualTo(5);
-        } catch(LangException e) {
+        } catch (LangException e) {
             e.printStackTrace();
             assertThat(true).isEqualTo(false);
         }

@@ -1,17 +1,18 @@
 package io.indy.seni;
 
 import android.app.Application;
+
 import io.indy.seni.dummy.DummyModule;
-//import com.jakewharton.u2020.data.DataModule;
-//import com.jakewharton.u2020.ui.UiModule;
 import dagger.Module;
 import dagger.Provides;
+import io.indy.seni.ui.UiModule;
+
 import javax.inject.Singleton;
 
 @Module(
     includes = {
-        DummyModule.class
-//        UiModule.class,
+        DummyModule.class,
+        UiModule.class
 //        DataModule.class
     },
     injects = {
@@ -24,10 +25,9 @@ public final class SeniModule {
   public SeniModule(SeniApp app) {
     this.app = app;
   }
-
-    /*
-  @Provides @Singleton Application provideApplication() {
+/*
+  @Provides @Singleton
+  Application provideApplication() {
     return app;
-  }
-    */
+  }*/
 }

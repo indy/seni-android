@@ -2,6 +2,8 @@ package io.indy.seni;
 
 import android.app.Application;
 import android.content.Context;
+import android.util.Log;
+
 import dagger.ObjectGraph;
 import io.indy.seni.dummy.Monkey;
 
@@ -9,6 +11,15 @@ import java.util.concurrent.TimeUnit;
 import javax.inject.Inject;
 
 public class SeniApp extends Application {
+
+
+    private static final String TAG = "SeniApp";
+    private static final boolean D = true;
+
+    static void ifd(final String message) {
+        if (AppConfig.DEBUG && D) Log.d(TAG, message);
+    }
+
   private ObjectGraph objectGraph;
 
   @Override public void onCreate() {
@@ -32,7 +43,7 @@ public class SeniApp extends Application {
     objectGraph.inject(this);
 
     long diff = TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - start);
-    //Timber.i("Global object graph creation took %sms", diff);
+    ifd("Global object graph creation took " + diff + "ms");
   }
 
   public void inject(Object o) {

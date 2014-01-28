@@ -67,6 +67,10 @@ android {
     buildConfigField "String", "BUILD_TIME", "\"${buildTime()}\""
   }
 
+  lintOptions {
+    abortOnError false
+  }
+
   // enable the diamond operator, multi-catch, 
   // strings in switches, try with resources, etc
   compileOptions {

@@ -31,6 +31,7 @@ import java.util.Date;
 import java.util.TimeZone;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -39,13 +40,15 @@ import io.indy.seni.R;
 import io.indy.seni.SeniApp;
 import io.indy.seni.ui.AppContainer;
 
-//@Singleton
+@Singleton
 public class DebugAppContainer implements AppContainer {
 
     private static final DateFormat DATE_DISPLAY_FORMAT = new SimpleDateFormat("yyyy-MM-dd hh:mm a");
 
     Activity activity;
     Context mDrawerContext;
+
+    @InjectView(R.id.debug_content) ViewGroup content;
 
     @InjectView(R.id.debug_build_name) TextView buildNameView;
     @InjectView(R.id.debug_build_code) TextView buildCodeView;
@@ -71,13 +74,11 @@ public class DebugAppContainer implements AppContainer {
     public ViewGroup get(Activity activity, SeniApp app) {
 
         this.activity = activity;
+        mDrawerContext = activity;
 
         activity.setContentView(R.layout.debug_activity_frame);
 
-        ViewGroup content = (ViewGroup)(activity.findViewById(R.id.debug_content));
-
-
-        mDrawerContext = activity;
+        // Manually find the debug drawer and inflate the drawer layout inside of it.
         ViewGroup drawer = (ViewGroup)(activity.findViewById(R.id.debug_drawer));
         LayoutInflater.from(mDrawerContext).inflate(R.layout.debug_drawer_content, drawer);
 

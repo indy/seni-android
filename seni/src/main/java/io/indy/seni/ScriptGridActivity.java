@@ -52,11 +52,7 @@ public class ScriptGridActivity extends Activity {
         app.inject(this);
 
         mContainer = mAppContainer.get(this, app);
-
         getLayoutInflater().inflate(R.layout.activity_script_grid, mContainer);
-
-        //setContentView(R.layout.activity_script_grid);
-
 
         ifd("monkey is: " + mMonkey.getName());
     }

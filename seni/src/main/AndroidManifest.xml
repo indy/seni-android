@@ -11,24 +11,9 @@
     <application
             android:allowBackup="true"
             android:icon="@drawable/ic_launcher"
-            android:label="@string/app_name"
+            android:label="@string/application_name"
             android:theme="@style/AppTheme"
             android:name=".SeniApp">
-
-        <!--
-        <activity
-                android:name="io.indy.seni.ScriptListActivity"
-                android:label="@string/app_name" >
-        </activity>
-        <activity
-                android:name="io.indy.seni.ScriptDetailActivity"
-                android:label="@string/title_script_detail"
-                android:parentActivityName=".ScriptListActivity" >
-            <meta-data
-                    android:name="android.support.PARENT_ACTIVITY"
-                    android:value=".ScriptListActivity" />
-        </activity>
-        -->
 
         <activity
                 android:name="io.indy.seni.RenderActivity"
@@ -37,7 +22,7 @@
 
         <activity
                 android:name="io.indy.seni.ScriptGridActivity"
-                android:label="@string/title_activity_script_grid">
+                android:label="@string/launcher_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>

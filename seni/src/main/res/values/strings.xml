@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">seni</string>
-
     <string name="title_activity_render">RenderActivity</string>
     <string name="title_activity_script_grid">ScriptGridActivity</string>
     <string name="title_activity_evolve">Evolve</string>

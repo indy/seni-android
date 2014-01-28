@@ -21,16 +21,34 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.view.MenuItem;
+import android.view.ViewGroup;
+
+import javax.inject.Inject;
+
+import io.indy.seni.ui.AppContainer;
 
 public class EvolveActivity extends Activity {
+
+    @Inject
+    AppContainer mAppContainer;
+
+    private ViewGroup mContainer;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_evolve);
+
+        SeniApp app = SeniApp.get(this);
+        app.inject(this);
+
+        mContainer = mAppContainer.get(this, app);
+        getLayoutInflater().inflate(R.layout.activity_evolve, mContainer);
+
+        //setContentView(R.layout.activity_evolve);
 
         // Show the Up button in the action bar.
-        getActionBar().setDisplayHomeAsUpEnabled(true);
+        //getActionBar().setDisplayHomeAsUpEnabled(true);
 
         // savedInstanceState is non-null when there is fragment state
         // saved from previous configurations of this activity

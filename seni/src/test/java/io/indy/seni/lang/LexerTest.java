@@ -16,9 +16,10 @@
 
 package io.indy.seni.lang;
 
+import org.junit.Test;
+
 import java.util.Queue;
 
-import org.junit.Test;
 import static org.fest.assertions.api.Assertions.assertThat;
 
 public class LexerTest {

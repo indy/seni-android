@@ -2,18 +2,18 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="io.indy.seni"
           android:versionCode="1"
-          android:versionName="1.0" >
+          android:versionName="1.0">
 
     <uses-sdk
             android:minSdkVersion="19"
-            android:targetSdkVersion="19" />
+            android:targetSdkVersion="19"/>
 
     <application
             android:allowBackup="true"
             android:icon="@drawable/ic_launcher"
             android:label="@string/app_name"
             android:theme="@style/AppTheme"
-            android:name=".SeniApp" >
+            android:name=".SeniApp">
 
         <!--
         <activity
@@ -32,25 +32,25 @@
 
         <activity
                 android:name="io.indy.seni.RenderActivity"
-                android:label="@string/title_activity_render" >
+                android:label="@string/title_activity_render">
         </activity>
 
         <activity
                 android:name="io.indy.seni.ScriptGridActivity"
-                android:label="@string/title_activity_script_grid" >
-                <intent-filter>
-                    <action android:name="android.intent.action.MAIN" />
-                    <category android:name="android.intent.category.LAUNCHER" />
-                </intent-filter>
+                android:label="@string/title_activity_script_grid">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
         </activity>
 
         <activity
                 android:name=".EvolveActivity"
                 android:label="@string/title_activity_evolve"
-                android:parentActivityName=".ScriptGridActivity" >
+                android:parentActivityName=".ScriptGridActivity">
             <meta-data
                     android:name="android.support.PARENT_ACTIVITY"
-                    android:value=".ScriptGridActivity" />
+                    android:value=".ScriptGridActivity"/>
         </activity>
 
     </application>

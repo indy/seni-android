@@ -38,7 +38,7 @@ public class Mathematical extends Binder {
             protected Node executeInt(int first, Iterator<Node> iter)
                     throws LangException {
 
-                return new NodeFloat((float)first);
+                return new NodeFloat((float) first);
             }
 
             protected Node executeFloat(float first, Iterator<Node> iter)
@@ -50,260 +50,260 @@ public class Mathematical extends Binder {
 
 
         e.addBinding(new NodeFnMath("+") {
-                protected Node executeInt(int first, Iterator<Node> iter)
+            protected Node executeInt(int first, Iterator<Node> iter)
                     throws LangException {
 
-                    int total = first;
-                    try {
-                        while(iter.hasNext()) {
-                            total += Node.asIntValue(iter.next());
-                        }
-                    } catch (LangException e) {
-                        // log plus
-                        throw e;
+                int total = first;
+                try {
+                    while (iter.hasNext()) {
+                        total += Node.asIntValue(iter.next());
                     }
-
-                    return new NodeInt(total);
+                } catch (LangException e) {
+                    // log plus
+                    throw e;
                 }
 
-                protected Node executeFloat(float first, Iterator<Node> iter)
+                return new NodeInt(total);
+            }
+
+            protected Node executeFloat(float first, Iterator<Node> iter)
                     throws LangException {
-        
-                    float total = first;
-                    try {
-                        while(iter.hasNext()) {
-                            total += Node.asFloatValue(iter.next());
-                        }
-                    } catch (LangException e) {
-                        throw e;
+
+                float total = first;
+                try {
+                    while (iter.hasNext()) {
+                        total += Node.asFloatValue(iter.next());
                     }
-                    return new NodeFloat(total);
+                } catch (LangException e) {
+                    throw e;
                 }
-            });
+                return new NodeFloat(total);
+            }
+        });
 
 
         e.addBinding(new NodeFnMath("-") {
-                protected Node executeInt(int first, Iterator<Node> iter) 
+            protected Node executeInt(int first, Iterator<Node> iter)
                     throws LangException {
 
-                    int total = first;
-                    try {
-                        while(iter.hasNext()) {
-                            total -= Node.asIntValue(iter.next());
-                        }
-                    } catch (LangException e) {
-                        // log minus
-                        throw e;
+                int total = first;
+                try {
+                    while (iter.hasNext()) {
+                        total -= Node.asIntValue(iter.next());
                     }
-
-                    return new NodeInt(total);
+                } catch (LangException e) {
+                    // log minus
+                    throw e;
                 }
 
-                protected Node executeFloat(float first, Iterator<Node> iter)
+                return new NodeInt(total);
+            }
+
+            protected Node executeFloat(float first, Iterator<Node> iter)
                     throws LangException {
-        
-                    float total = first;
-                    try {
-                        while(iter.hasNext()) {
-                            total -= Node.asFloatValue(iter.next());
-                        }
-                    } catch (LangException e) {
-                        throw e;
+
+                float total = first;
+                try {
+                    while (iter.hasNext()) {
+                        total -= Node.asFloatValue(iter.next());
                     }
-                    return new NodeFloat(total);
+                } catch (LangException e) {
+                    throw e;
                 }
-            });
+                return new NodeFloat(total);
+            }
+        });
 
         e.addBinding(new NodeFnMath("/") {
-                
-                protected Node executeInt(int first, Iterator<Node> iter) 
+
+            protected Node executeInt(int first, Iterator<Node> iter)
                     throws LangException {
 
-                    int total = first;
-                    try {
-                        while(iter.hasNext()) {
-                            total /= Node.asIntValue(iter.next());
-                        }
-                    } catch (LangException e) {
-                        throw e;
+                int total = first;
+                try {
+                    while (iter.hasNext()) {
+                        total /= Node.asIntValue(iter.next());
                     }
-
-                    return new NodeInt(total);
+                } catch (LangException e) {
+                    throw e;
                 }
 
-                protected Node executeFloat(float first, Iterator<Node> iter)
+                return new NodeInt(total);
+            }
+
+            protected Node executeFloat(float first, Iterator<Node> iter)
                     throws LangException {
-        
-                    float total = first;
-                    try {
-                        while(iter.hasNext()) {
-                            total /= Node.asFloatValue(iter.next());
-                        }
-                    } catch (LangException e) {
-                        throw e;
+
+                float total = first;
+                try {
+                    while (iter.hasNext()) {
+                        total /= Node.asFloatValue(iter.next());
                     }
-                    return new NodeFloat(total);
+                } catch (LangException e) {
+                    throw e;
                 }
-            });
+                return new NodeFloat(total);
+            }
+        });
 
         e.addBinding(new NodeFnMath("*") {
-                protected Node executeInt(int first, Iterator<Node> iter) 
+            protected Node executeInt(int first, Iterator<Node> iter)
                     throws LangException {
 
-                    int total = first;
-                    try {
-                        while(iter.hasNext()) {
-                            total *= Node.asIntValue(iter.next());
-                        }
-                    } catch (LangException e) {
-                        throw e;
+                int total = first;
+                try {
+                    while (iter.hasNext()) {
+                        total *= Node.asIntValue(iter.next());
                     }
-
-                    return new NodeInt(total);
+                } catch (LangException e) {
+                    throw e;
                 }
 
-                protected Node executeFloat(float first, Iterator<Node> iter)
+                return new NodeInt(total);
+            }
+
+            protected Node executeFloat(float first, Iterator<Node> iter)
                     throws LangException {
-        
-                    float total = first;
-                    try {
-                        while(iter.hasNext()) {
-                            total *= Node.asFloatValue(iter.next());
-                        }
-                    } catch (LangException e) {
-                        throw e;
+
+                float total = first;
+                try {
+                    while (iter.hasNext()) {
+                        total *= Node.asFloatValue(iter.next());
                     }
-                    return new NodeFloat(total);
+                } catch (LangException e) {
+                    throw e;
                 }
-            });
+                return new NodeFloat(total);
+            }
+        });
 
         e.addBinding(new NodeFnMath("<") {
-                
-                protected Node executeInt(int first, Iterator<Node> iter) 
+
+            protected Node executeInt(int first, Iterator<Node> iter)
                     throws LangException {
 
-                    int less = first;
-                    int val;
+                int less = first;
+                int val;
 
-                    try {
-                        while(iter.hasNext()) {
-                            val = Node.asIntValue(iter.next());
-                            if (less > val) {
-                                return new NodeBoolean(false);
-                            }
-                            less = val;
+                try {
+                    while (iter.hasNext()) {
+                        val = Node.asIntValue(iter.next());
+                        if (less > val) {
+                            return new NodeBoolean(false);
                         }
-
-                    } catch (LangException e) {
-                        // log less
-                        throw e;
+                        less = val;
                     }
-        
-                    return new NodeBoolean(true);
+
+                } catch (LangException e) {
+                    // log less
+                    throw e;
                 }
 
-                protected Node executeFloat(float first, Iterator<Node> iter)
+                return new NodeBoolean(true);
+            }
+
+            protected Node executeFloat(float first, Iterator<Node> iter)
                     throws LangException {
-        
-                    float less = first;
-                    float val;
 
-                    try {
-                        while(iter.hasNext()) {
-                            val = Node.asFloatValue(iter.next());
-                            if (less > val) {
-                                return new NodeBoolean(false);
-                            }
-                            less = val;
+                float less = first;
+                float val;
+
+                try {
+                    while (iter.hasNext()) {
+                        val = Node.asFloatValue(iter.next());
+                        if (less > val) {
+                            return new NodeBoolean(false);
                         }
-                    } catch (LangException e) {
-                        throw e;
+                        less = val;
                     }
-
-                    return new NodeBoolean(true);
-
+                } catch (LangException e) {
+                    throw e;
                 }
-            });
+
+                return new NodeBoolean(true);
+
+            }
+        });
 
         e.addBinding(new NodeFnMath(">") {
-                protected Node executeInt(int first, Iterator<Node> iter) 
+            protected Node executeInt(int first, Iterator<Node> iter)
                     throws LangException {
 
-                    int less = first;
-                    int val;
+                int less = first;
+                int val;
 
-                    try {
-                        while(iter.hasNext()) {
-                            val = Node.asIntValue(iter.next());
-                            if (less < val) {
-                                return new NodeBoolean(false);
-                            }
-                            less = val;
+                try {
+                    while (iter.hasNext()) {
+                        val = Node.asIntValue(iter.next());
+                        if (less < val) {
+                            return new NodeBoolean(false);
                         }
-
-                    } catch (LangException e) {
-                        // log less
-                        throw e;
+                        less = val;
                     }
-        
-                    return new NodeBoolean(true);
+
+                } catch (LangException e) {
+                    // log less
+                    throw e;
                 }
 
-                protected Node executeFloat(float first, Iterator<Node> iter)
+                return new NodeBoolean(true);
+            }
+
+            protected Node executeFloat(float first, Iterator<Node> iter)
                     throws LangException {
-        
-                    float less = first;
-                    float val;
 
-                    try {
-                        while(iter.hasNext()) {
-                            val = Node.asFloatValue(iter.next());
-                            if (less < val) {
-                                return new NodeBoolean(false);
-                            }
-                            less = val;
+                float less = first;
+                float val;
+
+                try {
+                    while (iter.hasNext()) {
+                        val = Node.asFloatValue(iter.next());
+                        if (less < val) {
+                            return new NodeBoolean(false);
                         }
-                    } catch (LangException e) {
-                        throw e;
+                        less = val;
                     }
-
-                    return new NodeBoolean(true);
+                } catch (LangException e) {
+                    throw e;
                 }
-            });
+
+                return new NodeBoolean(true);
+            }
+        });
 
         e.addBinding(new NodeFnMath("=") {
-                protected Node executeInt(int first, Iterator<Node> iter) 
+            protected Node executeInt(int first, Iterator<Node> iter)
                     throws LangException {
-                    try {
-                        while(iter.hasNext()) {
-                            if (first != Node.asIntValue(iter.next())) {
-                                return new NodeBoolean(false);
-                            }
+                try {
+                    while (iter.hasNext()) {
+                        if (first != Node.asIntValue(iter.next())) {
+                            return new NodeBoolean(false);
                         }
-                    } catch (LangException e) {
-                        // log equal
-                        throw e;
                     }
-        
-                    return new NodeBoolean(true);
+                } catch (LangException e) {
+                    // log equal
+                    throw e;
                 }
 
-                protected Node executeFloat(float first, Iterator<Node> iter)
-                    throws LangException {
-                    try {
-                        while(iter.hasNext()) {
-                            if (first != Node.asFloatValue(iter.next())) {
-                                return new NodeBoolean(false);
-                            }
-                        }
-                    } catch (LangException e) {
-                        throw e;
-                    }
+                return new NodeBoolean(true);
+            }
 
-                    return new NodeBoolean(true);        
+            protected Node executeFloat(float first, Iterator<Node> iter)
+                    throws LangException {
+                try {
+                    while (iter.hasNext()) {
+                        if (first != Node.asFloatValue(iter.next())) {
+                            return new NodeBoolean(false);
+                        }
+                    }
+                } catch (LangException e) {
+                    throw e;
                 }
-            });
+
+                return new NodeBoolean(true);
+            }
+        });
 
         return e;
-    }    
+    }
 }

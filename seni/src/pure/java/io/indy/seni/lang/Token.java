@@ -34,7 +34,7 @@ public class Token {
     }
 
     public static class TokenException extends Exception {
-        public TokenException(String message){
+        public TokenException(String message) {
             super(message);
         }
     }
@@ -55,7 +55,7 @@ public class Token {
     }
 
     public Token(Type type, int value) throws TokenException {
-        if(type != Type.INT) {
+        if (type != Type.INT) {
             throw new TokenException("value: " + value + " expected to have type INT");
         }
         mType = Type.INT;
@@ -63,7 +63,7 @@ public class Token {
     }
 
     public Token(Type type, float value) throws TokenException {
-        if(type != Type.FLOAT) {
+        if (type != Type.FLOAT) {
             throw new TokenException("value: " + value + " expected to have type FLOAT");
         }
         mType = Type.FLOAT;

@@ -31,13 +31,12 @@ public class ScriptAdapter extends BaseAdapter {
         if (AppConfig.DEBUG && D) Log.d(TAG, message);
     }
 
-    private static final String[] items={"lorem", "ipsum", "dolor",
+    private static final String[] items = {"lorem", "ipsum", "dolor",
             "sit", "amet",
             "consectetuer", "adipiscing", "elit", "morbi", "vel",
             "ligula", "vitae", "arcu", "aliquet", "mollis",
             "etiam", "vel", "erat", "placerat", "ante",
             "porttitor", "sodales", "pellentesque", "augue", "purus"};
-
 
 
     // private static final String[] items={"lorem", "ipsum"};
@@ -51,12 +50,12 @@ public class ScriptAdapter extends BaseAdapter {
 
     public ScriptAdapter(Context context) {
         mContext = context;
-        mInflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         mAstHolder = new AstHolder(Art1403b.script());
         mNumFucks = 32;
         mGenotypes = new Genotype[mNumFucks];
-        for(int i=0;i<mNumFucks;i++) {
+        for (int i = 0; i < mNumFucks; i++) {
             mGenotypes[i] = mAstHolder.getGenotype().mutate();
         }
     }
@@ -94,7 +93,7 @@ public class ScriptAdapter extends BaseAdapter {
         int numColumns = mContext.getResources().getInteger(R.integer.num_columns);
 
         if (convertView == null) {
-            if(numColumns > 1) {
+            if (numColumns > 1) {
                 view = mInflater.inflate(R.layout.cell_templist, parent, false);
             } else {
                 view = mInflater.inflate(R.layout.row_templist, parent, false);
@@ -109,12 +108,12 @@ public class ScriptAdapter extends BaseAdapter {
         seniView.setAstHolder(mAstHolder);
         seniView.setGenotype(mGenotypes[position % mNumFucks]);
 
-        if(numColumns > 1) {
+        if (numColumns > 1) {
             text = (TextView) view.findViewById(R.id.bar);
-            text.setText("shabba " + (CharSequence)getItem(position));
+            text.setText("shabba " + (CharSequence) getItem(position));
         } else {
             text = (TextView) view.findViewById(R.id.foo);
-            text.setText((CharSequence)getItem(position));
+            text.setText((CharSequence) getItem(position));
         }
 
         view.setOnClickListener(mOnClickListener);
@@ -127,7 +126,7 @@ public class ScriptAdapter extends BaseAdapter {
         public void onClick(View v) {
             ifd("clicked");
 
-            int position = (int)v.getTag(R.string.tag_position);
+            int position = (int) v.getTag(R.string.tag_position);
             Intent intent = new Intent(mContext, EvolveActivity.class);
 
             Genotype genotype = mGenotypes[position % mNumFucks];
@@ -135,7 +134,7 @@ public class ScriptAdapter extends BaseAdapter {
 
             try {
                 script = mAstHolder.scribe(genotype);
-            } catch(Node.ScribeException e) {
+            } catch (Node.ScribeException e) {
                 e.printStackTrace();
             }
 
@@ -148,9 +147,12 @@ public class ScriptAdapter extends BaseAdapter {
     private String getScript(int position) {
 
         switch (position % 3) {
-            case 0: return Art1352.script();
-            case 1: return Art1402.script();
-            default:return Art1403.script();
+            case 0:
+                return Art1352.script();
+            case 1:
+                return Art1402.script();
+            default:
+                return Art1403.script();
         }
     }
 

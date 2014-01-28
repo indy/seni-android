@@ -38,7 +38,7 @@ public class NodeColour extends NodeInternal {
             return false;
         }
 
-        NodeColour nodeColour = (NodeColour)n;
+        NodeColour nodeColour = (NodeColour) n;
         return mColour.compare(nodeColour.mColour);
     }
 

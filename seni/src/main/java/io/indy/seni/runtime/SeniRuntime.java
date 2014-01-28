@@ -5,7 +5,6 @@ import android.graphics.Paint;
 import android.util.Log;
 
 import java.util.List;
-import java.util.Queue;
 
 import io.indy.seni.AppConfig;
 import io.indy.seni.lang.AstHolder;
@@ -13,11 +12,8 @@ import io.indy.seni.lang.Env;
 import io.indy.seni.lang.Genotype;
 import io.indy.seni.lang.Interpreter;
 import io.indy.seni.lang.LangException;
-import io.indy.seni.lang.Lexer;
 import io.indy.seni.lang.Node;
 import io.indy.seni.lang.NodeFloat;
-import io.indy.seni.lang.Parser;
-import io.indy.seni.lang.Token;
 import io.indy.seni.runtime.bind.Platform;
 
 public class SeniRuntime {
@@ -51,8 +47,8 @@ public class SeniRuntime {
         //
         env = rt.bindCoreFunctions(env);
         env = rt.bindPlatformFunctions(env, sc);
-        env = env.addBinding("canvas-width", new NodeFloat((float)canvas.getWidth()));
-        env = env.addBinding("canvas-height", new NodeFloat((float)canvas.getHeight()));
+        env = env.addBinding("canvas-width", new NodeFloat((float) canvas.getWidth()));
+        env = env.addBinding("canvas-height", new NodeFloat((float) canvas.getHeight()));
 
         // generate ast from script
         //
@@ -66,7 +62,7 @@ public class SeniRuntime {
             for (Node node : ast) {
                 Interpreter.eval(env, node);
             }
-        } catch(LangException e) {
+        } catch (LangException e) {
             ifd("exception: " + e);
             e.printStackTrace();
         }

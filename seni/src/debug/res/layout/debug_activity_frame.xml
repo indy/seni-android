@@ -4,9 +4,12 @@
         android:id="@+id/debug_drawer_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-    <FrameLayout android:layout_width="match_parent"
-                 android:layout_height="match_parent"
-                 android:id="@+id/debug_content" />
+
+    <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/debug_content"/>
+
     <ScrollView
             android:id="@+id/debug_drawer"
             android:layout_width="290dp"

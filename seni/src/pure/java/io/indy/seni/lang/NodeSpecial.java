@@ -26,15 +26,13 @@ public class NodeSpecial extends NodeInternal {
         Interpreter.registerSpecial(keyword);
 
         mKeyword = keyword;
-        
+
         mType = Type.SPECIAL;
     }
 
     public Node executeSpecial(Env env, NodeList listExpr) throws LangException {
 
         // nothing has been eval'd
-
-
 
 
         return null;//Interpreter.eval(scoped, mBody);

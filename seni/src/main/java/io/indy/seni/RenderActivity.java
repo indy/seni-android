@@ -24,7 +24,9 @@ public class RenderActivity extends Activity {
 
     public static final String SCRIPT_NAME = "script_name";
 
-    /** A handle to the View in which the game is running. */
+    /**
+     * A handle to the View in which the game is running.
+     */
     private SeniView mSeniView;
 
     /**
@@ -48,12 +50,12 @@ public class RenderActivity extends Activity {
      *
      * @param item the Menu entry which was selected
      * @return true if the Menu item was legit (and we consumed it), false
-     *         otherwise
+     * otherwise
      */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-        switch(item.getItemId()) {
+        switch (item.getItemId()) {
             case R.id.action_settings:
                 ifd("settings clicked");
                 return true;
@@ -70,7 +72,7 @@ public class RenderActivity extends Activity {
      * Invoked when the Activity is created.
      *
      * @param savedInstanceState a Bundle containing state saved from a previous
-     *        execution, or null if this is a new execution
+     *                           execution, or null if this is a new execution
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,7 +95,6 @@ public class RenderActivity extends Activity {
             // we are being restored: resume a previous game
             //mSeniViewThread.restoreState(savedInstanceState);
         }
-
 
 
     }

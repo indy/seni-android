@@ -17,6 +17,7 @@
 package io.indy.seni.lang.bind;
 
 import org.junit.Test;
+
 import io.indy.seni.lang.EvalTestBase;
 
 
@@ -60,13 +61,13 @@ public class ListsTest extends EvalTestBase {
     @Test
     public void testMapcat() {
         assertEval("(mapcat (lambda (x) (cons x '())) '(1 2 3))",
-                   "(1 2 3)");
+                "(1 2 3)");
 
         assertEval("(mapcat (lambda (x) (cons x '(8))) '(1 2 3))",
-                   "(1 8 2 8 3 8)");
+                "(1 8 2 8 3 8)");
 
         assertEval("(mapcat (lambda (x y) (cons (+ x y) '(42))) '(1 2 3) '(4 5 6))",
-                   "(5 42 7 42 9 42)");
+                "(5 42 7 42 9 42)");
     }
 
     @Test

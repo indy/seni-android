@@ -49,7 +49,7 @@ public class NodeLambda extends NodeInternal {
 
         // param has already been eval'd
 
-        if(mArgs.size() != 1) {
+        if (mArgs.size() != 1) {
             // throw an exception
         }
 
@@ -66,7 +66,7 @@ public class NodeLambda extends NodeInternal {
 
         // the params have already been eval'd
 
-        if(mArgs.size() != params.size()) {
+        if (mArgs.size() != params.size()) {
             // throw an exception
         }
 
@@ -81,7 +81,7 @@ public class NodeLambda extends NodeInternal {
         // bind params to mArgs
         Iterator<String> argIter = mArgs.iterator();
         Iterator<Node> paramIter = params.iterator();
-        while(argIter.hasNext()) {
+        while (argIter.hasNext()) {
             env.addBinding(argIter.next(), paramIter.next());
         }
 

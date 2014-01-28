@@ -30,14 +30,14 @@ public class Platform extends Binder {
 
         e.addBinding(new NodeSpecialSeniContext("scope", sc) {
             public Node executeSpecial(Env env, NodeList listExpr)
-                throws LangException {
-                
+                    throws LangException {
+
                 mSeniContext.getCanvas().save();
-                
+
                 List<Node> children = listExpr.getChildren();
                 Iterator<Node> iter = children.iterator();
                 iter.next(); // 'scope' name
-                while(iter.hasNext()) {
+                while (iter.hasNext()) {
                     Interpreter.eval(env, iter.next());
                 }
 
@@ -54,7 +54,7 @@ public class Platform extends Binder {
                 Binder.checkArity(params, 1, keyword());
 
                 CoreBridge.setColour(mSeniContext.getPaint(),
-                                     Node.asColourValue(params.get(0)));
+                        Node.asColourValue(params.get(0)));
 
                 return Interpreter.NODE_NULL;
             }

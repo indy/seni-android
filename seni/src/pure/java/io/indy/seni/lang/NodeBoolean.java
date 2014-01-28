@@ -43,7 +43,7 @@ public class NodeBoolean extends Node {
         if (n.mType != Node.Type.BOOLEAN) {
             return false;
         }
-        return mBoolean == ((NodeBoolean)n).mBoolean;
+        return mBoolean == ((NodeBoolean) n).mBoolean;
     }
 
     protected String scribeValue() throws ScribeException {

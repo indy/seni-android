@@ -18,11 +18,13 @@ public class DebugAppContainer implements AppContainer {
 
     }
 
-    /** The root {@link android.view.ViewGroup} into which the activity should place its contents. */
+    /**
+     * The root {@link android.view.ViewGroup} into which the activity should place its contents.
+     */
     @Override
     public ViewGroup get(Activity activity, SeniApp app) {
 
         activity.setContentView(R.layout.debug_activity_frame);
-        return (ViewGroup)(activity.findViewById(R.id.debug_content));
+        return (ViewGroup) (activity.findViewById(R.id.debug_content));
     }
 }

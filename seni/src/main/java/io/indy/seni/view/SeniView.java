@@ -4,15 +4,8 @@ package io.indy.seni.view;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.graphics.Paint;
-import android.graphics.RectF;
-import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.util.AttributeSet;
 import android.util.Log;
-import android.view.SurfaceHolder;
-import android.view.SurfaceView;
 import android.view.View;
 
 import io.indy.seni.AppConfig;
@@ -71,6 +64,7 @@ public class SeniView extends View {
     public void setAstHolder(AstHolder astHolder) {
         mAstHolder = astHolder;
     }
+
     public void setGenotype(Genotype genotype) {
         mGenotype = genotype;
     }

@@ -17,8 +17,8 @@
 package io.indy.seni.lang;
 
 /**
-   Nodes derived from NodeInternal are created by the 
-   interpreter not the parser. They won't be scribed.
+ * Nodes derived from NodeInternal are created by the
+ * interpreter not the parser. They won't be scribed.
  */
 abstract public class NodeInternal extends Node {
 

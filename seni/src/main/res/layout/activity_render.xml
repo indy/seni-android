@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/container"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="io.indy.seni.RenderActivity"
-    tools:ignore="MergeRootFrame">
-    
+             xmlns:tools="http://schemas.android.com/tools"
+             android:id="@+id/container"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             tools:context="io.indy.seni.RenderActivity"
+             tools:ignore="MergeRootFrame">
+
     <io.indy.seni.view.SeniView
-      android:id="@+id/lunar"
-      android:layout_width="fill_parent"
-      android:layout_height="fill_parent"/>
+            android:id="@+id/lunar"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"/>
 
 </FrameLayout>

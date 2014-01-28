@@ -18,8 +18,7 @@ package io.indy.seni.lang;
 
 import java.util.List;
 import java.util.Queue;
-import org.junit.Test;
-import org.junit.Before;
+
 import static org.fest.assertions.api.Assertions.assertThat;
 
 abstract public class EvalTestBase {
@@ -127,7 +126,7 @@ abstract public class EvalTestBase {
             for (Node node : ast) {
                 res = Interpreter.eval(e, node);
             }
-            
+
             return res;
 
         } catch (LangException exception) {

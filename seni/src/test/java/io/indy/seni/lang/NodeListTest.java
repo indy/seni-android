@@ -16,9 +16,10 @@
 
 package io.indy.seni.lang;
 
+import org.junit.Test;
+
 import java.util.List;
 
-import org.junit.Test;
 import static org.fest.assertions.api.Assertions.assertThat;
 
 public class NodeListTest extends EvalTestBase {
@@ -30,7 +31,7 @@ public class NodeListTest extends EvalTestBase {
         n.addChild(nodeInt);
 
         assertThat(n.getType()).isEqualTo(Node.Type.LIST);
-        
+
         List<Node> children = n.getChildren();
         assertThat(children.size()).isEqualTo(1);
 

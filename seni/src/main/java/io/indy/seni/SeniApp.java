@@ -4,11 +4,9 @@ import android.app.Application;
 import android.content.Context;
 import android.util.Log;
 
-import dagger.ObjectGraph;
-import io.indy.seni.dummy.Monkey;
-
 import java.util.concurrent.TimeUnit;
-import javax.inject.Inject;
+
+import dagger.ObjectGraph;
 
 public class SeniApp extends Application {
 
@@ -20,37 +18,38 @@ public class SeniApp extends Application {
         if (AppConfig.DEBUG && D) Log.d(TAG, message);
     }
 
-  private ObjectGraph objectGraph;
+    private ObjectGraph objectGraph;
 
-  @Override public void onCreate() {
-    super.onCreate();
+    @Override
+    public void onCreate() {
+        super.onCreate();
 
-    if (BuildConfig.DEBUG) {
+        if (BuildConfig.DEBUG) {
 //      Timber.plant(new DebugTree());
-    } else {
-      // TODO Crashlytics.start(this);
-      // TODO Timber.plant(new CrashlyticsTree());
+        } else {
+            // TODO Crashlytics.start(this);
+            // TODO Timber.plant(new CrashlyticsTree());
+        }
+
+        buildObjectGraphAndInject();
+
     }
 
-    buildObjectGraphAndInject();
+    public void buildObjectGraphAndInject() {
+        long start = System.nanoTime();
 
-  }
+        objectGraph = ObjectGraph.create(Modules.list(this));
+        objectGraph.inject(this);
 
-  public void buildObjectGraphAndInject() {
-    long start = System.nanoTime();
+        long diff = TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - start);
+        ifd("Global object graph creation took " + diff + "ms");
+    }
 
-    objectGraph = ObjectGraph.create(Modules.list(this));
-    objectGraph.inject(this);
+    public void inject(Object o) {
+        objectGraph.inject(o);
+    }
 
-    long diff = TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - start);
-    ifd("Global object graph creation took " + diff + "ms");
-  }
-
-  public void inject(Object o) {
-    objectGraph.inject(o);
-  }
-
-  public static SeniApp get(Context context) {
-    return (SeniApp) context.getApplicationContext();
-  }
+    public static SeniApp get(Context context) {
+        return (SeniApp) context.getApplicationContext();
+    }
 }

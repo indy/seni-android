@@ -17,6 +17,7 @@
 package io.indy.seni.lang.bind;
 
 import org.junit.Test;
+
 import io.indy.seni.lang.EvalTestBase;
 
 public class FunctionalTest extends EvalTestBase {
@@ -41,8 +42,8 @@ public class FunctionalTest extends EvalTestBase {
     public void testFilter() {
         assertEval("(filter (lambda (x) (< x 10)) '(12 1 43 9 4))", "(1 9 4)");
 
-        assertEval("(define under10 (lambda (x) (< x 10)))" + 
-                   "(filter under10 '(12 1 43 9 4))", 
-                   "(1 9 4)");
+        assertEval("(define under10 (lambda (x) (< x 10)))" +
+                "(filter under10 '(12 1 43 9 4))",
+                "(1 9 4)");
     }
 }

@@ -17,13 +17,13 @@
 package io.indy.seni.lang;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Iterator;
+import java.util.List;
 
 public class Genotype {
 
     // list of alterable nodes and their values for this instance
-    private List<Node> mAlterable; 
+    private List<Node> mAlterable;
 
     public Genotype() {
         mAlterable = new ArrayList<Node>();
@@ -35,8 +35,8 @@ public class Genotype {
 
     public Env bind(Env env) {
         Env e = env.newScope();
-        
-        for(Node n : mAlterable) {
+
+        for (Node n : mAlterable) {
             e.addBinding(n.getGenSym(), n);
         }
 
@@ -51,8 +51,8 @@ public class Genotype {
         // temp
         Genotype genotype = new Genotype();
 
-        for(Node n : mAlterable) {
-            NodeFloat nf = new NodeFloat((float)Math.random());
+        for (Node n : mAlterable) {
+            NodeFloat nf = new NodeFloat((float) Math.random());
             nf.setGenSym(n.getGenSym());
             genotype.add(nf);
         }
@@ -63,7 +63,7 @@ public class Genotype {
     public static Genotype crossover(Genotype a, Genotype b, int index) {
         Genotype g = new Genotype();
 
-        if(a.mAlterable.size() != b.mAlterable.size()) {
+        if (a.mAlterable.size() != b.mAlterable.size()) {
             // todo: throw an error
             return null;
         }
@@ -73,7 +73,7 @@ public class Genotype {
         Node aNode, bNode;
 
         int count = 0;
-        while(aIter.hasNext()) {
+        while (aIter.hasNext()) {
             aNode = aIter.next();
             bNode = bIter.next();
             g.add(count++ < index ? aNode : bNode);

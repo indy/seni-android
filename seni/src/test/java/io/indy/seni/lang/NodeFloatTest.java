@@ -16,9 +16,8 @@
 
 package io.indy.seni.lang;
 
-import java.util.List;
-
 import org.junit.Test;
+
 import static org.fest.assertions.api.Assertions.assertThat;
 
 public class NodeFloatTest extends EvalTestBase {
@@ -37,7 +36,7 @@ public class NodeFloatTest extends EvalTestBase {
 
         try {
             assertThat(Node.asFloatValue(n)).isEqualTo(42.0f);
-        } catch(LangException e) {
+        } catch (LangException e) {
             assertThat(false).isEqualTo(true);
         }
     }

@@ -16,12 +16,8 @@
 
 package io.indy.seni.lang;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Queue;
-
 public class SymbolGenerator {
-    
+
     private int mVal;
 
     public SymbolGenerator() {

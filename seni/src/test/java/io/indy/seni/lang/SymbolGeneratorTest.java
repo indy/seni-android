@@ -16,12 +16,8 @@
 
 package io.indy.seni.lang;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Queue;
-import java.util.ArrayDeque;
-
 import org.junit.Test;
+
 import static org.fest.assertions.api.Assertions.assertThat;
 
 public class SymbolGeneratorTest {

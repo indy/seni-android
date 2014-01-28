@@ -25,7 +25,7 @@ public class Misc extends Binder {
          */
 
                 List<Node> children = listExpr.getChildren();
-                if(children.size() < 4) {
+                if (children.size() < 4) {
                     // throw an error : do-times not in form: do-times var count statements+
                 }
 
@@ -36,9 +36,9 @@ public class Misc extends Binder {
 
                 Env newScope = env.newScope();
                 Node res = null;
-                for (int i=0;i<iterations;i++) {
+                for (int i = 0; i < iterations; i++) {
                     newScope.addBinding(name, new NodeInt(i));
-                    for(int j=3;j<paramsSize;j++) {
+                    for (int j = 3; j < paramsSize; j++) {
                         res = Interpreter.eval(newScope, children.get(j));
                     }
                 }

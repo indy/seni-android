@@ -43,7 +43,7 @@ public class NodeName extends Node {
         if (n.mType != Node.Type.NAME) {
             return false;
         }
-        return ((NodeName)n).mName.equals(mName);
+        return ((NodeName) n).mName.equals(mName);
     }
 
     protected String scribeValue() throws ScribeException {
@@ -53,7 +53,7 @@ public class NodeName extends Node {
     public String toString() {
         try {
             String value = "";
-            if(isAlterable()) {
+            if (isAlterable()) {
                 value = "[" + scribeValue() + "]";
             } else {
                 value = "" + scribeValue();

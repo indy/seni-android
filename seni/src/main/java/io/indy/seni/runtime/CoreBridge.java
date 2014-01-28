@@ -18,10 +18,10 @@ public class CoreBridge {
     public static Paint setColour(Paint paint, Colour colour) {
         float[] f = colour.as(Colour.Format.RGB).getVals();
 
-        paint.setARGB((int)(f[Colour.ALPHA] * 255),
-                (int)(f[Colour.RED] * 255),
-                (int)(f[Colour.GREEN] * 255),
-                (int)(f[Colour.BLUE] * 255));
+        paint.setARGB((int) (f[Colour.ALPHA] * 255),
+                (int) (f[Colour.RED] * 255),
+                (int) (f[Colour.GREEN] * 255),
+                (int) (f[Colour.BLUE] * 255));
         return paint;
     }
 

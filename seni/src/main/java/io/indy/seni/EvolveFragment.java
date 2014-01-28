@@ -2,11 +2,9 @@ package io.indy.seni;
 
 import android.app.Fragment;
 import android.os.Bundle;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import io.indy.seni.dummy.DummyContent;
 
@@ -48,7 +46,7 @@ public class EvolveFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState) {
+                             Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_evolve, container, false);
 
         // Show the dummy content as text in a TextView.

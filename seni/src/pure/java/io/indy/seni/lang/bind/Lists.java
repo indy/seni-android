@@ -35,166 +35,166 @@ public class Lists extends Binder {
 
 
         e.addBinding(new NodeFn("first") {
-                public Node execute(Env env, java.util.List<Node> params)
+            public Node execute(Env env, java.util.List<Node> params)
                     throws LangException {
 
-                    Binder.checkArity(params, 1, keyword());
+                Binder.checkArity(params, 1, keyword());
 
-                    NodeList nodeList = Node.asList(params.get(0));
+                NodeList nodeList = Node.asList(params.get(0));
 
-                    return nodeList.getChild(0);
-                }                
-            });
+                return nodeList.getChild(0);
+            }
+        });
 
         e.addBinding(new NodeFn("second") {
-                public Node execute(Env env, java.util.List<Node> params)
+            public Node execute(Env env, java.util.List<Node> params)
                     throws LangException {
 
-                    Binder.checkArity(params, 1, keyword());
+                Binder.checkArity(params, 1, keyword());
 
-                    NodeList nodeList = Node.asList(params.get(0));
+                NodeList nodeList = Node.asList(params.get(0));
 
-                    return nodeList.getChild(1);
-                }                
-            });
+                return nodeList.getChild(1);
+            }
+        });
 
         e.addBinding(new NodeFn("nth") {
-                public Node execute(Env env, java.util.List<Node> params)
+            public Node execute(Env env, java.util.List<Node> params)
                     throws LangException {
 
-                    Binder.checkArity(params, 2, keyword());
+                Binder.checkArity(params, 2, keyword());
 
-                    NodeList nodeList = Node.asList(params.get(0));
-                    int nth = Node.asIntValue(params.get(1));
+                NodeList nodeList = Node.asList(params.get(0));
+                int nth = Node.asIntValue(params.get(1));
 
-                    return nodeList.getChild(nth);
-                }                
-            });
+                return nodeList.getChild(nth);
+            }
+        });
 
         e.addBinding(new NodeFn("cons") {
-                // (cons 2 (quote (4 8)))
-                public Node execute(Env env, java.util.List<Node> params)
+            // (cons 2 (quote (4 8)))
+            public Node execute(Env env, java.util.List<Node> params)
                     throws LangException {
 
-                    Binder.checkArity(params, 2, keyword());
-                    
-                    NodeList res = new NodeList();
+                Binder.checkArity(params, 2, keyword());
 
-                    //Node.debug(params.get(1), "should be a list");
+                NodeList res = new NodeList();
 
-                    res.addChild(params.get(0));
-                    for (Node child : Node.asList(params.get(1)).getChildren()) {
-                        res.addChild(child);
-                    }
+                //Node.debug(params.get(1), "should be a list");
 
-                    return res;
-                }                
-            });
+                res.addChild(params.get(0));
+                for (Node child : Node.asList(params.get(1)).getChildren()) {
+                    res.addChild(child);
+                }
+
+                return res;
+            }
+        });
 
         e.addBinding(new NodeFn("concat") {
-                public Node execute(Env env, java.util.List<Node> params)
+            public Node execute(Env env, java.util.List<Node> params)
                     throws LangException {
 
-                    NodeList res = new NodeList();
-                    NodeList nodeList;
+                NodeList res = new NodeList();
+                NodeList nodeList;
 
-                    for (Node n : params) {
-                        // all params have to be lists
-                        try {
-                            nodeList = Node.asList(n);
-                        } catch (LangException e) {
-                            String msg = "All args to concat have to be lists";
-                            throw new LangException(msg);
-                        }
-
-                        for(Node m : nodeList.getChildren()) {
-                            res.addChild(m);
-                        }
+                for (Node n : params) {
+                    // all params have to be lists
+                    try {
+                        nodeList = Node.asList(n);
+                    } catch (LangException e) {
+                        String msg = "All args to concat have to be lists";
+                        throw new LangException(msg);
                     }
-                    return res;
-                }                
-            });
+
+                    for (Node m : nodeList.getChildren()) {
+                        res.addChild(m);
+                    }
+                }
+                return res;
+            }
+        });
 
         e.addBinding(new NodeFn("count") {
-                public Node execute(Env env, java.util.List<Node> params)
+            public Node execute(Env env, java.util.List<Node> params)
                     throws LangException {
 
-                    Binder.checkArity(params, 1, keyword());
+                Binder.checkArity(params, 1, keyword());
 
-                    NodeList nodeList = Node.asList(params.get(0));
+                NodeList nodeList = Node.asList(params.get(0));
 
-                    return new NodeInt(nodeList.size());
-                }                
-            });
+                return new NodeInt(nodeList.size());
+            }
+        });
 
 
         e.addBinding(new NodeFn("mapcat") {
-                public Node execute(Env env, java.util.List<Node> params)
+            public Node execute(Env env, java.util.List<Node> params)
                     throws LangException {
 
-                    // first arg is a lambda|name rest are lists
-                    NodeLambda fn = Node.resolveLambda(env, params.get(0));
+                // first arg is a lambda|name rest are lists
+                NodeLambda fn = Node.resolveLambda(env, params.get(0));
 
-                    int numArgs = params.size() - 1;
-                    java.util.List<Node> fnArgs = new ArrayList<Node>(numArgs);
+                int numArgs = params.size() - 1;
+                java.util.List<Node> fnArgs = new ArrayList<Node>(numArgs);
 
-                    NodeList firstList = Node.asList(params.get(1));
-                    int numIterations = firstList.size();
+                NodeList firstList = Node.asList(params.get(1));
+                int numIterations = firstList.size();
 
-                    java.util.List<Node> resLists = new ArrayList<Node>(numIterations);
+                java.util.List<Node> resLists = new ArrayList<Node>(numIterations);
 
-                    for (int i=0;i<numIterations;i++) {
-                        fnArgs.clear();
-                        for (int j=1;j<params.size();j++) {
-                            NodeList nl = Node.asList(params.get(j));
-                            fnArgs.add(nl.getChildren().get(i));
-                        }
-                        // invoking the lambda returns a list
-                        Node res = fn.execute(env, fnArgs);
-                        resLists.add(res);
+                for (int i = 0; i < numIterations; i++) {
+                    fnArgs.clear();
+                    for (int j = 1; j < params.size(); j++) {
+                        NodeList nl = Node.asList(params.get(j));
+                        fnArgs.add(nl.getChildren().get(i));
+                    }
+                    // invoking the lambda returns a list
+                    Node res = fn.execute(env, fnArgs);
+                    resLists.add(res);
+                }
+
+                // concat the returned lists
+                NodeList ret = new NodeList();
+                NodeList nodeList;
+
+                for (Node n : resLists) {
+                    // all params have to be lists
+                    try {
+                        nodeList = Node.asList(n);
+                    } catch (LangException e) {
+                        String msg = "All results have to be lists";
+                        throw new LangException(msg);
                     }
 
-                    // concat the returned lists
-                    NodeList ret = new NodeList();
-                    NodeList nodeList;
-
-                    for (Node n : resLists) {
-                        // all params have to be lists
-                        try {
-                            nodeList = Node.asList(n);
-                        } catch (LangException e) {
-                            String msg = "All results have to be lists";
-                            throw new LangException(msg);
-                        }
-
-                        for(Node m : nodeList.getChildren()) {
-                            ret.addChild(m);
-                        }
+                    for (Node m : nodeList.getChildren()) {
+                        ret.addChild(m);
                     }
+                }
 
-                    return ret;
-                }                
-            });
+                return ret;
+            }
+        });
 
         e.addBinding(new NodeFn("reverse") {
-                public Node execute(Env env, java.util.List<Node> params)
+            public Node execute(Env env, java.util.List<Node> params)
                     throws LangException {
 
-                    Binder.checkArity(params, 1, keyword());
-                    
-                    NodeList res = new NodeList();
+                Binder.checkArity(params, 1, keyword());
 
-                    NodeList in = Node.asList(params.get(0));
-                    int inSize = in.size();
+                NodeList res = new NodeList();
 
-                    for (int i=0;i<inSize;i++) {
-                        res.addChild(in.getChild(inSize - i - 1));
-                    }
+                NodeList in = Node.asList(params.get(0));
+                int inSize = in.size();
 
-                    return res;
-                }                
-            });
+                for (int i = 0; i < inSize; i++) {
+                    res.addChild(in.getChild(inSize - i - 1));
+                }
+
+                return res;
+            }
+        });
 
         return e;
-    }    
+    }
 }

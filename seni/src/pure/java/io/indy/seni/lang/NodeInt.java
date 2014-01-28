@@ -43,7 +43,7 @@ public class NodeInt extends Node {
         if (n.mType != Node.Type.INT) {
             return false;
         }
-        return mInteger == ((NodeInt)n).mInteger;
+        return mInteger == ((NodeInt) n).mInteger;
     }
 
     protected String scribeValue() throws ScribeException {
@@ -53,7 +53,7 @@ public class NodeInt extends Node {
     public String toString() {
         try {
             String value = "";
-            if(isAlterable()) {
+            if (isAlterable()) {
                 value = "[" + scribeValue() + "]";
             } else {
                 value = "" + scribeValue();

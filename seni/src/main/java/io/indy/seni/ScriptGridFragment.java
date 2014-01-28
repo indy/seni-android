@@ -108,7 +108,7 @@ public class ScriptGridFragment extends Fragment {
             //setActivatedPosition(savedInstanceState.getInt(STATE_ACTIVATED_POSITION));
         }
 
-        GridView gridView = (GridView)view.findViewById(R.id.grid);
+        GridView gridView = (GridView) view.findViewById(R.id.grid);
         gridView.setAdapter(mScriptAdapter);
     }
 

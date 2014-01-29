@@ -47,43 +47,30 @@ public class ScriptAdapter extends BaseAdapter {
         if (AppConfig.DEBUG && D) Log.d(TAG, message);
     }
 
-    private static final String[] items = {"lorem", "ipsum", "dolor",
-            "sit", "amet",
-            "consectetuer", "adipiscing", "elit", "morbi", "vel",
-            "ligula", "vitae", "arcu", "aliquet", "mollis",
-            "etiam", "vel", "erat", "placerat", "ante",
-            "porttitor", "sodales", "pellentesque", "augue", "purus"};
-
-
-    // private static final String[] items={"lorem", "ipsum"};
+    private static final String[] items = {"lorem", "ipsum", "dolor"};
+    private AstHolder[] mAstHolder;
 
     private LayoutInflater mInflater;
     private Context mContext;
-
-    private AstHolder mAstHolder;
-    private Genotype[] mGenotypes;
-    private int mNumFucks;
 
     public ScriptAdapter(Context context) {
         mContext = context;
         mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-        mAstHolder = new AstHolder(Art1403b.script());
-        mNumFucks = 32;
-        mGenotypes = new Genotype[mNumFucks];
-        for (int i = 0; i < mNumFucks; i++) {
-            mGenotypes[i] = mAstHolder.getGenotype().mutate();
-        }
+        mAstHolder = new AstHolder[3];
+        mAstHolder[0] = new AstHolder(Art1352.script());
+        mAstHolder[1] = new AstHolder(Art1402.script());
+        mAstHolder[2] = new AstHolder(Art1403b.script());
     }
 
     @Override
     public int getCount() {
-        return items.length;
+        return mAstHolder.length;
     }
 
     @Override
     public Object getItem(int position) {
-        return items[position];
+        return mAstHolder[position];
     }
 
     @Override
@@ -121,15 +108,14 @@ public class ScriptAdapter extends BaseAdapter {
         view.setTag(R.string.tag_position, position);
 
         SeniView seniView = (SeniView) view.findViewById(R.id.seniView);
-        seniView.setAstHolder(mAstHolder);
-        seniView.setGenotype(mGenotypes[position % mNumFucks]);
+        seniView.setAstHolder(mAstHolder[position]);
 
         if (numColumns > 1) {
             text = (TextView) view.findViewById(R.id.bar);
-            text.setText("shabba " + (CharSequence) getItem(position));
+            text.setText("shabba " + position);
         } else {
             text = (TextView) view.findViewById(R.id.foo);
-            text.setText((CharSequence) getItem(position));
+            text.setText("" + position);
         }
 
         view.setOnClickListener(mOnClickListener);
@@ -145,11 +131,10 @@ public class ScriptAdapter extends BaseAdapter {
             int position = (int) v.getTag(R.string.tag_position);
             Intent intent = new Intent(mContext, EvolveActivity.class);
 
-            Genotype genotype = mGenotypes[position % mNumFucks];
             String script = "";
 
             try {
-                script = mAstHolder.scribe(genotype);
+                script = mAstHolder[position].scribe();
             } catch (Node.ScribeException e) {
                 e.printStackTrace();
             }
@@ -159,17 +144,4 @@ public class ScriptAdapter extends BaseAdapter {
             mContext.startActivity(intent);
         }
     };
-
-    private String getScript(int position) {
-
-        switch (position % 3) {
-            case 0:
-                return Art1352.script();
-            case 1:
-                return Art1402.script();
-            default:
-                return Art1403.script();
-        }
-    }
-
 }

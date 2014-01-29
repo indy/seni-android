@@ -78,6 +78,7 @@ public class SeniView extends View {
 
     public void setAstHolder(AstHolder astHolder) {
         mAstHolder = astHolder;
+        mGenotype = mAstHolder.getGenotype();
     }
 
     public void setGenotype(Genotype genotype) {

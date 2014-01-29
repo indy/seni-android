@@ -70,7 +70,7 @@ public class Art1403b {
                 + "      (box-radius (/ canvas-width 12.0))"
                 + "      (focal-x (/ canvas-width 2.0))"
                 + "      (focal-y (/ canvas-height 2.0))"
-                + "      (angle 38.0))"
+                + "      (angle (+ (* 45.0 [0.5]) 15.0)))"
                 + "  (scope (translate focal-x focal-y)"
                 + "         (rotate angle)"
                 + "         (piece primary secondary box-radius interpolate-lab)))"

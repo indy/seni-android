@@ -19,6 +19,7 @@ package io.indy.seni.view;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
@@ -73,10 +74,15 @@ public class SeniView extends View {
         super.onDraw(canvas);
         canvas.drawBitmap(mBitmap, 0, 0, null);
 
+        Paint paint = new Paint();
+        paint.setARGB(255, 0, 0, 0);
+        mCanvas.drawRect(0, 0, mCanvas.getWidth(), mCanvas.getHeight(), paint);
+
         SeniRuntime.render(mCanvas, mAstHolder, mGenotype);
     }
 
     public void setAstHolder(AstHolder astHolder) {
+        ifd("setAstHolder");
         mAstHolder = astHolder;
         mGenotype = mAstHolder.getGenotype();
     }

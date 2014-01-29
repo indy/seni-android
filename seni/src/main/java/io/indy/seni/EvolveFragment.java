@@ -16,30 +16,26 @@
 
 package io.indy.seni;
 
+import android.app.Activity;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.GridView;
 
+import io.indy.seni.adapter.EvolveAdapter;
+import io.indy.seni.adapter.ScriptAdapter;
 import io.indy.seni.dummy.DummyContent;
+import io.indy.seni.lang.AstHolder;
 
-/**
- * A fragment representing a single Script detail screen.
- * This fragment is either contained in a {@link ScriptListActivity}
- * in two-pane mode (on tablets) or a {@link ScriptDetailActivity}
- * on handsets.
- */
 public class EvolveFragment extends Fragment {
     /**
      * The original script that all other images are derived from
      */
     public static final String GENESIS_SCRIPT = "genesis_script";
 
-    /**
-     * The dummy content this fragment is presenting.
-     */
-    private DummyContent.DummyItem mItem;
+    private EvolveAdapter mEvolveAdapter;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -48,15 +44,20 @@ public class EvolveFragment extends Fragment {
     public EvolveFragment() {
     }
 
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        mEvolveAdapter = new EvolveAdapter(activity);
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         if (getArguments().containsKey(GENESIS_SCRIPT)) {
-            // Load the dummy content specified by the fragment
-            // arguments. In a real-world scenario, use a Loader
-            // to load content from a content provider.
-            //mItem = DummyContent.ITEM_MAP.get(getArguments().getString(GENESIS_SCRIPT));
+            String script = getArguments().getString(GENESIS_SCRIPT);
+            mEvolveAdapter.setScript(script);
         }
     }
 
@@ -64,12 +65,15 @@ public class EvolveFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_evolve, container, false);
-
-        // Show the dummy content as text in a TextView.
-//        if (mItem != null) {
-//            ((TextView) rootView.findViewById(R.id.script_detail)).setText(mItem.content);
-//        }
-
         return rootView;
+    }
+
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        GridView gridView = (GridView) view.findViewById(R.id.grid);
+        gridView.setAdapter(mEvolveAdapter);
     }
 }

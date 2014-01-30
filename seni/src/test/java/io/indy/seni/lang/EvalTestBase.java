@@ -136,4 +136,36 @@ abstract public class EvalTestBase {
         return null;
     }
 
+
+    protected Token makeToken(int val) {
+        try {
+            return new Token(Token.Type.INT, val);
+        } catch (Token.TokenException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    protected Token makeToken(String val) {
+        return new Token(Token.Type.NAME, val);
+    }
+
+    protected Token makeToken(float val) {
+        try {
+            return new Token(Token.Type.FLOAT, val);
+        } catch (Token.TokenException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    protected Token makeToken(Token.Type t) {
+        return new Token(t);
+    }
+
+    protected Token makeToken(Token.Type t, String val) {
+        return new Token(t, val);
+    }
+
+
 }

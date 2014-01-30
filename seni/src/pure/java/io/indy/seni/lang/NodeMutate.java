@@ -21,6 +21,8 @@ import java.util.List;
 
 public abstract class NodeMutate extends Node {
 
+    protected static String IN_RANGE = "in-range";
+
     protected boolean mAlterable;
     protected String mGenSym;
 

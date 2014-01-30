@@ -16,9 +16,17 @@
 
 package io.indy.seni.lang;
 
+import java.util.HashSet;
+import java.util.Set;
+import java.util.List;
+
 public class NodeName extends NodeMutate {
 
+    protected static String IN_SET = "in-set";
+
     private String mName;
+
+    private Set<String> mParameterSet;
 
     public NodeName(String value) {
         this(value, false);
@@ -32,11 +40,56 @@ public class NodeName extends NodeMutate {
     }
 
     public NodeMutate mutate() {
+        // todo: test mutate
+
+        int size = mParameterSet.size();
+        float f = (float)Math.random() * size;
+        int index = (int)f;
+
+        int count = 0;
+        for(String s: mParameterSet) {
+            if(count == index) {
+                return kloneSet(new NodeName(s));
+            }
+            count++;
+        }
+        
+        // NOTE: should never get here
+
         return kloneSet(new NodeName(mName));
     }
 
     public NodeMutate klone() {
         return kloneSet(new NodeName(mName));
+    }
+
+    @Override
+    public void addParameterNode(Node node) {
+        super.addParameterNode(node);
+        
+        // todo:
+        // an env in which the parameter functions evaluate to themselves
+        // call Interpreter:eval
+        // use the result
+
+        // BUT...
+        // in the meantime just manually parse the node children
+
+        try {
+            NodeList nodeList = Node.asList(node);
+            String name = Node.asNameValue(nodeList.getChild(0));
+            if(name.equals(IN_SET)) {
+
+                mParameterSet = new HashSet<String>();
+
+                List<Node> children = nodeList.getChildren();
+                for(int i=1;i<children.size();i++) {
+                    mParameterSet.add(Node.asNameValue(children.get(i)));
+                }
+            }
+        } catch (LangException e) {
+            e.printStackTrace();
+        }
     }
 
     public String getName() {

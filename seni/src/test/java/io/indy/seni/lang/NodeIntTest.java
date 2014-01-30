@@ -18,6 +18,10 @@ package io.indy.seni.lang;
 
 import org.junit.Test;
 
+import java.util.ArrayDeque;
+import java.util.List;
+import java.util.Queue;
+
 import static org.fest.assertions.api.Assertions.assertThat;
 
 public class NodeIntTest extends EvalTestBase {
@@ -53,5 +57,37 @@ public class NodeIntTest extends EvalTestBase {
     public void testToString() {
         NodeInt n = new NodeInt(42);
         assertThat(n.toString()).isEqualTo("INT: 42");
+    }
+
+    @Test
+    public void testMutate() {
+        NodeInt n = new NodeInt(12, true);
+
+        int minValue = 30;
+        int maxValue = 50;
+        Queue<Token> tokens = new ArrayDeque<Token>();
+        tokens.add(makeToken(Token.Type.LIST_START));
+        tokens.add(makeToken("in-range"));
+        tokens.add(makeToken(minValue));
+        tokens.add(makeToken(maxValue));
+        tokens.add(makeToken(Token.Type.LIST_END));
+        List<Node> params = Parser.parse(tokens);
+
+        n.addParameterNode(params.get(0));
+
+        assertThat(n.getType()).isEqualTo(Node.Type.INT);
+        assertThat(n.getInt()).isEqualTo(12);
+
+        for(int i=0;i<100;i++) {
+            NodeMutate m = n.mutate();
+            assertThat(m.getType()).isEqualTo(Node.Type.INT);
+            try {
+                int f = Node.asIntValue(m);
+                assertThat(f >= minValue).isTrue();
+                assertThat(f <= maxValue).isTrue();
+            } catch (LangException e) {
+                assertThat(true).isFalse();
+            }
+        }
     }
 }

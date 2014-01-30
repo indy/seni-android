@@ -18,6 +18,10 @@ package io.indy.seni.lang;
 
 import org.junit.Test;
 
+import java.util.ArrayDeque;
+import java.util.List;
+import java.util.Queue;
+
 import static org.fest.assertions.api.Assertions.assertThat;
 
 public class NodeFloatTest extends EvalTestBase {
@@ -62,6 +66,39 @@ public class NodeFloatTest extends EvalTestBase {
         NodeFloat n = new NodeFloat(12.34f);
         assertThat(n.toString()).isEqualTo("FLOAT: 12.34");
     }
+
+    @Test
+    public void testMutate() {
+        NodeFloat n = new NodeFloat(12.34f, true);
+
+        float minValue = 8.0f;
+        float maxValue = 24.0f;
+        Queue<Token> tokens = new ArrayDeque<Token>();
+        tokens.add(makeToken(Token.Type.LIST_START));
+        tokens.add(makeToken("in-range"));
+        tokens.add(makeToken(minValue));
+        tokens.add(makeToken(maxValue));
+        tokens.add(makeToken(Token.Type.LIST_END));
+        List<Node> params = Parser.parse(tokens);
+
+        n.addParameterNode(params.get(0));
+
+        assertThat(n.getType()).isEqualTo(Node.Type.FLOAT);
+        assertThat(n.getFloat()).isEqualTo(12.34f);
+
+        for(int i=0;i<100;i++) {
+            NodeMutate m = n.mutate();
+            assertThat(m.getType()).isEqualTo(Node.Type.FLOAT);
+            try {
+                float f = Node.asFloatValue(m);
+                assertThat(f >= minValue).isTrue();
+                assertThat(f <= maxValue).isTrue();
+            } catch (LangException e) {
+                assertThat(true).isFalse();
+            }
+        }
+    }
+
 
 }
 

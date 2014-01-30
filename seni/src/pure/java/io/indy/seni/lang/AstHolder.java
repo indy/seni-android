@@ -82,12 +82,6 @@ public class AstHolder {
         return mGenotype;
     }
 
-    public static class UglyCopyException extends Exception {
-        public UglyCopyException(String message) {
-            super(message);
-        }
-    }
-
     /*
       Assign gensym values to the alterable 
       nodes and collect them in a genotype
@@ -104,7 +98,6 @@ public class AstHolder {
         try {
             if (node.getType() == Node.Type.LIST) {
                 List<Node> children = Node.asList(node).getChildren();
-                ;
                 for (Node n : children) {
                     addGenSyms(n, sg);
                 }

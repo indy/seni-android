@@ -36,7 +36,8 @@ public class NodeInt extends NodeMutate {
     }
 
     public NodeMutate mutate() {
-        return new NodeInt(mInteger);
+        int val = (int)(((float)Math.random()) * 100.0f);
+        return kloneSet(new NodeInt(val));
     }
 
     public NodeMutate klone() {

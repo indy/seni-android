@@ -36,7 +36,7 @@ public class NodeString extends NodeMutate {
     }
 
     public NodeMutate mutate() {
-        return new NodeString(mString);
+        return kloneSet(new NodeString(mString));
     }
 
     public NodeMutate klone() {

@@ -52,9 +52,7 @@ public class Genotype {
         Genotype genotype = new Genotype();
 
         for (NodeMutate n : mAlterable) {
-            NodeFloat nf = new NodeFloat((float) Math.random());
-            nf.setGenSym(n.getGenSym());
-            genotype.add(nf);
+            genotype.add(n.mutate());
         }
 
         return genotype;

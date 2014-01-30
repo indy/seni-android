@@ -46,7 +46,7 @@ public class GenotypeTest {
 
         try {
             c = Genotype.crossover(a, b, 2);
-            List<Node> alt = c.getAlterable();
+            List<NodeMutate> alt = c.getAlterable();
             assertThat(Node.asIntValue(alt.get(0))).isEqualTo(1);
             assertThat(Node.asIntValue(alt.get(1))).isEqualTo(2);
             assertThat(Node.asIntValue(alt.get(2))).isEqualTo(97);

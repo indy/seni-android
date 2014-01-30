@@ -1,0 +1,74 @@
+/*
+ * Copyright 2014 Inderjit Gill
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package io.indy.seni.lang;
+
+public abstract class NodeMutate extends Node {
+
+    protected boolean mAlterable;
+    protected String mGenSym;
+
+    public NodeMutate() {
+        super();
+        mAlterable = false;
+    }
+
+    public NodeMutate(boolean alterable) {
+        super();
+        mAlterable = alterable;
+    }
+    
+    abstract public NodeMutate mutate();
+    abstract public NodeMutate klone();
+
+    protected NodeMutate kloneSet(NodeMutate k) {
+        k.mAlterable = mAlterable;
+        k.mGenSym = mGenSym;
+        return k;
+    }
+
+    public void setGenSym(String genSym) {
+        mGenSym = genSym;
+    }
+
+    public String getGenSym() {
+        return mGenSym;
+    }
+
+    @Override
+    public boolean isAlterable() {
+        return mAlterable;
+    }
+
+    @Override
+    public String scribe(Env env) throws Node.ScribeException {
+        if (isAlterable()) {
+
+            Node n = this;
+            try {
+                if (env != null && env.hasBinding(mGenSym)) {
+                    n = env.lookup(mGenSym);
+                }
+            } catch (LangException e) {
+                throw new ScribeException("LangException->ScribeException " + e);
+            }
+
+            return "[" + n.scribeValue() + "]";
+        } else {
+            return scribeValue();
+        }
+    }
+}

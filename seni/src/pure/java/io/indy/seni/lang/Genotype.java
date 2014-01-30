@@ -23,27 +23,27 @@ import java.util.List;
 public class Genotype {
 
     // list of alterable nodes and their values for this instance
-    private List<Node> mAlterable;
+    private List<NodeMutate> mAlterable;
 
     public Genotype() {
-        mAlterable = new ArrayList<Node>();
+        mAlterable = new ArrayList<NodeMutate>();
     }
 
-    public List<Node> getAlterable() {
+    public List<NodeMutate> getAlterable() {
         return mAlterable;
     }
 
     public Env bind(Env env) {
         Env e = env.newScope();
 
-        for (Node n : mAlterable) {
+        for (NodeMutate n : mAlterable) {
             e.addBinding(n.getGenSym(), n);
         }
 
         return e;
     }
 
-    public void add(Node n) {
+    public void add(NodeMutate n) {
         mAlterable.add(n);
     }
 
@@ -51,7 +51,7 @@ public class Genotype {
         // temp
         Genotype genotype = new Genotype();
 
-        for (Node n : mAlterable) {
+        for (NodeMutate n : mAlterable) {
             NodeFloat nf = new NodeFloat((float) Math.random());
             nf.setGenSym(n.getGenSym());
             genotype.add(nf);
@@ -68,9 +68,9 @@ public class Genotype {
             return null;
         }
 
-        Iterator<Node> aIter = a.mAlterable.iterator();
-        Iterator<Node> bIter = b.mAlterable.iterator();
-        Node aNode, bNode;
+        Iterator<NodeMutate> aIter = a.mAlterable.iterator();
+        Iterator<NodeMutate> bIter = b.mAlterable.iterator();
+        NodeMutate aNode, bNode;
 
         int count = 0;
         while (aIter.hasNext()) {

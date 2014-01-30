@@ -16,7 +16,7 @@
 
 package io.indy.seni.lang;
 
-public class NodeFloat extends Node {
+public class NodeFloat extends NodeMutate {
 
     private float mFloat;
 
@@ -33,6 +33,14 @@ public class NodeFloat extends Node {
     private void init(float value) {
         mType = Node.Type.FLOAT;
         mFloat = value;
+    }
+
+    public NodeMutate mutate() {
+        return new NodeFloat(mFloat);
+    }
+
+    public NodeMutate klone() {
+        return kloneSet(new NodeFloat(mFloat));
     }
 
     public float getFloat() {

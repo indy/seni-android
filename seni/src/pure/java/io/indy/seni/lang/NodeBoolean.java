@@ -16,7 +16,7 @@
 
 package io.indy.seni.lang;
 
-public class NodeBoolean extends Node {
+public class NodeBoolean extends NodeMutate {
 
     private boolean mBoolean;
 
@@ -33,6 +33,14 @@ public class NodeBoolean extends Node {
     private void init(boolean value) {
         mType = Node.Type.BOOLEAN;
         mBoolean = value;
+    }
+
+    public NodeMutate mutate() {
+        return new NodeBoolean(mBoolean);
+    }
+
+    public NodeMutate klone() {
+        return kloneSet(new NodeBoolean(mBoolean));
     }
 
     public boolean getBoolean() {

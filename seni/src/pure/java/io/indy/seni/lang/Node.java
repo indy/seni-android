@@ -35,27 +35,11 @@ abstract public class Node {
 
     protected Type mType;
 
-    protected boolean mAlterable;
-    protected String mGenSym;
-
     public Node() {
-        mAlterable = false;
-    }
-
-    public Node(boolean alterable) {
-        mAlterable = alterable;
     }
 
     public boolean isAlterable() {
-        return mAlterable;
-    }
-
-    public void setGenSym(String genSym) {
-        mGenSym = genSym;
-    }
-
-    public String getGenSym() {
-        return mGenSym;
+        return false;
     }
 
     public static NodeBoolean asBoolean(Node n) throws LangException {
@@ -179,21 +163,7 @@ abstract public class Node {
     abstract protected String scribeValue() throws ScribeException;
 
     public String scribe(Env env) throws ScribeException {
-        if (isAlterable()) {
-
-            Node n = this;
-            try {
-                if (env != null && env.hasBinding(mGenSym)) {
-                    n = env.lookup(mGenSym);
-                }
-            } catch (LangException e) {
-                throw new ScribeException("LangException->ScribeException " + e);
-            }
-
-            return "[" + n.scribeValue() + "]";
-        } else {
-            return scribeValue();
-        }
+        return scribeValue();
     }
 
     public String toString() {

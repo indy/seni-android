@@ -35,28 +35,36 @@ public class Interpreter {
         sSpecialFormNames.add(name);
     }
 
+    private static Node evalMutableNode(Env env, Node expr) throws LangException {
+        if (expr.isAlterable()) {
+            return env.lookup(((NodeMutate)expr).getGenSym());
+        } else {
+            return expr;
+        }
+    }
+
     public static Node eval(Env env, Node expr) throws LangException {
 
         Node.Type type = expr.getType();
 
         if (type == Node.Type.INT) {
-            return expr.isAlterable() ? env.lookup(expr.getGenSym()) : expr;
+            return evalMutableNode(env, expr);
         }
 
         if (type == Node.Type.FLOAT) {
-            return expr.isAlterable() ? env.lookup(expr.getGenSym()) : expr;
+            return evalMutableNode(env, expr);
         }
 
         if (type == Node.Type.BOOLEAN) {
-            return expr.isAlterable() ? env.lookup(expr.getGenSym()) : expr;
+            return evalMutableNode(env, expr);
+        }
+
+        if (type == Node.Type.STRING) {
+            return evalMutableNode(env, expr);
         }
 
         if (type == Node.Type.COLOUR) {
             return expr;
-        }
-
-        if (type == Node.Type.STRING) {
-            return expr.isAlterable() ? env.lookup(expr.getGenSym()) : expr;
         }
 
         if (type == Node.Type.NULL) {
@@ -64,12 +72,16 @@ public class Interpreter {
         }
 
         if (type == Node.Type.NAME) {
-            String name;
+            NodeName nodeName;
             if (expr.isAlterable()) {
-                name = ((NodeName) (env.lookup(expr.getGenSym()))).getName();
+                String genSym = ((NodeMutate)expr).getGenSym();
+                nodeName = ((NodeName) (env.lookup(genSym)));
             } else {
-                name = ((NodeName) expr).getName();
+                nodeName = ((NodeName) expr);
             }
+
+            String name = nodeName.getName();
+
             return env.lookup(name);
         }
 

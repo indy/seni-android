@@ -96,7 +96,7 @@ public class Parser {
     private static Node consumeList(Queue<Token> tokens, boolean alterable) {
         // LIST_START has already been consumed
 
-        NodeList node = new NodeList(alterable);
+        NodeList node = new NodeList();
         Token token;
 
         while (true) {

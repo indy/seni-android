@@ -92,7 +92,7 @@ abstract public class EvalTestBase {
         }
     }
 
-    protected void appendAlterable(Genotype genotype, Genotype derived, Node node) {
+    protected void appendAlterable(Genotype genotype, Genotype derived, NodeMutate node) {
         int index = derived.getAlterable().size();
         node.setGenSym((genotype.getAlterable().get(index)).getGenSym());
         derived.add(node);

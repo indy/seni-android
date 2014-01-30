@@ -29,10 +29,10 @@ public class AstHolderTest {
         AstHolder astHolder = new AstHolder("(+ [4] [5])");
         Genotype genotype = astHolder.getGenotype();
 
-        List<Node> alterable = genotype.getAlterable();
+        List<NodeMutate> alterable = genotype.getAlterable();
 
         assertThat(alterable.size()).isEqualTo(2);
-        Node n;
+        NodeMutate n;
 
         try {
             n = alterable.get(0);
@@ -59,11 +59,11 @@ public class AstHolderTest {
         AstHolder astHolder = new AstHolder("([rotate] (- [3.14] (+ [4] 5)))");
         Genotype genotype = astHolder.getGenotype();
 
-        List<Node> alterable = genotype.getAlterable();
+        List<NodeMutate> alterable = genotype.getAlterable();
 
 
         assertThat(alterable.size()).isEqualTo(3);
-        Node n;
+        NodeMutate n;
 
         try {
 

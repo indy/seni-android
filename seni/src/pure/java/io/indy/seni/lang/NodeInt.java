@@ -16,7 +16,7 @@
 
 package io.indy.seni.lang;
 
-public class NodeInt extends Node {
+public class NodeInt extends NodeMutate {
 
     private int mInteger;
 
@@ -33,6 +33,14 @@ public class NodeInt extends Node {
     private void init(int value) {
         mType = Node.Type.INT;
         mInteger = value;
+    }
+
+    public NodeMutate mutate() {
+        return new NodeInt(mInteger);
+    }
+
+    public NodeMutate klone() {
+        return kloneSet(new NodeInt(mInteger));
     }
 
     public int getInt() {
@@ -64,5 +72,4 @@ public class NodeInt extends Node {
         }
         return "" + getType() + ": toString ERROR";
     }
-
 }

@@ -29,11 +29,6 @@ public class NodeList extends Node {
         init();
     }
 
-    public NodeList(boolean alterable) {
-        super(alterable);
-        init();
-    }
-
     private void init() {
         mType = Node.Type.LIST;
         mChildren = new ArrayList<Node>();

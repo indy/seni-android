@@ -21,16 +21,12 @@ public class NodeString extends NodeMutate {
     private String mString;
 
     public NodeString(String value) {
-        super();
-        init(value);
+        this(value, false);
     }
 
     public NodeString(String value, boolean alterable) {
         super(alterable);
-        init(value);
-    }
 
-    private void init(String value) {
         mType = Node.Type.STRING;
         mString = value;
     }

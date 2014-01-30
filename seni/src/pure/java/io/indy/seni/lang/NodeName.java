@@ -21,16 +21,12 @@ public class NodeName extends NodeMutate {
     private String mName;
 
     public NodeName(String value) {
-        super();
-        init(value);
+        this(value, false);
     }
 
     public NodeName(String value, boolean alterable) {
         super(alterable);
-        init(value);
-    }
 
-    private void init(String value) {
         mType = Node.Type.NAME;
         mName = value;
     }

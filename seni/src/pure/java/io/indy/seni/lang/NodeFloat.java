@@ -21,16 +21,12 @@ public class NodeFloat extends NodeMutate {
     private float mFloat;
 
     public NodeFloat(float value) {
-        super();
-        init(value);
+        this(value, false);
     }
 
     public NodeFloat(float value, boolean alterable) {
         super(alterable);
-        init(value);
-    }
 
-    private void init(float value) {
         mType = Node.Type.FLOAT;
         mFloat = value;
     }

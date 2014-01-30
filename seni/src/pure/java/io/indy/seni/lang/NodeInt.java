@@ -21,16 +21,12 @@ public class NodeInt extends NodeMutate {
     private int mInteger;
 
     public NodeInt(int value) {
-        super();
-        init(value);
+        this(value, false);
     }
 
     public NodeInt(int value, boolean alterable) {
         super(alterable);
-        init(value);
-    }
 
-    private void init(int value) {
         mType = Node.Type.INT;
         mInteger = value;
     }

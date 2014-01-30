@@ -21,16 +21,12 @@ public class NodeBoolean extends NodeMutate {
     private boolean mBoolean;
 
     public NodeBoolean(boolean value) {
-        super();
-        init(value);
+        this(value, false);
     }
 
     public NodeBoolean(boolean value, boolean alterable) {
         super(alterable);
-        init(value);
-    }
 
-    private void init(boolean value) {
         mType = Node.Type.BOOLEAN;
         mBoolean = value;
     }

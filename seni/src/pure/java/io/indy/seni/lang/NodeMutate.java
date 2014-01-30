@@ -27,12 +27,10 @@ public abstract class NodeMutate extends Node {
     protected List<Node> mParameterAst;
 
     public NodeMutate() {
-        super();
-        mAlterable = false;
+        this(false);
     }
 
     public NodeMutate(boolean alterable) {
-        super();
         mAlterable = alterable;
 
         if (mAlterable) {

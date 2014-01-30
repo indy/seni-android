@@ -16,10 +16,15 @@
 
 package io.indy.seni.lang;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public abstract class NodeMutate extends Node {
 
     protected boolean mAlterable;
     protected String mGenSym;
+
+    protected List<Node> mParameterAst;
 
     public NodeMutate() {
         super();
@@ -29,6 +34,10 @@ public abstract class NodeMutate extends Node {
     public NodeMutate(boolean alterable) {
         super();
         mAlterable = alterable;
+
+        if (mAlterable) {
+            mParameterAst = new ArrayList<Node>();
+        }
     }
     
     abstract public NodeMutate mutate();
@@ -51,6 +60,14 @@ public abstract class NodeMutate extends Node {
     @Override
     public boolean isAlterable() {
         return mAlterable;
+    }
+
+    public void addParameterNode(Node node) {
+        mParameterAst.add(node);
+    }
+    
+    public List<Node> getParameterNodes() {
+        return mParameterAst;
     }
 
     @Override

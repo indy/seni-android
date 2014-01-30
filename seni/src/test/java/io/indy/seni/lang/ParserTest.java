@@ -220,6 +220,50 @@ public class ParserTest {
         assertThat(ni.isAlterable()).isFalse();
     }
 
+    @Test
+    public void parseBracketedParameters() {
+        Queue<Token> tokens = new ArrayDeque<Token>();
+
+        // [19 (in-range 8 24)]
+        tokens.add(makeToken(Token.Type.BRACKET_START));
+        tokens.add(makeToken(19));
+        tokens.add(makeToken(Token.Type.LIST_START));
+        tokens.add(makeToken("in-range"));
+        tokens.add(makeToken(8));
+        tokens.add(makeToken(24));
+        tokens.add(makeToken(Token.Type.LIST_END));
+        tokens.add(makeToken(Token.Type.BRACKET_END));
+
+        List<Node> nodes = Parser.parse(tokens);
+        assertThat(nodes.size()).isEqualTo(1);
+
+        Node n = nodes.get(0);
+        assertThat(n.getType()).isEqualTo(Node.Type.INT);
+        NodeInt ni = (NodeInt) n;
+        assertThat(ni.getInt()).isEqualTo(19);
+        assertThat(ni.isAlterable()).isTrue();
+
+        List<Node> parameters = ni.getParameterNodes();
+        assertThat(parameters.size()).isEqualTo(1);
+
+        Node parameter = parameters.get(0);
+        assertThat(parameter.getType()).isEqualTo(Node.Type.LIST);
+        NodeList nl = (NodeList) parameter;
+
+        try {
+            assertThat(nl.getChild(0).getType()).isEqualTo(Node.Type.NAME);
+            assertThat(Node.asNameValue(nl.getChild(0))).isEqualTo("in-range");
+
+            assertThat(nl.getChild(1).getType()).isEqualTo(Node.Type.INT);
+            assertThat(Node.asIntValue(nl.getChild(1))).isEqualTo(8);
+
+            assertThat(nl.getChild(2).getType()).isEqualTo(Node.Type.INT);
+            assertThat(Node.asIntValue(nl.getChild(2))).isEqualTo(24);
+        } catch (LangException e) {
+            assertThat(true).isEqualTo(false);
+        }
+    }
+
     private Token makeToken(int val) {
         try {
             return new Token(Token.Type.INT, val);
@@ -227,6 +271,10 @@ public class ParserTest {
             e.printStackTrace();
         }
         return null;
+    }
+
+    private Token makeToken(String val) {
+        return new Token(Token.Type.NAME, val);
     }
 
     private Token makeToken(float val) {

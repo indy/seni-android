@@ -59,6 +59,8 @@ public class Parser {
             return consumeQuotedForm(tokens);
         } else if (type == Token.Type.BRACKET_START) {
             return consumeBracketForm(tokens);
+        } else if (type == Token.Type.BRACKET_END) {
+            return null;
         } else {
             // throw an error
         }
@@ -68,15 +70,26 @@ public class Parser {
 
     private static Node consumeBracketForm(Queue<Token> tokens) {
         // [4] -> 4
-        // [(foo bar)] -> (foo bar)
+        // [4 (in-range 2 9)] -> 4
 
-        // should only be one form in-between square brackets
+        // first form in-between square brackets is the base value
+        // this has to be one of: boolean, int, float, name, string
         Node node = consumeItem(tokens, true);
+        Node.Type nodeType = node.getType();
+        if (nodeType != Node.Type.BOOLEAN &&
+            nodeType != Node.Type.INT &&
+            nodeType != Node.Type.FLOAT &&
+            nodeType != Node.Type.NAME &&
+            nodeType != Node.Type.STRING) {
+            // throw an error - non-mutable node within square brackets
+        }
 
-        // after consuming it we should be on the end bracket
-        Token token = tokens.remove();
-        if (token.getType() != Token.Type.BRACKET_END) {
-            // throw an error - only one form allowed in-between brackets
+        NodeMutate nodeMutate = (NodeMutate)node;
+
+        Node parameter = consumeItem(tokens, false);
+        while (parameter != null) {
+            nodeMutate.addParameterNode(parameter);
+            parameter = consumeItem(tokens, false);
         }
 
         return node;

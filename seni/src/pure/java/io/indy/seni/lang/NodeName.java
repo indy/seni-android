@@ -54,6 +54,7 @@ public class NodeName extends NodeMutate {
         return ((NodeName) n).mName.equals(mName);
     }
 
+    @Override
     protected String scribeValue() throws ScribeException {
         return mName;
     }

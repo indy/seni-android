@@ -23,7 +23,7 @@ package io.indy.seni.lang;
 
 // TODO: deal with the above cases and remove concept of NULL from seni
 
-public class NodeNull extends NodeInternal {
+public class NodeNull extends Node {
 
     public NodeNull() {
         super();

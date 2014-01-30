@@ -19,7 +19,7 @@ package io.indy.seni.lang;
 import java.util.Iterator;
 import java.util.List;
 
-public class NodeLambda extends NodeInternal {
+public class NodeLambda extends Node {
 
     protected List<String> mArgs;
     protected Node mBody;

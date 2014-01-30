@@ -160,7 +160,9 @@ abstract public class Node {
 
     abstract public boolean eq(Node n);
 
-    abstract protected String scribeValue() throws ScribeException;
+    protected String scribeValue() throws ScribeException {
+        throw new ScribeException(this.toString());
+    }
 
     public String scribe(Env env) throws ScribeException {
         return scribeValue();

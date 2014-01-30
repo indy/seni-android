@@ -16,7 +16,7 @@
 
 package io.indy.seni.lang;
 
-public class NodeSpecial extends NodeInternal {
+public class NodeSpecial extends Node {
 
     private String mKeyword;
 

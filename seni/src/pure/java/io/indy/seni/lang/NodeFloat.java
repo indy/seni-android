@@ -54,6 +54,7 @@ public class NodeFloat extends NodeMutate {
         return mFloat == ((NodeFloat) n).mFloat;
     }
 
+    @Override
     protected String scribeValue() throws ScribeException {
         return String.valueOf(mFloat);
     }

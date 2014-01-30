@@ -54,6 +54,7 @@ public class NodeBoolean extends NodeMutate {
         return mBoolean == ((NodeBoolean) n).mBoolean;
     }
 
+    @Override
     protected String scribeValue() throws ScribeException {
         return mBoolean ? "true" : "false";
     }

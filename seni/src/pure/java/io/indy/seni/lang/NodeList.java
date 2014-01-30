@@ -74,10 +74,6 @@ public class NodeList extends Node {
         return true;
     }
 
-    protected String scribeValue() throws ScribeException {
-        throw new ScribeException("WHO IS CALLING NodeList:scribeValue ??? " + this.toString());
-    }
-
     public String scribe(Env env) throws ScribeException {
 
         String res = "(";

@@ -54,6 +54,7 @@ public class NodeInt extends NodeMutate {
         return mInteger == ((NodeInt) n).mInteger;
     }
 
+    @Override
     protected String scribeValue() throws ScribeException {
         return Integer.toString(mInteger);
     }

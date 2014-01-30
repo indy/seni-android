@@ -18,7 +18,7 @@ package io.indy.seni.lang;
 
 import io.indy.seni.core.Colour;
 
-public class NodeColour extends NodeInternal {
+public class NodeColour extends Node {
 
     private Colour mColour;
 

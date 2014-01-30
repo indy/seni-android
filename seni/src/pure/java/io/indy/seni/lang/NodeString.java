@@ -54,6 +54,7 @@ public class NodeString extends NodeMutate {
         return ((NodeString) n).mString.equals(mString);
     }
 
+    @Override
     protected String scribeValue() throws ScribeException {
         return "\"" + mString + "\"";
     }

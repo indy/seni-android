@@ -39,19 +39,19 @@ public class NodeInt extends NodeMutate {
 
     public NodeMutate mutate() {
         int range = mMaxRange - mMinRange;
-        float f = (float)Math.random() * (float)range;
-        int val = ((int)f) + mMinRange;
+        float f = (float) Math.random() * (float) range;
+        int val = ((int) f) + mMinRange;
         return kloneSet(new NodeInt(val));
     }
 
     public NodeMutate klone() {
         return kloneSet(new NodeInt(mInteger));
     }
-    
+
     @Override
     public void addParameterNode(Node node) {
         super.addParameterNode(node);
-        
+
         // todo:
         // an env in which the parameter functions evaluate to themselves
         // call Interpreter:eval
@@ -63,7 +63,7 @@ public class NodeInt extends NodeMutate {
         try {
             NodeList nodeList = Node.asList(node);
             String name = Node.asNameValue(nodeList.getChild(0));
-            if(name.equals(NodeMutate.IN_RANGE)) {
+            if (name.equals(NodeMutate.IN_RANGE)) {
                 mMinRange = Node.asIntValue(nodeList.getChild(1));
                 mMaxRange = Node.asIntValue(nodeList.getChild(2));
             }

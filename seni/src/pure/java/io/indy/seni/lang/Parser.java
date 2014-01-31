@@ -77,14 +77,14 @@ public class Parser {
         Node node = consumeItem(tokens, true);
         Node.Type nodeType = node.getType();
         if (nodeType != Node.Type.BOOLEAN &&
-            nodeType != Node.Type.INT &&
-            nodeType != Node.Type.FLOAT &&
-            nodeType != Node.Type.NAME &&
-            nodeType != Node.Type.STRING) {
+                nodeType != Node.Type.INT &&
+                nodeType != Node.Type.FLOAT &&
+                nodeType != Node.Type.NAME &&
+                nodeType != Node.Type.STRING) {
             // throw an error - non-mutable node within square brackets
         }
 
-        NodeMutate nodeMutate = (NodeMutate)node;
+        NodeMutate nodeMutate = (NodeMutate) node;
 
         Node parameter = consumeItem(tokens, false);
         while (parameter != null) {

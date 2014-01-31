@@ -17,8 +17,8 @@
 package io.indy.seni.lang;
 
 import java.util.HashSet;
-import java.util.Set;
 import java.util.List;
+import java.util.Set;
 
 public class NodeName extends NodeMutate {
 
@@ -43,17 +43,17 @@ public class NodeName extends NodeMutate {
         // todo: test mutate
 
         int size = mParameterSet.size();
-        float f = (float)Math.random() * size;
-        int index = (int)f;
+        float f = (float) Math.random() * size;
+        int index = (int) f;
 
         int count = 0;
-        for(String s: mParameterSet) {
-            if(count == index) {
+        for (String s : mParameterSet) {
+            if (count == index) {
                 return kloneSet(new NodeName(s));
             }
             count++;
         }
-        
+
         // NOTE: should never get here
 
         return kloneSet(new NodeName(mName));
@@ -66,7 +66,7 @@ public class NodeName extends NodeMutate {
     @Override
     public void addParameterNode(Node node) {
         super.addParameterNode(node);
-        
+
         // todo:
         // an env in which the parameter functions evaluate to themselves
         // call Interpreter:eval
@@ -78,12 +78,12 @@ public class NodeName extends NodeMutate {
         try {
             NodeList nodeList = Node.asList(node);
             String name = Node.asNameValue(nodeList.getChild(0));
-            if(name.equals(IN_SET)) {
+            if (name.equals(IN_SET)) {
 
                 mParameterSet = new HashSet<String>();
 
                 List<Node> children = nodeList.getChildren();
-                for(int i=1;i<children.size();i++) {
+                for (int i = 1; i < children.size(); i++) {
                     mParameterSet.add(Node.asNameValue(children.get(i)));
                 }
             }

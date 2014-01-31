@@ -39,8 +39,9 @@ public abstract class NodeMutate extends Node {
             mParameterAst = new ArrayList<Node>();
         }
     }
-    
+
     abstract public NodeMutate mutate();
+
     abstract public NodeMutate klone();
 
     protected NodeMutate kloneSet(NodeMutate k) {
@@ -65,7 +66,7 @@ public abstract class NodeMutate extends Node {
     public void addParameterNode(Node node) {
         mParameterAst.add(node);
     }
-    
+
     public List<Node> getParameterNodes() {
         return mParameterAst;
     }

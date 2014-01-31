@@ -37,7 +37,7 @@ public class Interpreter {
 
     private static Node evalMutableNode(Env env, Node expr) throws LangException {
         if (expr.isAlterable()) {
-            return env.lookup(((NodeMutate)expr).getGenSym());
+            return env.lookup(((NodeMutate) expr).getGenSym());
         } else {
             return expr;
         }
@@ -74,7 +74,7 @@ public class Interpreter {
         if (type == Node.Type.NAME) {
             NodeName nodeName;
             if (expr.isAlterable()) {
-                String genSym = ((NodeMutate)expr).getGenSym();
+                String genSym = ((NodeMutate) expr).getGenSym();
                 nodeName = ((NodeName) (env.lookup(genSym)));
             } else {
                 nodeName = ((NodeName) expr);

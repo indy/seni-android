@@ -90,7 +90,7 @@ public class AstHolder {
 
         if (node.isAlterable()) {
             // only NodeMutate classes can be alterable
-            NodeMutate nodeM = (NodeMutate)node;
+            NodeMutate nodeM = (NodeMutate) node;
             nodeM.setGenSym(sg.gen());
             mGenotype.add(nodeM.klone());
         }

@@ -39,7 +39,7 @@ public class NodeFloat extends NodeMutate {
 
     public NodeMutate mutate() {
         float range = mMaxRange - mMinRange;
-        float f = (float)Math.random() * range;
+        float f = (float) Math.random() * range;
         float val = f + mMinRange;
         return kloneSet(new NodeFloat(val));
     }
@@ -63,7 +63,7 @@ public class NodeFloat extends NodeMutate {
         try {
             NodeList nodeList = Node.asList(node);
             String name = Node.asNameValue(nodeList.getChild(0));
-            if(name.equals(NodeMutate.IN_RANGE)) {
+            if (name.equals(NodeMutate.IN_RANGE)) {
                 mMinRange = Node.asFloatValue(nodeList.getChild(1));
                 mMaxRange = Node.asFloatValue(nodeList.getChild(2));
             }

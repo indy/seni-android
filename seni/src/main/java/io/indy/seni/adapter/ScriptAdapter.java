@@ -33,6 +33,7 @@ import io.indy.seni.dummy.Art1352;
 import io.indy.seni.dummy.Art1402;
 import io.indy.seni.dummy.Art1403;
 import io.indy.seni.dummy.Art1403b;
+import io.indy.seni.dummy.Art1405;
 import io.indy.seni.lang.AstHolder;
 import io.indy.seni.lang.Genotype;
 import io.indy.seni.lang.Node;
@@ -47,7 +48,7 @@ public class ScriptAdapter extends BaseAdapter {
         if (AppConfig.DEBUG && D) Log.d(TAG, message);
     }
 
-    private static final String[] items = {"lorem", "ipsum", "dolor"};
+    private static final String[] items = {"lorem", "ipsum", "dolor", "foo"};
     private AstHolder[] mAstHolder;
 
     private LayoutInflater mInflater;
@@ -57,10 +58,11 @@ public class ScriptAdapter extends BaseAdapter {
         mContext = context;
         mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-        mAstHolder = new AstHolder[3];
+        mAstHolder = new AstHolder[4];
         mAstHolder[0] = new AstHolder(Art1352.script());
         mAstHolder[1] = new AstHolder(Art1402.script());
         mAstHolder[2] = new AstHolder(Art1403b.script());
+        mAstHolder[3] = new AstHolder(Art1405.script());
     }
 
     @Override

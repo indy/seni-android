@@ -25,6 +25,8 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import java.util.List;
+
 import io.indy.seni.AppConfig;
 import io.indy.seni.EvolveActivity;
 import io.indy.seni.EvolveFragment;
@@ -36,6 +38,7 @@ import io.indy.seni.dummy.Art1403b;
 import io.indy.seni.lang.AstHolder;
 import io.indy.seni.lang.Genotype;
 import io.indy.seni.lang.Node;
+import io.indy.seni.lang.NodeMutate;
 import io.indy.seni.view.SeniView;
 
 public class EvolveAdapter extends BaseAdapter {
@@ -60,11 +63,20 @@ public class EvolveAdapter extends BaseAdapter {
     }
 
     public void setScript(String script) {
+
+        ifd("script: " + script);
+
         mAstHolder = new AstHolder(script);
-        mNumFucks = 32;
+        mNumFucks = 50;
         mGenotypes = new Genotype[mNumFucks];
         for (int i = 0; i < mNumFucks; i++) {
             mGenotypes[i] = mAstHolder.getGenotype().mutate();
+/*
+            List<NodeMutate> alterable = mGenotypes[i].getAlterable();
+            for(NodeMutate n : alterable) {
+                ifd("i: " + i + " " + n.toString());
+            }
+            */
         }
     }
 
@@ -96,16 +108,13 @@ public class EvolveAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         View view;
-        TextView text;
 
-        int numColumns = mContext.getResources().getInteger(R.integer.num_columns);
+        int numColumns = mContext.getResources().getInteger(R.integer.num_evolve_columns);
+
+        ifd("numColumns " + numColumns);
 
         if (convertView == null) {
-            if (numColumns > 1) {
-                view = mInflater.inflate(R.layout.cell_templist, parent, false);
-            } else {
-                view = mInflater.inflate(R.layout.row_templist, parent, false);
-            }
+            view = mInflater.inflate(R.layout.cell_evolve, parent, false);
         } else {
             view = convertView;
         }
@@ -115,14 +124,6 @@ public class EvolveAdapter extends BaseAdapter {
         SeniView seniView = (SeniView) view.findViewById(R.id.seniView);
         seniView.setAstHolder(mAstHolder);
         seniView.setGenotype(mGenotypes[position % mNumFucks]);
-
-        if (numColumns > 1) {
-            text = (TextView) view.findViewById(R.id.bar);
-            text.setText("shabba ");
-        } else {
-            text = (TextView) view.findViewById(R.id.foo);
-            text.setText("id: " + position);
-        }
 
         view.setOnClickListener(mOnClickListener);
 

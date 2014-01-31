@@ -6,6 +6,6 @@
           android:layout_height="match_parent"
           android:verticalSpacing="40dip"
           android:horizontalSpacing="5dip"
-          android:numColumns="@integer/num_columns"
+          android:numColumns="@integer/num_evolve_columns"
           android:gravity="center"
           tools:context=".EvolveFragment"/>

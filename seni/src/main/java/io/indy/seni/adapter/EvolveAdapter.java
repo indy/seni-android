@@ -67,7 +67,7 @@ public class EvolveAdapter extends BaseAdapter {
         ifd("script: " + script);
 
         mAstHolder = new AstHolder(script);
-        mNumFucks = 50;
+        mNumFucks = 150;
         mGenotypes = new Genotype[mNumFucks];
         for (int i = 0; i < mNumFucks; i++) {
             mGenotypes[i] = mAstHolder.getGenotype().mutate();

@@ -20,6 +20,7 @@ public class NodeInt extends NodeMutate {
 
     private int mInteger;
 
+    private boolean mHasSpecifiedRange;
     private int mMinRange;
     private int mMaxRange;
 
@@ -33,19 +34,32 @@ public class NodeInt extends NodeMutate {
         mType = Node.Type.INT;
         mInteger = value;
 
+        mHasSpecifiedRange = false;
         mMinRange = 0;
         mMaxRange = 100;
     }
 
     public NodeMutate mutate() {
-        int range = mMaxRange - mMinRange;
-        float f = (float) Math.random() * (float) range;
+        float f = (float) Math.random() * (float) (mMaxRange - mMinRange);
         int val = ((int) f) + mMinRange;
-        return kloneSet(new NodeInt(val));
+
+        return kloneWithValue(val);
     }
 
     public NodeMutate klone() {
-        return kloneSet(new NodeInt(mInteger));
+        return kloneWithValue(mInteger);
+    }
+
+    private NodeInt kloneWithValue(int val) {
+        NodeInt n = new NodeInt(val, mAlterable);
+
+        n.mGenSym = mGenSym;
+
+        n.mHasSpecifiedRange = this.mHasSpecifiedRange;
+        n.mMinRange = this.mMinRange;
+        n.mMaxRange = this.mMaxRange;
+
+        return n;
     }
 
     @Override
@@ -86,7 +100,14 @@ public class NodeInt extends NodeMutate {
 
     @Override
     protected String scribeValue() throws ScribeException {
-        return Integer.toString(mInteger);
+        String ret = Integer.toString(mInteger);
+        if(mHasSpecifiedRange) {
+            ret += " (" + NodeMutate.IN_RANGE +
+                    " " + Integer.toString(mMinRange) +
+                    " " + Integer.toString(mMaxRange) +
+                    ")";
+        }
+        return ret;
     }
 
     public String toString() {

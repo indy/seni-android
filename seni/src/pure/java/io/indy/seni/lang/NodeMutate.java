@@ -44,12 +44,6 @@ public abstract class NodeMutate extends Node {
 
     abstract public NodeMutate klone();
 
-    protected NodeMutate kloneSet(NodeMutate k) {
-        k.mAlterable = mAlterable;
-        k.mGenSym = mGenSym;
-        return k;
-    }
-
     public void setGenSym(String genSym) {
         mGenSym = genSym;
     }

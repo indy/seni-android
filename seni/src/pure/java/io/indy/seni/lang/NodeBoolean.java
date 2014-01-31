@@ -33,12 +33,22 @@ public class NodeBoolean extends NodeMutate {
 
     public NodeMutate mutate() {
         boolean val = Math.random() < 0.5;
-        return kloneSet(new NodeBoolean(val));
+
+        return kloneWithValue(val);
     }
 
     public NodeMutate klone() {
-        return kloneSet(new NodeBoolean(mBoolean));
+        return kloneWithValue(mBoolean);
     }
+
+    private NodeBoolean kloneWithValue(boolean val) {
+        NodeBoolean n = new NodeBoolean(val, mAlterable);
+
+        n.mGenSym = mGenSym;
+
+        return n;
+    }
+
 
     public boolean getBoolean() {
         return mBoolean;

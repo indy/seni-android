@@ -26,6 +26,7 @@ public class NodeName extends NodeMutate {
 
     private String mName;
 
+    private boolean mHasParameterSet;
     private Set<String> mParameterSet;
 
     public NodeName(String value) {
@@ -37,6 +38,8 @@ public class NodeName extends NodeMutate {
 
         mType = Node.Type.NAME;
         mName = value;
+
+        mHasParameterSet = false;
     }
 
     public NodeMutate mutate() {
@@ -49,18 +52,34 @@ public class NodeName extends NodeMutate {
         int count = 0;
         for (String s : mParameterSet) {
             if (count == index) {
-                return kloneSet(new NodeName(s));
+                return kloneWithValue(s);
             }
             count++;
         }
 
         // NOTE: should never get here
-
-        return kloneSet(new NodeName(mName));
+        return kloneWithValue(mName);
     }
 
     public NodeMutate klone() {
-        return kloneSet(new NodeName(mName));
+        return kloneWithValue(mName);
+    }
+
+    private NodeName kloneWithValue(String val) {
+        NodeName n = new NodeName(val, mAlterable);
+
+        n.mGenSym = mGenSym;
+
+        n.mHasParameterSet = this.mHasParameterSet;
+        if(mHasParameterSet) {
+            n.mParameterSet = new HashSet<String>();
+
+            for(String s : mParameterSet) {
+                n.mParameterSet.add(s);
+            }
+        }
+
+        return n;
     }
 
     @Override
@@ -105,7 +124,15 @@ public class NodeName extends NodeMutate {
 
     @Override
     protected String scribeValue() throws ScribeException {
-        return mName;
+        String ret = mName;
+        if(mHasParameterSet) {
+            ret += " (" + IN_SET + " ";
+            for(String s : mParameterSet) {
+                ret += " " + s;
+            }
+            ret += ")";
+        }
+        return ret;
     }
 
     public String toString() {

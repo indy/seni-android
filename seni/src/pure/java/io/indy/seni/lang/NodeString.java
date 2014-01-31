@@ -32,11 +32,19 @@ public class NodeString extends NodeMutate {
     }
 
     public NodeMutate mutate() {
-        return kloneSet(new NodeString(mString));
+        return kloneWithValue(mString);
     }
 
     public NodeMutate klone() {
-        return kloneSet(new NodeString(mString));
+        return kloneWithValue(mString);
+    }
+
+    private NodeString kloneWithValue(String val) {
+        NodeString n = new NodeString(val, mAlterable);
+
+        n.mGenSym = mGenSym;
+
+        return n;
     }
 
     public String getString() {

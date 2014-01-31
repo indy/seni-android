@@ -20,6 +20,7 @@ public class NodeFloat extends NodeMutate {
 
     private float mFloat;
 
+    private boolean mHasSpecifiedRange;
     private float mMinRange;
     private float mMaxRange;
 
@@ -33,19 +34,32 @@ public class NodeFloat extends NodeMutate {
         mType = Node.Type.FLOAT;
         mFloat = value;
 
+        mHasSpecifiedRange = false;
         mMinRange = 0.0f;
         mMaxRange = 1.0f;
     }
 
     public NodeMutate mutate() {
-        float range = mMaxRange - mMinRange;
-        float f = (float) Math.random() * range;
+        float f = (float) Math.random() * (mMaxRange - mMinRange);
         float val = f + mMinRange;
-        return kloneSet(new NodeFloat(val));
+
+        return kloneWithValue(val);
     }
 
     public NodeMutate klone() {
-        return kloneSet(new NodeFloat(mFloat));
+        return kloneWithValue(mFloat);
+    }
+
+    private NodeFloat kloneWithValue(float val) {
+        NodeFloat n = new NodeFloat(val, mAlterable);
+
+        n.mGenSym = mGenSym;
+
+        n.mHasSpecifiedRange = this.mHasSpecifiedRange;
+        n.mMinRange = this.mMinRange;
+        n.mMaxRange = this.mMaxRange;
+
+        return n;
     }
 
     @Override
@@ -64,6 +78,7 @@ public class NodeFloat extends NodeMutate {
             NodeList nodeList = Node.asList(node);
             String name = Node.asNameValue(nodeList.getChild(0));
             if (name.equals(NodeMutate.IN_RANGE)) {
+                mHasSpecifiedRange = true;
                 mMinRange = Node.asFloatValue(nodeList.getChild(1));
                 mMaxRange = Node.asFloatValue(nodeList.getChild(2));
             }
@@ -85,7 +100,14 @@ public class NodeFloat extends NodeMutate {
 
     @Override
     protected String scribeValue() throws ScribeException {
-        return String.valueOf(mFloat);
+        String ret = String.valueOf(mFloat);
+        if(mHasSpecifiedRange) {
+            ret += " (" + NodeMutate.IN_RANGE +
+                    " " + String.valueOf(mMinRange) +
+                    " " + String.valueOf(mMaxRange) +
+                    ")";
+        }
+        return ret;
     }
 
     public String toString() {

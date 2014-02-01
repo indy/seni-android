@@ -60,7 +60,7 @@ public class ImageCache {
 
     // Default memory cache size in kilobytes
     private static final int DEFAULT_MEM_CACHE_SIZE = 1024 * 5; // 5MB
-
+/*
     // Default disk cache size in bytes
     private static final int DEFAULT_DISK_CACHE_SIZE = 1024 * 1024 * 10; // 10MB
 
@@ -68,17 +68,17 @@ public class ImageCache {
     private static final CompressFormat DEFAULT_COMPRESS_FORMAT = CompressFormat.JPEG;
     private static final int DEFAULT_COMPRESS_QUALITY = 70;
     private static final int DISK_CACHE_INDEX = 0;
-
+*/
     // Constants to easily toggle various caches
     private static final boolean DEFAULT_MEM_CACHE_ENABLED = true;
-    private static final boolean DEFAULT_DISK_CACHE_ENABLED = false;
-    private static final boolean DEFAULT_INIT_DISK_CACHE_ON_CREATE = false;
+//    private static final boolean DEFAULT_DISK_CACHE_ENABLED = false;
+//    private static final boolean DEFAULT_INIT_DISK_CACHE_ON_CREATE = false;
 
-    private DiskLruCache mDiskLruCache;
+//    private DiskLruCache mDiskLruCache;
     private LruCache<String, BitmapDrawable> mMemoryCache;
     private ImageCacheParams mCacheParams;
-    private final Object mDiskCacheLock = new Object();
-    private boolean mDiskCacheStarting = true;
+//    private final Object mDiskCacheLock = new Object();
+//    private boolean mDiskCacheStarting = true;
 
     private Set<SoftReference<Bitmap>> mReusableBitmaps;
 
@@ -183,12 +183,14 @@ public class ImageCache {
             };
         }
 
+        /*
         // By default the disk cache is not initialized here as it should be initialized
         // on a separate thread due to disk access.
         if (cacheParams.initDiskCacheOnCreate) {
             // Set up disk cache
             initDiskCache();
         }
+        */
     }
 
     /**
@@ -197,6 +199,7 @@ public class ImageCache {
      * cache when it is created, instead you should call initDiskCache() to initialize it on a
      * background thread.
      */
+    /*
     public void initDiskCache() {
         // Set up disk cache
         synchronized (mDiskCacheLock) {
@@ -224,6 +227,7 @@ public class ImageCache {
             mDiskCacheLock.notifyAll();
         }
     }
+    */
 
     /**
      * Adds a bitmap to both memory and disk cache.
@@ -244,7 +248,7 @@ public class ImageCache {
             }
             mMemoryCache.put(data, value);
         }
-
+        /*
         synchronized (mDiskCacheLock) {
             // Add to disk cache
             if (mDiskLruCache != null) {
@@ -277,6 +281,7 @@ public class ImageCache {
                 }
             }
         }
+        */
     }
 
     /**
@@ -305,6 +310,7 @@ public class ImageCache {
      * @param data Unique identifier for which item to get
      * @return The bitmap if found in cache, null otherwise
      */
+    /*
     public Bitmap getBitmapFromDiskCache(String data) {
         final String key = hashKeyForDisk(data);
         Bitmap bitmap = null;
@@ -346,6 +352,7 @@ public class ImageCache {
             return bitmap;
         }
     }
+    */
 
     /**
      * @param options - BitmapFactory.Options with out* options populated
@@ -393,7 +400,7 @@ public class ImageCache {
                 Log.d(TAG, "Memory cache cleared");
             }
         }
-
+        /*
         synchronized (mDiskCacheLock) {
             mDiskCacheStarting = true;
             if (mDiskLruCache != null && !mDiskLruCache.isClosed()) {
@@ -409,6 +416,7 @@ public class ImageCache {
                 initDiskCache();
             }
         }
+        */
     }
 
     /**
@@ -416,6 +424,7 @@ public class ImageCache {
      * disk access so this should not be executed on the main/UI thread.
      */
     public void flush() {
+        /*
         synchronized (mDiskCacheLock) {
             if (mDiskLruCache != null) {
                 try {
@@ -428,6 +437,7 @@ public class ImageCache {
                 }
             }
         }
+        */
     }
 
     /**
@@ -435,6 +445,7 @@ public class ImageCache {
      * disk access so this should not be executed on the main/UI thread.
      */
     public void close() {
+        /*
         synchronized (mDiskCacheLock) {
             if (mDiskLruCache != null) {
                 try {
@@ -450,6 +461,7 @@ public class ImageCache {
                 }
             }
         }
+        */
     }
 
     /**
@@ -457,14 +469,15 @@ public class ImageCache {
      */
     public static class ImageCacheParams {
         public int memCacheSize = DEFAULT_MEM_CACHE_SIZE;
+        public boolean memoryCacheEnabled = DEFAULT_MEM_CACHE_ENABLED;
+        /*
         public int diskCacheSize = DEFAULT_DISK_CACHE_SIZE;
         public File diskCacheDir;
         public CompressFormat compressFormat = DEFAULT_COMPRESS_FORMAT;
         public int compressQuality = DEFAULT_COMPRESS_QUALITY;
-        public boolean memoryCacheEnabled = DEFAULT_MEM_CACHE_ENABLED;
         public boolean diskCacheEnabled = DEFAULT_DISK_CACHE_ENABLED;
         public boolean initDiskCacheOnCreate = DEFAULT_INIT_DISK_CACHE_ON_CREATE;
-
+        */
         /**
          * Create a set of image cache parameters that can be provided to
          * {@link ImageCache#getInstance(FragmentManager, ImageCacheParams)} or
@@ -475,7 +488,7 @@ public class ImageCache {
          *                               is sufficient.
          */
         public ImageCacheParams(Context context, String diskCacheDirectoryName) {
-            diskCacheDir = getDiskCacheDir(context, diskCacheDirectoryName);
+            //diskCacheDir = getDiskCacheDir(context, diskCacheDirectoryName);
         }
 
         /**
@@ -550,6 +563,7 @@ public class ImageCache {
      * @param uniqueName A unique directory name to append to the cache dir
      * @return The cache dir
      */
+    /*
     public static File getDiskCacheDir(Context context, String uniqueName) {
         // Check if media is mounted or storage is built-in, if so, try and use external cache dir
         // otherwise use internal cache dir
@@ -560,11 +574,13 @@ public class ImageCache {
 
         return new File(cachePath + File.separator + uniqueName);
     }
+    */
 
     /**
      * A hashing method that changes a string (like a URL) into a hash suitable for using as a
      * disk filename.
      */
+    /*
     public static String hashKeyForDisk(String key) {
         String cacheKey;
         try {
@@ -576,6 +592,7 @@ public class ImageCache {
         }
         return cacheKey;
     }
+    */
 
     private static String bytesToHexString(byte[] bytes) {
         // http://stackoverflow.com/questions/332079

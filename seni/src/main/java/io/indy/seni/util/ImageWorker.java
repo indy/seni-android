@@ -266,10 +266,12 @@ public abstract class ImageWorker {
             // thread and the ImageView that was originally bound to this task is still bound back
             // to this task and our "exit early" flag is not set then try and fetch the bitmap from
             // the cache
+            /*
             if (mImageCache != null && !isCancelled() && getAttachedImageView() != null
                     && !mExitTasksEarly) {
                 bitmap = mImageCache.getBitmapFromDiskCache(dataString);
             }
+            */
 
             // If the bitmap was not found in the cache and this task has not been cancelled by
             // another thread and the ImageView that was originally bound to this task is still
@@ -439,9 +441,9 @@ public abstract class ImageWorker {
     }
 
     protected void initDiskCacheInternal() {
-        if (mImageCache != null) {
-            mImageCache.initDiskCache();
-        }
+//        if (mImageCache != null) {
+//            mImageCache.initDiskCache();
+//        }
     }
 
     protected void clearCacheInternal() {

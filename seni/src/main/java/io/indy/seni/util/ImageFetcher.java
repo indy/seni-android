@@ -18,6 +18,8 @@ package io.indy.seni.util;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Paint;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
@@ -46,11 +48,11 @@ public class ImageFetcher extends ImageResizer {
     private static final String HTTP_CACHE_DIR = "http";
     private static final int IO_BUFFER_SIZE = 8 * 1024;
 
-    private DiskLruCache mHttpDiskCache;
-    private File mHttpCacheDir;
-    private boolean mHttpDiskCacheStarting = true;
-    private final Object mHttpDiskCacheLock = new Object();
-    private static final int DISK_CACHE_INDEX = 0;
+    //private DiskLruCache mHttpDiskCache;
+    //private File mHttpCacheDir;
+    //private boolean mHttpDiskCacheStarting = true;
+    //private final Object mHttpDiskCacheLock = new Object();
+    //private static final int DISK_CACHE_INDEX = 0;
 
     /**
      * Initialize providing a target image width and height for the processing images.
@@ -77,15 +79,16 @@ public class ImageFetcher extends ImageResizer {
 
     private void init(Context context) {
         checkConnection(context);
-        mHttpCacheDir = ImageCache.getDiskCacheDir(context, HTTP_CACHE_DIR);
+        // mHttpCacheDir = ImageCache.getDiskCacheDir(context, HTTP_CACHE_DIR);
     }
 
     @Override
     protected void initDiskCacheInternal() {
         super.initDiskCacheInternal();
-        initHttpDiskCache();
+        //initHttpDiskCache();
     }
 
+    /*
     private void initHttpDiskCache() {
         if (!mHttpCacheDir.exists()) {
             mHttpCacheDir.mkdirs();
@@ -105,10 +108,12 @@ public class ImageFetcher extends ImageResizer {
             mHttpDiskCacheLock.notifyAll();
         }
     }
+    */
 
     @Override
     protected void clearCacheInternal() {
         super.clearCacheInternal();
+        /*
         synchronized (mHttpDiskCacheLock) {
             if (mHttpDiskCache != null && !mHttpDiskCache.isClosed()) {
                 try {
@@ -124,11 +129,13 @@ public class ImageFetcher extends ImageResizer {
                 initHttpDiskCache();
             }
         }
+        */
     }
 
     @Override
     protected void flushCacheInternal() {
         super.flushCacheInternal();
+        /*
         synchronized (mHttpDiskCacheLock) {
             if (mHttpDiskCache != null) {
                 try {
@@ -141,11 +148,13 @@ public class ImageFetcher extends ImageResizer {
                 }
             }
         }
+        */
     }
 
     @Override
     protected void closeCacheInternal() {
         super.closeCacheInternal();
+        /*
         synchronized (mHttpDiskCacheLock) {
             if (mHttpDiskCache != null) {
                 try {
@@ -161,6 +170,7 @@ public class ImageFetcher extends ImageResizer {
                 }
             }
         }
+        */
     }
 
     /**
@@ -168,6 +178,7 @@ public class ImageFetcher extends ImageResizer {
     *
     * @param context
     */
+
     private void checkConnection(Context context) {
         final ConnectivityManager cm =
                 (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -177,6 +188,7 @@ public class ImageFetcher extends ImageResizer {
             Log.e(TAG, "checkConnection - no connection found");
         }
     }
+
 
     /**
      * The main process method, which will be called by the ImageWorker in the AsyncTask background
@@ -190,6 +202,17 @@ public class ImageFetcher extends ImageResizer {
             Log.d(TAG, "processBitmap - " + data);
         }
 
+        // could also create arbitrary bitmap and resize it
+        Bitmap b = Bitmap.createBitmap(mImageWidth, mImageHeight, Bitmap.Config.ARGB_8888);
+        Canvas c = new Canvas(b);
+
+        Paint paint = new Paint();
+        paint.setARGB(255, 200, 0, 0);
+        c.drawRect(0, 0, mImageWidth, mImageHeight, paint);
+
+        return b;
+
+        /*
         final String key = ImageCache.hashKeyForDisk(data);
         FileDescriptor fileDescriptor = null;
         FileInputStream fileInputStream = null;
@@ -249,7 +272,9 @@ public class ImageFetcher extends ImageResizer {
                 fileInputStream.close();
             } catch (IOException e) {}
         }
+
         return bitmap;
+        */
     }
 
     @Override

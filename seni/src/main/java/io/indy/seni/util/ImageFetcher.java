@@ -28,6 +28,10 @@ import android.widget.Toast;
 
 import io.indy.seni.BuildConfig;
 import io.indy.seni.R;
+import io.indy.seni.dummy.Art1403b;
+import io.indy.seni.lang.AstHolder;
+import io.indy.seni.lang.Genotype;
+import io.indy.seni.runtime.SeniRuntime;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -209,6 +213,11 @@ public class ImageFetcher extends ImageResizer {
         Paint paint = new Paint();
         paint.setARGB(255, 200, 0, 0);
         c.drawRect(0, 0, mImageWidth, mImageHeight, paint);
+
+        String script = Art1403b.script();
+        AstHolder mAstHolder = new AstHolder(script);
+        Genotype mGenotype = mAstHolder.getGenotype();
+        SeniRuntime.render(c, mAstHolder, mGenotype);
 
         return b;
 

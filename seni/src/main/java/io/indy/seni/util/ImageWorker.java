@@ -293,7 +293,7 @@ public abstract class ImageWorker {
                 } else {
                     // Running on Gingerbread or older, so wrap in a RecyclingBitmapDrawable
                     // which will recycle automagically
-                    drawable = new RecyclingBitmapDrawable(mResources, bitmap);
+                    drawable = null; //new RecyclingBitmapDrawable(mResources, bitmap);
                 }
 
                 if (mImageCache != null) {

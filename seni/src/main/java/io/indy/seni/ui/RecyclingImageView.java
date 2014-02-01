@@ -22,8 +22,6 @@ import android.graphics.drawable.LayerDrawable;
 import android.util.AttributeSet;
 import android.widget.ImageView;
 
-import io.indy.seni.util.RecyclingBitmapDrawable;
-
 /**
  * Sub-class of ImageView which automatically notifies the drawable when it is
  * being displayed.
@@ -74,10 +72,7 @@ public class RecyclingImageView extends ImageView {
      * @param isDisplayed
      */
     private static void notifyDrawable(Drawable drawable, final boolean isDisplayed) {
-        if (drawable instanceof RecyclingBitmapDrawable) {
-            // The drawable is a CountingBitmapDrawable, so notify it
-            ((RecyclingBitmapDrawable) drawable).setIsDisplayed(isDisplayed);
-        } else if (drawable instanceof LayerDrawable) {
+        if (drawable instanceof LayerDrawable) {
             // The drawable is a LayerDrawable, so recurse on each layer
             LayerDrawable layerDrawable = (LayerDrawable) drawable;
             for (int i = 0, z = layerDrawable.getNumberOfLayers(); i < z; i++) {

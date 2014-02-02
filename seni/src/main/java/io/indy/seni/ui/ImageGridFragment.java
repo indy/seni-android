@@ -84,7 +84,7 @@ public class ImageGridFragment extends Fragment implements AdapterView.OnItemCli
 
         // The ImageFetcher takes care of loading images into our ImageView children asynchronously
         mImageFetcher = new ImageFetcher(getActivity(), mImageThumbSize);
-        mImageFetcher.setLoadingImage(R.drawable.empty_photo);
+        mImageFetcher.setLoadingImage(R.drawable.empty_genotype);
         mImageFetcher.addImageCache(getActivity().getFragmentManager(), cacheParams);
     }
 

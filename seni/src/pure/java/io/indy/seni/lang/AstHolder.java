@@ -115,7 +115,7 @@ public class AstHolder {
 
             // gensym alterable nodes in ast
             SymbolGenerator sg = new SymbolGenerator(mGenSymStart);
-            mGenotype = new Genotype();
+            mGenotype = new Genotype(this);
             for (Node node : ast) {
                 addGenSyms(node, sg);
             }

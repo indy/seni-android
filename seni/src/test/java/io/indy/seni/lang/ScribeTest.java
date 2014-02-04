@@ -50,7 +50,7 @@ public class ScribeTest extends EvalTestBase {
         AstHolder astHolder = new AstHolder("(+ [4] [5])");
         Genotype genotype = astHolder.getGenotype();
 
-        Genotype derived = new Genotype();
+        Genotype derived = new Genotype(null);
         appendAlterable(genotype, derived, new NodeInt(7));
         appendAlterable(genotype, derived, new NodeInt(9));
 
@@ -64,7 +64,7 @@ public class ScribeTest extends EvalTestBase {
         AstHolder astHolder = new AstHolder("(+ [3.14] [6.9])");
         Genotype genotype = astHolder.getGenotype();
 
-        Genotype derived = new Genotype();
+        Genotype derived = new Genotype(null);
         appendAlterable(genotype, derived, new NodeFloat(5.43f));
         appendAlterable(genotype, derived, new NodeFloat(9.32f));
 
@@ -77,7 +77,7 @@ public class ScribeTest extends EvalTestBase {
         AstHolder astHolder = new AstHolder("(+ 1 2 [foo])");
         Genotype genotype = astHolder.getGenotype();
 
-        Genotype derived = new Genotype();
+        Genotype derived = new Genotype(null);
         appendAlterable(genotype, derived, new NodeName("bar"));
 
         assertScribe(astHolder, derived, "(+ 1 2 [bar])");
@@ -89,7 +89,7 @@ public class ScribeTest extends EvalTestBase {
         AstHolder astHolder = new AstHolder("(+ 1 2 (fn [\"hi\"]) foo)");
         Genotype genotype = astHolder.getGenotype();
 
-        Genotype derived = new Genotype();
+        Genotype derived = new Genotype(null);
         appendAlterable(genotype, derived, new NodeString("bye"));
 
         assertScribe(astHolder, derived, "(+ 1 2 (fn [\"bye\"]) foo)");
@@ -101,7 +101,7 @@ public class ScribeTest extends EvalTestBase {
         AstHolder astHolder = new AstHolder("(+ [1] 2 (fn [\"hi\"]) [foo])");
         Genotype genotype = astHolder.getGenotype();
 
-        Genotype derived = new Genotype();
+        Genotype derived = new Genotype(null);
         appendAlterable(genotype, derived, new NodeInt(42));
         appendAlterable(genotype, derived, new NodeString("bye"));
         appendAlterable(genotype, derived, new NodeName("bar"));

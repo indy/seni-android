@@ -46,6 +46,10 @@ public class SeniRuntime {
         render(canvas, astHolder, astHolder.getGenotype());
     }
 
+    public static void render(Canvas canvas, Genotype genotype) {
+        render(canvas, genotype.getAstHolder(), genotype);
+    }
+
     public static void render(Canvas canvas, AstHolder astHolder, Genotype genotype) {
         SeniContext sc = new SeniContext(canvas);
         Paint paint = sc.getPaint();

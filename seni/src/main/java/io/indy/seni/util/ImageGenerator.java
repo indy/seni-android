@@ -105,12 +105,14 @@ public class ImageGenerator extends ImageWorker {
      * The main process method, which will be called by the ImageWorker in the AsyncTask background
      * thread.
      *
-     * @param data The data to load the bitmap, in this case, a regular http URL
+     * @param genotype The data to load the bitmap, in this case, a regular http URL
      * @return The downloaded and resized bitmap
      */
-    private Bitmap processBitmap(String data) {
+
+    @Override
+    protected Bitmap processBitmap(Genotype genotype) {
         if (BuildConfig.DEBUG) {
-            Log.d(TAG, "processBitmap - " + data);
+            //Log.d(TAG, "processBitmap - " + data);
         }
 
         // could also create arbitrary bitmap and resize it
@@ -118,20 +120,11 @@ public class ImageGenerator extends ImageWorker {
         Canvas c = new Canvas(b);
 
         Paint paint = new Paint();
-        paint.setARGB(255, 200, 0, 0);
+        paint.setARGB(255, 250, 250, 250);
         c.drawRect(0, 0, mImageWidth, mImageHeight, paint);
 
-        String script = Art1403b.script();
-        AstHolder mAstHolder = new AstHolder(script);
-        Genotype mGenotype = mAstHolder.getGenotype();
-        SeniRuntime.render(c, mAstHolder, mGenotype);
+        SeniRuntime.render(c, genotype);
 
         return b;
     }
-
-    @Override
-    protected Bitmap processBitmap(Object data) {
-        return processBitmap(String.valueOf(data));
-    }
-
 }

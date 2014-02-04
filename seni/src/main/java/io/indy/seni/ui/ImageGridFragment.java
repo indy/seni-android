@@ -39,7 +39,10 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import io.indy.seni.BuildConfig;
+import io.indy.seni.EvolveFragment;
 import io.indy.seni.R;
+import io.indy.seni.lang.AstHolder;
+import io.indy.seni.lang.Genotype;
 import io.indy.seni.provider.Images;
 import io.indy.seni.util.ImageCache.ImageCacheParams;
 import io.indy.seni.util.ImageGenerator;
@@ -75,6 +78,12 @@ public class ImageGridFragment extends Fragment implements AdapterView.OnItemCli
         mImageThumbSpacing = getResources().getDimensionPixelSize(R.dimen.image_thumbnail_spacing);
 
         mAdapter = new ImageAdapter(getActivity());
+
+
+        if (getArguments().containsKey(EvolveFragment.GENESIS_SCRIPT)) {
+            String script = getArguments().getString(EvolveFragment.GENESIS_SCRIPT);
+            mAdapter.setScript(script);
+        }
 
         ImageCacheParams cacheParams = new ImageCacheParams(getActivity(), IMAGE_CACHE_DIR);
 
@@ -215,6 +224,20 @@ public class ImageGridFragment extends Fragment implements AdapterView.OnItemCli
         private int mActionBarHeight = 0;
         private GridView.LayoutParams mImageViewLayoutParams;
 
+
+        private AstHolder mAstHolder;
+        private Genotype[] mGenotypes;
+        private int mNumFucks;
+
+        public void setScript(String script) {
+            mAstHolder = new AstHolder(script);
+            mNumFucks = 150;
+            mGenotypes = new Genotype[mNumFucks];
+            for (int i = 0; i < mNumFucks; i++) {
+                mGenotypes[i] = mAstHolder.getGenotype().mutate();
+            }
+        }
+
         public ImageAdapter(Context context) {
             super();
             mContext = context;
@@ -237,13 +260,14 @@ public class ImageGridFragment extends Fragment implements AdapterView.OnItemCli
             }
 
             // Size + number of columns for top empty row
-            return Images.imageThumbUrls.length + mNumColumns;
+//            return Images.imageThumbUrls.length + mNumColumns;
+            return mGenotypes.length + mNumColumns;
         }
 
         @Override
         public Object getItem(int position) {
             return position < mNumColumns ?
-                    null : Images.imageThumbUrls[position - mNumColumns];
+                    null : mGenotypes[position - mNumColumns];
         }
 
         @Override
@@ -297,7 +321,7 @@ public class ImageGridFragment extends Fragment implements AdapterView.OnItemCli
 
             // Finally load the image asynchronously into the ImageView, this also takes care of
             // setting a placeholder image while the background thread runs
-            mImageGenerator.loadImage(Images.imageThumbUrls[position - mNumColumns], imageView);
+            mImageGenerator.loadImage(mGenotypes[position - mNumColumns], imageView);
             return imageView;
         }
 

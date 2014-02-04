@@ -22,6 +22,12 @@ import java.util.List;
 
 public class Genotype {
 
+    static public int sIdCount = 0;
+    static public String createId() {
+        return "genoId-" + Integer.toString(sIdCount++);
+    }
+
+    private String mId;
     private AstHolder mAstHolder;
 
     // list of alterable nodes and their values for this instance
@@ -30,10 +36,19 @@ public class Genotype {
     public Genotype(AstHolder astHolder) {
         mAstHolder = astHolder;
         mAlterable = new ArrayList<>();
+        mId = Genotype.createId();
     }
 
     public List<NodeMutate> getAlterable() {
         return mAlterable;
+    }
+
+    public String getId() {
+        return mId;
+    }
+
+    public AstHolder getAstHolder() {
+        return mAstHolder;
     }
 
     public Env bind(Env env) {

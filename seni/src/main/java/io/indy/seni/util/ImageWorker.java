@@ -17,6 +17,7 @@
 package io.indy.seni.util;
 
 import io.indy.seni.BuildConfig;
+import io.indy.seni.lang.Genotype;
 
 import android.app.FragmentManager;
 import android.content.Context;
@@ -40,7 +41,7 @@ import java.lang.ref.WeakReference;
  */
 public abstract class ImageWorker {
     private static final String TAG = "ImageWorker";
-    private static final int FADE_IN_TIME = 200;
+    private static final int FADE_IN_TIME = 500;
 
     private ImageCache mImageCache;
     private ImageCache.ImageCacheParams mImageCacheParams;
@@ -69,21 +70,23 @@ public abstract class ImageWorker {
      * @param data The URL of the image to download.
      * @param imageView The ImageView to bind the downloaded image to.
      */
-    public void loadImage(Object data, ImageView imageView) {
-        if (data == null) {
+    public void loadImage(Genotype genotype, ImageView imageView) {
+        if (genotype == null) {
             return;
         }
+
+        String genotypeId = genotype.getId();
 
         BitmapDrawable value = null;
 
         if (mImageCache != null) {
-            value = mImageCache.getBitmapFromMemCache(String.valueOf(data));
+            value = mImageCache.getBitmapFromMemCache(genotypeId);
         }
 
         if (value != null) {
             // Bitmap found in memory cache
             imageView.setImageDrawable(value);
-        } else if (cancelPotentialWork(data, imageView)) {
+        } else if (cancelPotentialWork(genotypeId, imageView)) {
             final BitmapWorkerTask task = new BitmapWorkerTask(imageView);
             final AsyncDrawable asyncDrawable =
                     new AsyncDrawable(mResources, mLoadingBitmap, task);
@@ -92,7 +95,7 @@ public abstract class ImageWorker {
             // NOTE: This uses a custom version of AsyncTask that has been pulled from the
             // framework and slightly modified. Refer to the docs at the top of the class
             // for more info on what was changed.
-            task.executeOnExecutor(AsyncTask.DUAL_THREAD_EXECUTOR, data);
+            task.executeOnExecutor(AsyncTask.DUAL_THREAD_EXECUTOR, genotype);
             //task.executeOnExecutor(AsyncTask.SERIAL_EXECUTOR, data);
         }
     }
@@ -160,7 +163,7 @@ public abstract class ImageWorker {
      *            {@link ImageWorker#loadImage(Object, ImageView)}
      * @return The processed bitmap
      */
-    protected abstract Bitmap processBitmap(Object data);
+    protected abstract Bitmap processBitmap(Genotype data);
 
     /**
      * @return The {@link ImageCache} object currently being used by this ImageWorker.
@@ -227,8 +230,8 @@ public abstract class ImageWorker {
     /**
      * The actual AsyncTask that will asynchronously process the image.
      */
-    private class BitmapWorkerTask extends AsyncTask<Object, Void, BitmapDrawable> {
-        private Object data;
+    private class BitmapWorkerTask extends AsyncTask<Genotype, Void, BitmapDrawable> {
+        private Genotype data;
         private final WeakReference<ImageView> imageViewReference;
 
         public BitmapWorkerTask(ImageView imageView) {
@@ -239,13 +242,13 @@ public abstract class ImageWorker {
          * Background processing.
          */
         @Override
-        protected BitmapDrawable doInBackground(Object... params) {
+        protected BitmapDrawable doInBackground(Genotype... params) {
             if (BuildConfig.DEBUG) {
                 Log.d(TAG, "doInBackground - starting work");
             }
 
             data = params[0];
-            final String dataString = String.valueOf(data);
+            final String dataString = data.getId();//String.valueOf(data);
             Bitmap bitmap = null;
             BitmapDrawable drawable = null;
 

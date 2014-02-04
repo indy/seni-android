@@ -17,10 +17,8 @@
 package io.indy.seni.ui;
 
 import android.annotation.TargetApi;
-import android.app.ActivityOptions;
 import android.app.Fragment;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
 import android.util.Log;
@@ -44,7 +42,7 @@ import io.indy.seni.BuildConfig;
 import io.indy.seni.R;
 import io.indy.seni.provider.Images;
 import io.indy.seni.util.ImageCache.ImageCacheParams;
-import io.indy.seni.util.ImageFetcher;
+import io.indy.seni.util.ImageGenerator;
 import io.indy.seni.util.Utils;
 
 /**
@@ -61,7 +59,7 @@ public class ImageGridFragment extends Fragment implements AdapterView.OnItemCli
     private int mImageThumbSize;
     private int mImageThumbSpacing;
     private ImageAdapter mAdapter;
-    private ImageFetcher mImageFetcher;
+    private ImageGenerator mImageGenerator;
 
     /**
      * Empty constructor as per the Fragment documentation
@@ -82,10 +80,10 @@ public class ImageGridFragment extends Fragment implements AdapterView.OnItemCli
 
         cacheParams.setMemCacheSizePercent(0.25f); // Set memory cache to 25% of app memory
 
-        // The ImageFetcher takes care of loading images into our ImageView children asynchronously
-        mImageFetcher = new ImageFetcher(getActivity(), mImageThumbSize);
-        mImageFetcher.setLoadingImage(R.drawable.empty_genotype);
-        mImageFetcher.addImageCache(getActivity().getFragmentManager(), cacheParams);
+        // The ImageGenerator takes care of loading images into our ImageView children asynchronously
+        mImageGenerator = new ImageGenerator(getActivity(), mImageThumbSize);
+        mImageGenerator.setLoadingImage(R.drawable.empty_genotype);
+        mImageGenerator.addImageCache(getActivity().getFragmentManager(), cacheParams);
     }
 
     @Override
@@ -103,10 +101,10 @@ public class ImageGridFragment extends Fragment implements AdapterView.OnItemCli
                 if (scrollState == AbsListView.OnScrollListener.SCROLL_STATE_FLING) {
                     // Before Honeycomb pause image loading on scroll to help with performance
                     if (!Utils.hasHoneycomb()) {
-                        mImageFetcher.setPauseWork(true);
+                        mImageGenerator.setPauseWork(true);
                     }
                 } else {
-                    mImageFetcher.setPauseWork(false);
+                    mImageGenerator.setPauseWork(false);
                 }
             }
 
@@ -153,22 +151,22 @@ public class ImageGridFragment extends Fragment implements AdapterView.OnItemCli
     @Override
     public void onResume() {
         super.onResume();
-        mImageFetcher.setExitTasksEarly(false);
+        mImageGenerator.setExitTasksEarly(false);
         mAdapter.notifyDataSetChanged();
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        mImageFetcher.setPauseWork(false);
-        mImageFetcher.setExitTasksEarly(true);
-        mImageFetcher.flushCache();
+        mImageGenerator.setPauseWork(false);
+        mImageGenerator.setExitTasksEarly(true);
+        mImageGenerator.flushCache();
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        mImageFetcher.closeCache();
+        mImageGenerator.closeCache();
     }
 
     @TargetApi(VERSION_CODES.JELLY_BEAN)
@@ -198,7 +196,7 @@ public class ImageGridFragment extends Fragment implements AdapterView.OnItemCli
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.clear_cache:
-                mImageFetcher.clearCache();
+                mImageGenerator.clearCache();
                 Toast.makeText(getActivity(), R.string.clear_cache_complete_toast,
                         Toast.LENGTH_SHORT).show();
                 return true;
@@ -301,7 +299,7 @@ public class ImageGridFragment extends Fragment implements AdapterView.OnItemCli
 
             // Finally load the image asynchronously into the ImageView, this also takes care of
             // setting a placeholder image while the background thread runs
-            mImageFetcher.loadImage(Images.imageThumbUrls[position - mNumColumns], imageView);
+            mImageGenerator.loadImage(Images.imageThumbUrls[position - mNumColumns], imageView);
             return imageView;
         }
 
@@ -318,7 +316,7 @@ public class ImageGridFragment extends Fragment implements AdapterView.OnItemCli
             mItemHeight = height;
             mImageViewLayoutParams =
                     new GridView.LayoutParams(LayoutParams.MATCH_PARENT, mItemHeight);
-            mImageFetcher.setImageSize(height);
+            mImageGenerator.setImageSize(height);
             notifyDataSetChanged();
         }
 

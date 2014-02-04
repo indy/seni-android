@@ -44,10 +44,13 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 /**
- * A simple subclass of {@link ImageResizer} that fetches and resizes images fetched from a URL.
+ * A simple subclass of {@link ImageWorker} that fetches and resizes images fetched from a URL.
  */
-public class ImageGenerator extends ImageResizer {
+public class ImageGenerator extends ImageWorker {
     private static final String TAG = "ImageGenerator";
+
+    protected int mImageWidth;
+    protected int mImageHeight;
 
     /**
      * Initialize providing a target image width and height for the processing images.
@@ -57,8 +60,8 @@ public class ImageGenerator extends ImageResizer {
      * @param imageHeight
      */
     public ImageGenerator(Context context, int imageWidth, int imageHeight) {
-        super(context, imageWidth, imageHeight);
-        init(context);
+        super(context);
+        setImageSize(imageWidth, imageHeight);
     }
 
     /**
@@ -68,31 +71,34 @@ public class ImageGenerator extends ImageResizer {
      * @param imageSize
      */
     public ImageGenerator(Context context, int imageSize) {
-        super(context, imageSize);
-        init(context);
+        super(context);
+        setImageSize(imageSize);
     }
 
-    private void init(Context context) {
+
+    /**
+     * Set the target image width and height.
+     *
+     * @param width
+     * @param height
+     */
+    public void setImageSize(int width, int height) {
+        mImageWidth = width;
+        mImageHeight = height;
     }
 
-    @Override
-    protected void initDiskCacheInternal() {
-        super.initDiskCacheInternal();
+    /**
+     * Set the target image size (width and height will be the same).
+     *
+     * @param size
+     */
+    public void setImageSize(int size) {
+        setImageSize(size, size);
     }
 
     @Override
     protected void clearCacheInternal() {
         super.clearCacheInternal();
-    }
-
-    @Override
-    protected void flushCacheInternal() {
-        super.flushCacheInternal();
-    }
-
-    @Override
-    protected void closeCacheInternal() {
-        super.closeCacheInternal();
     }
 
     /**

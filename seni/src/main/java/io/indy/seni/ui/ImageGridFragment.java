@@ -160,13 +160,11 @@ public class ImageGridFragment extends Fragment implements AdapterView.OnItemCli
         super.onPause();
         mImageGenerator.setPauseWork(false);
         mImageGenerator.setExitTasksEarly(true);
-        mImageGenerator.flushCache();
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        mImageGenerator.closeCache();
     }
 
     @TargetApi(VERSION_CODES.JELLY_BEAN)

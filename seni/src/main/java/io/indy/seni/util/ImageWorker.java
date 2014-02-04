@@ -53,9 +53,6 @@ public abstract class ImageWorker {
     protected Resources mResources;
 
     private static final int MESSAGE_CLEAR = 0;
-    private static final int MESSAGE_INIT_DISK_CACHE = 1;
-    private static final int MESSAGE_FLUSH = 2;
-    private static final int MESSAGE_CLOSE = 3;
 
     protected ImageWorker(Context context) {
         mResources = context.getResources();
@@ -96,6 +93,7 @@ public abstract class ImageWorker {
             // framework and slightly modified. Refer to the docs at the top of the class
             // for more info on what was changed.
             task.executeOnExecutor(AsyncTask.DUAL_THREAD_EXECUTOR, data);
+            //task.executeOnExecutor(AsyncTask.SERIAL_EXECUTOR, data);
         }
     }
 
@@ -127,7 +125,6 @@ public abstract class ImageWorker {
             ImageCache.ImageCacheParams cacheParams) {
         mImageCacheParams = cacheParams;
         mImageCache = ImageCache.getInstance(fragmentManager, mImageCacheParams);
-        new CacheAsyncTask().execute(MESSAGE_INIT_DISK_CACHE);
     }
 
     /**
@@ -140,7 +137,6 @@ public abstract class ImageWorker {
     public void addImageCache(FragmentActivity activity, String diskCacheDirectoryName) {
         mImageCacheParams = new ImageCache.ImageCacheParams(activity, diskCacheDirectoryName);
         mImageCache = ImageCache.getInstance(activity.getFragmentManager(), mImageCacheParams);
-        new CacheAsyncTask().execute(MESSAGE_INIT_DISK_CACHE);
     }
 
     /**
@@ -287,14 +283,7 @@ public abstract class ImageWorker {
             // here, if it was, and the thread is still running, we may as well add the processed
             // bitmap to our cache as it might be used again in the future
             if (bitmap != null) {
-                if (Utils.hasHoneycomb()) {
-                    // Running on Honeycomb or newer, so wrap in a standard BitmapDrawable
-                    drawable = new BitmapDrawable(mResources, bitmap);
-                } else {
-                    // Running on Gingerbread or older, so wrap in a RecyclingBitmapDrawable
-                    // which will recycle automagically
-                    drawable = null; //new RecyclingBitmapDrawable(mResources, bitmap);
-                }
+                drawable = new BitmapDrawable(mResources, bitmap);
 
                 if (mImageCache != null) {
                     mImageCache.addBitmapToCache(dataString, drawable);
@@ -426,24 +415,9 @@ public abstract class ImageWorker {
                 case MESSAGE_CLEAR:
                     clearCacheInternal();
                     break;
-                case MESSAGE_INIT_DISK_CACHE:
-                    initDiskCacheInternal();
-                    break;
-                case MESSAGE_FLUSH:
-                    flushCacheInternal();
-                    break;
-                case MESSAGE_CLOSE:
-                    closeCacheInternal();
-                    break;
             }
             return null;
         }
-    }
-
-    protected void initDiskCacheInternal() {
-//        if (mImageCache != null) {
-//            mImageCache.initDiskCache();
-//        }
     }
 
     protected void clearCacheInternal() {
@@ -452,28 +426,7 @@ public abstract class ImageWorker {
         }
     }
 
-    protected void flushCacheInternal() {
-        if (mImageCache != null) {
-            mImageCache.flush();
-        }
-    }
-
-    protected void closeCacheInternal() {
-        if (mImageCache != null) {
-            mImageCache.close();
-            mImageCache = null;
-        }
-    }
-
     public void clearCache() {
         new CacheAsyncTask().execute(MESSAGE_CLEAR);
-    }
-
-    public void flushCache() {
-        new CacheAsyncTask().execute(MESSAGE_FLUSH);
-    }
-
-    public void closeCache() {
-        new CacheAsyncTask().execute(MESSAGE_CLOSE);
     }
 }

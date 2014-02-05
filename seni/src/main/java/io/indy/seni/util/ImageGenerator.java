@@ -29,6 +29,7 @@ import android.graphics.drawable.Drawable;
 import android.graphics.drawable.TransitionDrawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
@@ -52,6 +53,10 @@ import java.io.OutputStream;
 import java.lang.ref.WeakReference;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadFactory;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * A simple subclass of {@link ImageWorker} that fetches and resizes images fetched from a URL.
@@ -59,9 +64,22 @@ import java.net.URL;
 public class ImageGenerator {
     private static final String TAG = "ImageGenerator";
 
+
+    private static final ThreadFactory  sThreadFactory = new ThreadFactory() {
+        private final AtomicInteger mCount = new AtomicInteger(1);
+
+        public Thread newThread(Runnable r) {
+            return new Thread(r, "AsyncTask #" + mCount.getAndIncrement());
+        }
+    };
+
+    public static final Executor DUAL_THREAD_EXECUTOR =
+            Executors.newFixedThreadPool(2, sThreadFactory);
+
+
     private static final int FADE_IN_TIME = 500;
 
-    private ImageCache mImageCache;
+    private ImageCache mImageCache;±
     private ImageCache.ImageCacheParams mImageCacheParams;
     private Bitmap mLoadingBitmap;
     private boolean mFadeInBitmap = true;
@@ -186,7 +204,7 @@ public class ImageGenerator {
             // NOTE: This uses a custom version of AsyncTask that has been pulled from the
             // framework and slightly modified. Refer to the docs at the top of the class
             // for more info on what was changed.
-            task.executeOnExecutor(AsyncTask.DUAL_THREAD_EXECUTOR, genotype);
+            task.executeOnExecutor(DUAL_THREAD_EXECUTOR, genotype);
             //task.executeOnExecutor(AsyncTask.SERIAL_EXECUTOR, data);
         }
     }

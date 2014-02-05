@@ -28,7 +28,6 @@ import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.TransitionDrawable;
 import android.os.AsyncTask;
-import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.widget.ImageView;
 
@@ -42,9 +41,6 @@ import io.indy.seni.BuildConfig;
 import io.indy.seni.lang.Genotype;
 import io.indy.seni.runtime.SeniRuntime;
 
-/**
- * A simple subclass of {@link ImageWorker} that fetches and resizes images fetched from a URL.
- */
 public class ImageGenerator {
     private static final String TAG = "ImageGenerator";
 
@@ -151,14 +147,11 @@ public class ImageGenerator {
 
 
     /**
-     * Load an image specified by the data parameter into an ImageView (override
-     * {@link ImageWorker#processBitmap(Object)} to define the processing logic). A memory and
-     * disk cache will be used if an {@link ImageCache} has been added using
-     * {@link ImageWorker#addImageCache(android.app.FragmentManager, ImageCache.ImageCacheParams)}. If the
+     * Generate an image specified by the genotype parameter into an ImageView. If the
      * image is found in the memory cache, it is set immediately, otherwise an {@link AsyncTask}
-     * will be created to asynchronously load the bitmap.
+     * will be created to asynchronously generate the bitmap.
      *
-     * @param data The URL of the image to download.
+     * @param genotype The genotype used to create the image phenotype
      * @param imageView The ImageView to bind the downloaded image to.
      */
     public void loadImage(Genotype genotype, ImageView imageView) {
@@ -183,11 +176,7 @@ public class ImageGenerator {
                     new AsyncDrawable(mResources, mLoadingBitmap, task);
             imageView.setImageDrawable(asyncDrawable);
 
-            // NOTE: This uses a custom version of AsyncTask that has been pulled from the
-            // framework and slightly modified. Refer to the docs at the top of the class
-            // for more info on what was changed.
             task.executeOnExecutor(DUAL_THREAD_EXECUTOR, genotype);
-            //task.executeOnExecutor(AsyncTask.SERIAL_EXECUTOR, data);
         }
     }
 
@@ -219,18 +208,6 @@ public class ImageGenerator {
                               ImageCache.ImageCacheParams cacheParams) {
         mImageCacheParams = cacheParams;
         mImageCache = ImageCache.getInstance(fragmentManager, mImageCacheParams);
-    }
-
-    /**
-     * Adds an {@link ImageCache} to this {@link ImageWorker} to handle disk and memory bitmap
-     * caching.
-     * @param activity
-     * @param diskCacheDirectoryName See
-     * {@link ImageCache.ImageCacheParams#ImageCacheParams(Context, String)}.
-     */
-    public void addImageCache(FragmentActivity activity, String diskCacheDirectoryName) {
-        mImageCacheParams = new ImageCache.ImageCacheParams(activity, diskCacheDirectoryName);
-        mImageCache = ImageCache.getInstance(activity.getFragmentManager(), mImageCacheParams);
     }
 
     /**

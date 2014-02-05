@@ -48,8 +48,6 @@ public class EvolveGridFragment extends Fragment implements AdapterView.OnItemCl
 
     public static final String GENESIS_SCRIPT = "GENESIS_SCRIPT";
 
-    private static final String IMAGE_CACHE_DIR = "thumbs";
-
     private int mImageThumbSize;
     private int mImageThumbSpacing;
     private EvolveAdapter mAdapter;
@@ -68,7 +66,7 @@ public class EvolveGridFragment extends Fragment implements AdapterView.OnItemCl
         mImageThumbSize = getResources().getDimensionPixelSize(R.dimen.image_thumbnail_size);
         mImageThumbSpacing = getResources().getDimensionPixelSize(R.dimen.image_thumbnail_spacing);
 
-        ImageCache.ImageCacheParams cacheParams = new ImageCache.ImageCacheParams(getActivity(), IMAGE_CACHE_DIR);
+        ImageCache.ImageCacheParams cacheParams = new ImageCache.ImageCacheParams();
 
         cacheParams.setMemCacheSizePercent(0.25f); // Set memory cache to 25% of app memory
 

@@ -270,7 +270,7 @@ public class ImageCache {
          *                               application cache directory. Usually "cache" or "images"
          *                               is sufficient.
          */
-        public ImageCacheParams(Context context, String diskCacheDirectoryName) {
+        public ImageCacheParams() {
         }
 
         /**

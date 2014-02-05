@@ -32,6 +32,7 @@ import android.os.StatFs;
 import android.support.v4.util.LruCache;
 import android.util.Log;
 
+import io.indy.seni.AppConfig;
 import io.indy.seni.BuildConfig;
 
 import java.io.File;
@@ -130,10 +131,8 @@ public class ImageCache {
             // require knowledge of the expected size of the bitmaps. From Honeycomb to JellyBean
             // the size would need to be precise, from KitKat onward the size would just need to
             // be the upper bound (due to changes in how inBitmap can re-use bitmaps).
-            if (Utils.hasHoneycomb()) {
-                mReusableBitmaps =
-                        Collections.synchronizedSet(new HashSet<SoftReference<Bitmap>>());
-            }
+            mReusableBitmaps = Collections.synchronizedSet(new HashSet<SoftReference<Bitmap>>());
+
 
             mMemoryCache = new LruCache<String, BitmapDrawable>(mCacheParams.memCacheSize) {
 
@@ -317,7 +316,7 @@ public class ImageCache {
     private static boolean canUseForInBitmap(
             Bitmap candidate, BitmapFactory.Options targetOptions) {
 
-        if (!Utils.hasKitKat()) {
+        if (!AppConfig.hasKitKat()) {
             // On earlier versions, the dimensions must match exactly and the inSampleSize must be 1
             return candidate.getWidth() == targetOptions.outWidth
                     && candidate.getHeight() == targetOptions.outHeight
@@ -376,6 +375,8 @@ public class ImageCache {
     public static int getBitmapSize(BitmapDrawable value) {
         Bitmap bitmap = value.getBitmap();
 
+        return bitmap.getAllocationByteCount();
+        /*
         // From KitKat onward use getAllocationByteCount() as allocated bytes can potentially be
         // larger than bitmap byte count.
         if (Utils.hasKitKat()) {
@@ -388,6 +389,7 @@ public class ImageCache {
 
         // Pre HC-MR1
         return bitmap.getRowBytes() * bitmap.getHeight();
+        */
     }
 
     /**

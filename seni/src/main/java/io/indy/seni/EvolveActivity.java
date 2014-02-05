@@ -26,7 +26,6 @@ import android.view.ViewGroup;
 import javax.inject.Inject;
 
 import io.indy.seni.ui.AppContainer;
-import io.indy.seni.ui.ImageGridFragment;
 
 public class EvolveActivity extends Activity {
 
@@ -64,10 +63,9 @@ public class EvolveActivity extends Activity {
             // Create the detail fragment and add it to the activity
             // using a fragment transaction.
             Bundle arguments = new Bundle();
-            arguments.putString(EvolveFragment.GENESIS_SCRIPT,
-                    getIntent().getStringExtra(EvolveFragment.GENESIS_SCRIPT));
-            //EvolveFragment fragment = new EvolveFragment();
-            ImageGridFragment fragment = new ImageGridFragment();
+            arguments.putString(EvolveGridFragment.GENESIS_SCRIPT,
+                    getIntent().getStringExtra(EvolveGridFragment.GENESIS_SCRIPT));
+            EvolveGridFragment fragment = new EvolveGridFragment();
             fragment.setArguments(arguments);
             getFragmentManager().beginTransaction()
                     .add(R.id.evolve_container, fragment)

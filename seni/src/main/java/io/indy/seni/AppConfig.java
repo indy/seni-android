@@ -16,10 +16,21 @@
 
 package io.indy.seni;
 
+import android.os.Build;
+
 public final class AppConfig {
 
     public static final boolean DEBUG = BuildConfig.DEBUG;
 
     public static final String VERSION = BuildConfig.VERSION_NAME;
     public static final String BUILD_CODE = BuildConfig.BUILD_TIME + "-" + BuildConfig.GIT_SHA;
+
+
+    public static boolean hasJellyBean() {
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN;
+    }
+
+    public static boolean hasKitKat() {
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT;
+    }
 }

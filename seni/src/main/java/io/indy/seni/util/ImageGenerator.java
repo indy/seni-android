@@ -79,7 +79,7 @@ public class ImageGenerator {
 
     private static final int FADE_IN_TIME = 500;
 
-    private ImageCache mImageCache;±
+    private ImageCache mImageCache;
     private ImageCache.ImageCacheParams mImageCacheParams;
     private Bitmap mLoadingBitmap;
     private boolean mFadeInBitmap = true;
@@ -88,8 +88,6 @@ public class ImageGenerator {
     private final Object mPauseWorkLock = new Object();
 
     protected Resources mResources;
-
-    private static final int MESSAGE_CLEAR = 0;
 
     protected int mImageWidth;
     protected int mImageHeight;
@@ -506,15 +504,10 @@ public class ImageGenerator {
         }
     }
 
-    protected class CacheAsyncTask extends AsyncTask<Object, Void, Void> {
-
+    protected class ClearCacheAsyncTask extends AsyncTask<Void, Void, Void> {
         @Override
-        protected Void doInBackground(Object... params) {
-            switch ((Integer)params[0]) {
-                case MESSAGE_CLEAR:
-                    clearCacheInternal();
-                    break;
-            }
+        protected Void doInBackground(Void... params) {
+            clearCacheInternal();
             return null;
         }
     }
@@ -526,8 +519,6 @@ public class ImageGenerator {
     }
 
     public void clearCache() {
-        new CacheAsyncTask().execute(MESSAGE_CLEAR);
+        new ClearCacheAsyncTask().execute();
     }
-
-
 }

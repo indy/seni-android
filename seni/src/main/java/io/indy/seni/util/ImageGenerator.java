@@ -27,36 +27,20 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.TransitionDrawable;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.widget.ImageView;
-import android.widget.Toast;
 
-import io.indy.seni.BuildConfig;
-import io.indy.seni.R;
-import io.indy.seni.dummy.Art1403b;
-import io.indy.seni.lang.AstHolder;
-import io.indy.seni.lang.Genotype;
-import io.indy.seni.runtime.SeniRuntime;
-
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileDescriptor;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.OutputStream;
 import java.lang.ref.WeakReference;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.atomic.AtomicInteger;
+
+import io.indy.seni.BuildConfig;
+import io.indy.seni.lang.Genotype;
+import io.indy.seni.runtime.SeniRuntime;
 
 /**
  * A simple subclass of {@link ImageWorker} that fetches and resizes images fetched from a URL.

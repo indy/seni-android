@@ -27,16 +27,14 @@ import android.widget.TextView;
 
 import io.indy.seni.AppConfig;
 import io.indy.seni.EvolveActivity;
-import io.indy.seni.EvolveFragment;
+import io.indy.seni.EvolveGridFragment;
 import io.indy.seni.R;
 import io.indy.seni.dummy.Art1352;
 import io.indy.seni.dummy.Art1402;
-import io.indy.seni.dummy.Art1403;
 import io.indy.seni.dummy.Art1403b;
 import io.indy.seni.dummy.Art1405;
 import io.indy.seni.dummy.Art1405b;
 import io.indy.seni.lang.AstHolder;
-import io.indy.seni.lang.Genotype;
 import io.indy.seni.lang.Node;
 import io.indy.seni.view.SeniView;
 
@@ -143,7 +141,7 @@ public class ScriptAdapter extends BaseAdapter {
                 e.printStackTrace();
             }
 
-            intent.putExtra(EvolveFragment.GENESIS_SCRIPT, script);
+            intent.putExtra(EvolveGridFragment.GENESIS_SCRIPT, script);
 
             mContext.startActivity(intent);
         }

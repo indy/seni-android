@@ -22,15 +22,33 @@ import java.util.List;
 
 public class Genotype {
 
+    static public int sIdCount = 0;
+    static public String createId() {
+        return "genoId-" + Integer.toString(sIdCount++);
+    }
+
+    private String mId;
+    private AstHolder mAstHolder;
+
     // list of alterable nodes and their values for this instance
     private List<NodeMutate> mAlterable;
 
-    public Genotype() {
-        mAlterable = new ArrayList<NodeMutate>();
+    public Genotype(AstHolder astHolder) {
+        mAstHolder = astHolder;
+        mAlterable = new ArrayList<>();
+        mId = Genotype.createId();
     }
 
     public List<NodeMutate> getAlterable() {
         return mAlterable;
+    }
+
+    public String getId() {
+        return mId;
+    }
+
+    public AstHolder getAstHolder() {
+        return mAstHolder;
     }
 
     public Env bind(Env env) {
@@ -49,7 +67,7 @@ public class Genotype {
 
     public Genotype mutate() {
         // temp
-        Genotype genotype = new Genotype();
+        Genotype genotype = new Genotype(mAstHolder);
 
         for (NodeMutate n : mAlterable) {
             genotype.add(n.mutate());
@@ -59,7 +77,7 @@ public class Genotype {
     }
 
     public static Genotype crossover(Genotype a, Genotype b, int index) {
-        Genotype g = new Genotype();
+        Genotype g = new Genotype(a.mAstHolder);
 
         if (a.mAlterable.size() != b.mAlterable.size()) {
             // todo: throw an error

@@ -27,8 +27,8 @@ public class GenotypeTest {
     @Test
     public void parseAlterableInt() {
 
-        Genotype a = new Genotype();
-        Genotype b = new Genotype();
+        Genotype a = new Genotype(null);
+        Genotype b = new Genotype(null);
         a.add(new NodeInt(1));
         b.add(new NodeInt(99));
 

@@ -17,29 +17,20 @@
 package io.indy.seni.adapter;
 
 import android.content.Context;
-import android.content.Intent;
 import android.util.Log;
-import android.view.LayoutInflater;
+import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.BaseAdapter;
-import android.widget.TextView;
-
-import java.util.List;
+import android.widget.GridView;
+import android.widget.ImageView;
 
 import io.indy.seni.AppConfig;
-import io.indy.seni.EvolveActivity;
-import io.indy.seni.EvolveFragment;
-import io.indy.seni.R;
-import io.indy.seni.dummy.Art1352;
-import io.indy.seni.dummy.Art1402;
-import io.indy.seni.dummy.Art1403;
-import io.indy.seni.dummy.Art1403b;
 import io.indy.seni.lang.AstHolder;
 import io.indy.seni.lang.Genotype;
-import io.indy.seni.lang.Node;
-import io.indy.seni.lang.NodeMutate;
-import io.indy.seni.view.SeniView;
+import io.indy.seni.ui.RecyclingImageView;
+import io.indy.seni.util.ImageGenerator;
 
 public class EvolveAdapter extends BaseAdapter {
 
@@ -50,90 +41,141 @@ public class EvolveAdapter extends BaseAdapter {
         if (AppConfig.DEBUG && D) Log.d(TAG, message);
     }
 
-    private LayoutInflater mInflater;
-    private Context mContext;
+
+    private final Context mContext;
+    private int mItemHeight = 0;
+    private int mNumColumns = 0;
+    private int mActionBarHeight = 0;
+    private GridView.LayoutParams mImageViewLayoutParams;
+
+    private ImageGenerator mImageGenerator;
 
     private AstHolder mAstHolder;
     private Genotype[] mGenotypes;
     private int mNumFucks;
 
-    public EvolveAdapter(Context context) {
-        mContext = context;
-        mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-    }
-
     public void setScript(String script) {
-
-        ifd("script: " + script);
-
         mAstHolder = new AstHolder(script);
         mNumFucks = 150;
         mGenotypes = new Genotype[mNumFucks];
         for (int i = 0; i < mNumFucks; i++) {
             mGenotypes[i] = mAstHolder.getGenotype().mutate();
-/*
-            List<NodeMutate> alterable = mGenotypes[i].getAlterable();
-            for(NodeMutate n : alterable) {
-                ifd("i: " + i + " " + n.toString());
-            }
-            */
+        }
+    }
+
+    public EvolveAdapter(Context context, ImageGenerator imageGenerator) {
+        super();
+
+        // The ImageGenerator takes care of loading images into our ImageView children asynchronously
+        mImageGenerator = imageGenerator;
+
+        mContext = context;
+        mImageViewLayoutParams = new GridView.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        // Calculate ActionBar height
+        TypedValue tv = new TypedValue();
+        if (context.getTheme().resolveAttribute(
+                android.R.attr.actionBarSize, tv, true)) {
+            mActionBarHeight = TypedValue.complexToDimensionPixelSize(
+                    tv.data, context.getResources().getDisplayMetrics());
         }
     }
 
     @Override
     public int getCount() {
-        return mGenotypes.length;
+        // If columns have yet to be determined, return no items
+        if (getNumColumns() == 0) {
+            return 0;
+        }
+
+        // Size + number of columns for top empty row
+//            return Images.imageThumbUrls.length + mNumColumns;
+        return mGenotypes.length + mNumColumns;
     }
 
     @Override
     public Object getItem(int position) {
-        return mGenotypes[position];
+        return position < mNumColumns ?
+                null : mGenotypes[position - mNumColumns];
     }
 
     @Override
     public long getItemId(int position) {
-        return position;
+        return position < mNumColumns ? 0 : position - mNumColumns;
     }
 
     @Override
     public int getViewTypeCount() {
-        return 1;
+        // Two types of views, the normal ImageView and the top row of empty views
+        return 2;
     }
 
     @Override
     public int getItemViewType(int position) {
-        return 0;
+        return (position < mNumColumns) ? 1 : 0;
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        View view;
-
-        int numColumns = mContext.getResources().getInteger(R.integer.num_evolve_columns);
-
-        ifd("numColumns " + numColumns);
-
-        if (convertView == null) {
-            view = mInflater.inflate(R.layout.cell_evolve, parent, false);
-        } else {
-            view = convertView;
-        }
-
-        view.setTag(R.string.tag_position, position);
-
-        SeniView seniView = (SeniView) view.findViewById(R.id.seniView);
-        seniView.setAstHolder(mAstHolder);
-        seniView.setGenotype(mGenotypes[position % mNumFucks]);
-
-        view.setOnClickListener(mOnClickListener);
-
-        return view;
+    public boolean hasStableIds() {
+        return true;
     }
 
-    private View.OnClickListener mOnClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            ifd("clicked");
+    @Override
+    public View getView(int position, View convertView, ViewGroup container) {
+        // First check if this is the top row
+        if (position < mNumColumns) {
+            if (convertView == null) {
+                convertView = new View(mContext);
+            }
+            // Set empty view with height of ActionBar
+            convertView.setLayoutParams(new AbsListView.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT, mActionBarHeight));
+            return convertView;
         }
-    };
+
+        // Now handle the main ImageView thumbnails
+        ImageView imageView;
+        if (convertView == null) { // if it's not recycled, instantiate and initialize
+            imageView = new RecyclingImageView(mContext);
+            imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+            imageView.setLayoutParams(mImageViewLayoutParams);
+        } else { // Otherwise re-use the converted view
+            imageView = (ImageView) convertView;
+        }
+
+        // Check the height matches our calculated column width
+        if (imageView.getLayoutParams().height != mItemHeight) {
+            imageView.setLayoutParams(mImageViewLayoutParams);
+        }
+
+        // Finally load the image asynchronously into the ImageView, this also takes care of
+        // setting a placeholder image while the background thread runs
+        mImageGenerator.loadImage(mGenotypes[position - mNumColumns], imageView);
+        return imageView;
+    }
+
+    /**
+     * Sets the item height. Useful for when we know the column width so the height can be set
+     * to match.
+     *
+     * @param height
+     */
+    public void setItemHeight(int height) {
+        if (height == mItemHeight) {
+            return;
+        }
+        mItemHeight = height;
+        mImageViewLayoutParams =
+                new GridView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, mItemHeight);
+        mImageGenerator.setImageSize(height);
+        notifyDataSetChanged();
+    }
+
+    public void setNumColumns(int numColumns) {
+        mNumColumns = numColumns;
+    }
+
+    public int getNumColumns() {
+        return mNumColumns;
+    }
 }

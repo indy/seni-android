@@ -1,0 +1,11 @@
+(let ((primary (colour [0.1] [0.6] [0.8] 1.0))
+      (box-radius (/ canvas-width [3.0 (in-range 2.0 8.0)]))
+      (focal-x (/ canvas-width 2.0))
+      (focal-y (/ canvas-height 2.0))
+      (angle [30.0 (in-range 15.0 60.0)]))
+  (scope (translate focal-x focal-y)
+         (rotate angle)
+         (set-colour primary)
+         (rect (* -1.0 box-radius) (* -1.0 box-radius)
+               (*  1.0 box-radius) (*  1.0 box-radius))))
+

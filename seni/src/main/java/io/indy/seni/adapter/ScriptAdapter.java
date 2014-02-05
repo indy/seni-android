@@ -25,15 +25,18 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
+
 import io.indy.seni.AppConfig;
 import io.indy.seni.EvolveActivity;
 import io.indy.seni.EvolveGridFragment;
 import io.indy.seni.R;
-import io.indy.seni.dummy.Art1352;
-import io.indy.seni.dummy.Art1402;
-import io.indy.seni.dummy.Art1403b;
-import io.indy.seni.dummy.Art1405;
-import io.indy.seni.dummy.Art1405b;
 import io.indy.seni.lang.AstHolder;
 import io.indy.seni.lang.Node;
 import io.indy.seni.view.SeniView;
@@ -47,8 +50,7 @@ public class ScriptAdapter extends BaseAdapter {
         if (AppConfig.DEBUG && D) Log.d(TAG, message);
     }
 
-    private static final String[] items = {"lorem", "ipsum", "dolor", "foo", "bar"};
-    private AstHolder[] mAstHolder;
+    private List<AstHolder> mAstHolders;
 
     private LayoutInflater mInflater;
     private Context mContext;
@@ -57,22 +59,58 @@ public class ScriptAdapter extends BaseAdapter {
         mContext = context;
         mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-        mAstHolder = new AstHolder[5];
-        mAstHolder[0] = new AstHolder(Art1352.script());
-        mAstHolder[1] = new AstHolder(Art1402.script());
-        mAstHolder[2] = new AstHolder(Art1403b.script());
-        mAstHolder[3] = new AstHolder(Art1405.script());
-        mAstHolder[4] = new AstHolder(Art1405b.script());
+        mAstHolders = parseScripts(context, "scripts");
+    }
+
+    private List<AstHolder> parseScripts(Context context, String assetFolder) {
+        List<AstHolder> asts = new ArrayList<>();
+
+        try {
+            String[] dir = context.getAssets().list(assetFolder);
+            for(String s : dir) {
+                String path = new File(assetFolder, s).toString();
+                ifd("path = " + path);
+                String script = readStringFromAsset(context, path);
+                AstHolder astHolder = new AstHolder(script); // todo: check if correctly parsed
+                asts.add(astHolder);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return asts;
+    }
+
+    private String readStringFromAsset(Context context, String path) {
+        String res = "";
+        try {
+            InputStream is = context.getAssets().open(path);
+            BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+            StringBuilder sb = new StringBuilder();
+            String line = reader.readLine();
+
+            while (line != null) {
+                sb.append(line);
+                line = reader.readLine();
+            }
+            res = sb.toString();
+
+            reader.close();
+        } catch (IOException e) {
+            //log the exception
+        }
+
+        return res;
     }
 
     @Override
     public int getCount() {
-        return mAstHolder.length;
+        return mAstHolders.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return mAstHolder[position];
+        return mAstHolders.get(position);
     }
 
     @Override
@@ -110,7 +148,7 @@ public class ScriptAdapter extends BaseAdapter {
         view.setTag(R.string.tag_position, position);
 
         SeniView seniView = (SeniView) view.findViewById(R.id.seniView);
-        seniView.setAstHolder(mAstHolder[position]);
+        seniView.setAstHolder(mAstHolders.get(position));
 
         if (numColumns > 1) {
             text = (TextView) view.findViewById(R.id.bar);
@@ -136,7 +174,7 @@ public class ScriptAdapter extends BaseAdapter {
             String script = "";
 
             try {
-                script = mAstHolder[position].scribe();
+                script = mAstHolders.get(position).scribe();
             } catch (Node.ScribeException e) {
                 e.printStackTrace();
             }

@@ -16,8 +16,11 @@
 
 package io.indy.seni.lang;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.Queue;
+import java.util.HashMap;
+import java.util.Map;
 
 /*
   seni reserves names beginning with $ for internal use
@@ -36,7 +39,16 @@ import java.util.Queue;
 
 public class AstHolder {
 
+    private static final String METADATA = "metadata";
+    private static final String CONFIGURE = "configure";
+
     private List<Node> mAst;       // immutable and shared by multiple instances of astHolder
+
+    private Node mMetadataNode; // for scribing
+    private Map<String, Node> mMetadata;
+
+    private Node mConfigurationNode; // for scribing
+    private Map<String, Node> mConfiguration;
 
     // list of alterable nodes and their values for this instance
     private Genotype mGenotype;
@@ -50,12 +62,27 @@ public class AstHolder {
     public AstHolder(String script, int genSymStart) {
         mGenSymStart = genSymStart;
         mAst = buildAst(script);
-        // traverse the mAst for alterable nodes, add them into mAlterable
+
+        mMetadata = extractPairForm(mAst, METADATA);
+        mMetadataNode = mMetadata.get(METADATA);
+
+        mConfiguration = extractPairForm(mAst, CONFIGURE);
+        mConfigurationNode = mConfiguration.get(CONFIGURE);
     }
 
     public AstHolder(AstHolder astHolder) {
         mAst = astHolder.mAst;
         // create a copy of mAlterable
+        // create a copu of metadata
+        // create a copu of configuration
+    }
+
+    public Node getMetadata(String key) {
+        return mMetadata.get(key);
+    }
+
+    public Node getConfiguration(String key) {
+        return mConfiguration.get(key);
     }
 
     // scribe all of the nodes in mAst
@@ -68,6 +95,15 @@ public class AstHolder {
         Env env = genotype.bind(new Env());
 
         String res = "";
+
+        if(mMetadataNode != null) {
+            res += mMetadataNode.scribe(env) + " ";
+        }
+
+        if(mConfigurationNode != null) {
+            res += mConfigurationNode.scribe(env) + " ";
+        }
+
         for (Node ast : mAst) {
             res += ast.scribe(env);
         }
@@ -126,5 +162,64 @@ public class AstHolder {
         }
 
         return null;
+    }
+
+    /**
+     * remove list of k,v pairs from ast and build a map with them
+     * the returned map will also have a special key named formName
+     * which has a value of the original node in the ast
+     */
+    private Map<String, Node> extractPairForm(List<Node> ast, String formName) {
+        Map<String, Node> map = new HashMap<String, Node>();
+
+        Node meta;
+
+        Iterator<Node> iter = ast.iterator();
+        while(iter.hasNext()) {
+            Node n = iter.next();
+
+            if(n.getType() == Node.Type.LIST) {
+                try {
+                    NodeList nl = Node.asList(n);
+                    Node child = nl.getChild(0);
+                    if(child.getType() == Node.Type.NAME) {
+                        String name = Node.asNameValue(child);
+                        if(name.equals(formName)) {
+                            map.put(formName, n);
+                            addPairFormsToMap(map, nl);
+                            iter.remove();
+                        }
+                    }
+                } catch (LangException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return map;
+    }
+
+    private void addPairFormsToMap(Map<String, Node> map, NodeList nl) {
+        List<Node> children = nl.getChildren();
+        
+        Iterator<Node> iter = children.iterator();
+        if(iter.hasNext()) {
+            iter.next();        // NodeName: metadata | configure
+        }
+
+        Node k, v;
+        while(iter.hasNext()) {
+            k = iter.next();
+            if(!iter.hasNext()) {
+                // throw an exception, no corresponding v for k
+            }
+            v = iter.next();
+
+            try {
+                String s = Node.asNameValue(k);
+                map.put(s, v);
+            } catch(LangException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }

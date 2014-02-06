@@ -45,6 +45,16 @@ public class ScribeTest extends EvalTestBase {
     }
 
     @Test
+    public void scribeMetaAndConfigure() {
+
+        String script = "(metadata foo \"bar\") (configure baq \"baz\") (+ [4] [5])";
+        AstHolder astHolder = new AstHolder(script);
+        Genotype genotype = astHolder.getGenotype();
+
+        assertScribe(astHolder, genotype, script);
+    }
+
+    @Test
     public void scribeInts() {
 
         AstHolder astHolder = new AstHolder("(+ [4] [5])");

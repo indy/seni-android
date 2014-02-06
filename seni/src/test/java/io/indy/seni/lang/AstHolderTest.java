@@ -108,4 +108,48 @@ public class AstHolderTest {
         }
 
     }
+
+
+    @Test
+    public void parseMetadata() {
+
+        AstHolder astHolder = new AstHolder("(metadata m \"hello\")(+ [4] [5])");
+
+        List<Node> nodes = astHolder.getAst();
+        // the metadata node should be ignored
+        assertThat(nodes.size()).isEqualTo(1);
+
+
+        // nothing in metadata should be alterable
+        try {
+            String m = Node.asStringValue(astHolder.getMetadata("m"));
+            assertThat(m).isEqualTo("hello");
+        } catch (LangException e) {
+            e.printStackTrace();
+            assertThat(true).isEqualTo(false);
+        }
+
+    }
+
+    @Test
+    public void parseConfiguration() {
+
+        AstHolder astHolder = new AstHolder("(configure aspect-ratio \"square\")(+ [4] [5])");
+
+        List<Node> nodes = astHolder.getAst();
+        // the configuration node should be ignored
+        assertThat(nodes.size()).isEqualTo(1);
+
+
+        // nothing in configuration should be alterable
+        try {
+            Node val = astHolder.getConfiguration("aspect-ratio");
+            assertThat(Node.asStringValue(val)).isEqualTo("square");
+        } catch (LangException e) {
+            e.printStackTrace();
+            assertThat(true).isEqualTo(false);
+        }
+
+    }
+
 }

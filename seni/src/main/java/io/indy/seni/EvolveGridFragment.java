@@ -53,6 +53,8 @@ public class EvolveGridFragment extends Fragment implements AdapterView.OnItemCl
     private EvolveAdapter mAdapter;
     private ImageGenerator mImageGenerator;
 
+    private GridView mGridView;
+
     /**
      * Empty constructor as per the Fragment documentation
      */
@@ -87,8 +89,9 @@ public class EvolveGridFragment extends Fragment implements AdapterView.OnItemCl
     public View onCreateView(
             LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        final View v = inflater.inflate(R.layout.image_grid_fragment, container, false);
-        final GridView mGridView = (GridView) v.findViewById(R.id.gridView);
+        final View v = inflater.inflate(R.layout.fragment_evolve, container, false);
+
+        mGridView = (GridView) v.findViewById(R.id.gridView);
         mGridView.setAdapter(mAdapter);
         mGridView.setOnItemClickListener(this);
         mGridView.setOnScrollListener(new AbsListView.OnScrollListener() {

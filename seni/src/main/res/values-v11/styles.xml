@@ -20,7 +20,7 @@
         <item name="android:background">#99000000</item>
     </style>
 
-    <style name="PhotoGridLayout">
+    <style name="PhenoGridLayout">
         <item name="android:drawSelectorOnTop">true</item>
     </style>
 

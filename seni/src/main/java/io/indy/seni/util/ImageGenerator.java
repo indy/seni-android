@@ -130,16 +130,16 @@ public class ImageGenerator {
         }
 
         // could also create arbitrary bitmap and resize it
-        Bitmap b = Bitmap.createBitmap(mImageWidth, mImageHeight, Bitmap.Config.ARGB_8888);
-        Canvas c = new Canvas(b);
+        Bitmap bitmap = Bitmap.createBitmap(mImageWidth, mImageHeight, Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
 
         Paint paint = new Paint();
-        paint.setARGB(255, 250, 250, 250);
-        c.drawRect(0, 0, mImageWidth, mImageHeight, paint);
+        paint.setARGB(255, 255, 255, 255);
+        canvas.drawRect(0, 0, mImageWidth, mImageHeight, paint);
 
-        SeniRuntime.render(c, genotype);
+        SeniRuntime.render(canvas, genotype);
 
-        return b;
+        return bitmap;
     }
 
 

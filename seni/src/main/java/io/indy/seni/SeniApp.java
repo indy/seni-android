@@ -20,9 +20,11 @@ import android.app.Application;
 import android.content.Context;
 import android.util.Log;
 
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import dagger.ObjectGraph;
+import io.indy.seni.lang.Genotype;
 
 public class SeniApp extends Application {
 
@@ -67,5 +69,25 @@ public class SeniApp extends Application {
 
     public static SeniApp get(Context context) {
         return (SeniApp) context.getApplicationContext();
+    }
+
+
+    private List<Genotype> mBreedingGenotypes;
+    private String mGenesisScript;
+
+    public void setBreedingGenotypes(List<Genotype> genotypes) {
+        mBreedingGenotypes = genotypes;
+    }
+
+    public List<Genotype> getBreedingGenotypes() {
+        return mBreedingGenotypes;
+    }
+
+    public void setGenesisScript(String script) {
+        mGenesisScript = script;
+    }
+
+    public String getGenesisScript() {
+        return mGenesisScript;
     }
 }

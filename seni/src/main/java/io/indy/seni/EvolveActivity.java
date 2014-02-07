@@ -62,9 +62,14 @@ public class EvolveActivity extends Activity {
         if (savedInstanceState == null) {
             // Create the detail fragment and add it to the activity
             // using a fragment transaction.
+
+            String script = getIntent().getStringExtra(EvolveGridFragment.GENESIS_SCRIPT);
+
+            app.setGenesisScript(script);
+
             Bundle arguments = new Bundle();
-            arguments.putString(EvolveGridFragment.GENESIS_SCRIPT,
-                    getIntent().getStringExtra(EvolveGridFragment.GENESIS_SCRIPT));
+            arguments.putBoolean(EvolveGridFragment.HAS_GENOTYPES, false);
+            arguments.putString(EvolveGridFragment.GENESIS_SCRIPT, script);
             EvolveGridFragment fragment = new EvolveGridFragment();
             fragment.setArguments(arguments);
             getFragmentManager().beginTransaction()

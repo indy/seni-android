@@ -8,6 +8,9 @@
     <string name="action_templist">Temp List</string>
 
 
+    <string name="context_menu_breed">Breed</string>
+
+
     <!-- delete these eventually -->
 
     <string name="app_name">BitmapFun</string>

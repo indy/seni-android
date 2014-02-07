@@ -17,10 +17,13 @@
 package io.indy.seni;
 
 import android.annotation.TargetApi;
+import android.app.Activity;
 import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.ActionMode;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -33,7 +36,12 @@ import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import io.indy.seni.adapter.EvolveAdapter;
+import io.indy.seni.lang.Genotype;
+import io.indy.seni.lang.NodeMutate;
 import io.indy.seni.util.ImageCache;
 import io.indy.seni.util.ImageGenerator;
 
@@ -47,6 +55,9 @@ public class EvolveGridFragment extends Fragment implements AdapterView.OnItemCl
     }
 
     public static final String GENESIS_SCRIPT = "GENESIS_SCRIPT";
+    public static final String HAS_GENOTYPES = "HAS_GENOTYPES";
+
+    private String mGenesisScript;
 
     private int mImageThumbSize;
     private int mImageThumbSpacing;
@@ -65,6 +76,8 @@ public class EvolveGridFragment extends Fragment implements AdapterView.OnItemCl
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
 
+        ifd("onCreate");
+
         mImageThumbSize = getResources().getDimensionPixelSize(R.dimen.image_thumbnail_size);
         mImageThumbSpacing = getResources().getDimensionPixelSize(R.dimen.image_thumbnail_spacing);
 
@@ -79,10 +92,19 @@ public class EvolveGridFragment extends Fragment implements AdapterView.OnItemCl
 
         mAdapter = new EvolveAdapter(getActivity(), mImageGenerator);
 
-        if (getArguments().containsKey(EvolveGridFragment.GENESIS_SCRIPT)) {
-            String script = getArguments().getString(EvolveGridFragment.GENESIS_SCRIPT);
-            mAdapter.setScript(script);
+        if (getArguments().containsKey(GENESIS_SCRIPT)) {
+            mGenesisScript = getArguments().getString(EvolveGridFragment.GENESIS_SCRIPT);
+            mAdapter.setScript(mGenesisScript);
         }
+
+        if (getArguments().containsKey(HAS_GENOTYPES)) {
+            if(getArguments().getBoolean(HAS_GENOTYPES)) {
+                SeniApp app = (SeniApp)(getActivity().getApplication());
+                mAdapter.setBreedingGenotypes(app.getBreedingGenotypes());
+            }
+        }
+
+        mAdapter.breed(50);
     }
 
     @Override
@@ -110,6 +132,9 @@ public class EvolveGridFragment extends Fragment implements AdapterView.OnItemCl
                                  int visibleItemCount, int totalItemCount) {
             }
         });
+
+        mGridView.setChoiceMode(GridView.CHOICE_MODE_MULTIPLE_MODAL);
+        mGridView.setMultiChoiceModeListener(mMultiChoiceModeListener);
 
         // This listener is used to get the final width of the GridView and then calculate the
         // number of columns and the width of each column. The width of each column is variable
@@ -198,4 +223,108 @@ public class EvolveGridFragment extends Fragment implements AdapterView.OnItemCl
         }
         return super.onOptionsItemSelected(item);
     }
+
+
+    /**
+     * Manage the multiple phenotype selections
+     */
+    private AbsListView.MultiChoiceModeListener mMultiChoiceModeListener =
+            new AbsListView.MultiChoiceModeListener() {
+
+                @Override
+                public void onItemCheckedStateChanged(ActionMode mode, int position,
+                                                      long id, boolean checked) {
+                    // Here you can do something when items are selected/de-selected,
+                    // such as update the title in the CAB
+
+                    ifd("onItemCheckedStateChanged");
+                    int count = mGridView.getCheckedItemCount();
+                    if(count == 1) {
+                        mode.setTitle("1 phenotype selected");
+                    } else  {
+                        mode.setTitle("" + count + " phenotypes selected");
+                    }
+                }
+
+                @Override
+                public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+                    // Respond to clicks on the actions in the CAB
+
+                    switch (item.getItemId()) {
+                        case R.id.menu_breed:
+
+                            // launch a new EvolveGridFragment with the chosen genotypes
+                            List<Genotype> genotypes = new ArrayList<>();
+                            long[] ids = mGridView.getCheckedItemIds();
+
+                            int numColumns = mAdapter.getNumColumns();
+
+                            for(int i=0;i<ids.length;i++) {
+
+                                int pos = (int)ids[i];
+                                Genotype genotype = mAdapter.getItemFromId(pos);
+
+                                List<NodeMutate> l = genotype.getAlterable();
+                                for(NodeMutate n : l) {
+                                    ifd(n.toString());
+                                }
+                                genotypes.add(genotype);
+                            }
+
+                            SeniApp app = (SeniApp)(getActivity().getApplication());
+                            app.setGenesisScript(mGenesisScript);
+
+                            Bundle arguments = new Bundle();
+
+                            if(ids.length > 0) {
+                                arguments.putBoolean(HAS_GENOTYPES, true);
+                                app.setBreedingGenotypes(genotypes);
+                            } else {
+                                arguments.putBoolean(HAS_GENOTYPES, false);
+                            }
+                            arguments.putString(GENESIS_SCRIPT, mGenesisScript);
+
+
+                            mode.finish(); // Action picked, so close the CAB
+
+                            EvolveGridFragment fragment = new EvolveGridFragment();
+                            fragment.setArguments(arguments);
+                            FragmentTransaction ft = getFragmentManager().beginTransaction();
+                            ft.replace(R.id.evolve_container, fragment);
+                            ft.commit();
+
+                            return true;
+                        default:
+                            return false;
+                    }
+                }
+
+                @Override
+                public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+                    ifd("onCreateActionMode");
+
+                    // Inflate the menu for the CAB
+                    MenuInflater inflater = mode.getMenuInflater();
+                    inflater.inflate(R.menu.context_evolve, menu);
+
+                    mode.setTitle("Choose the best");
+                    mode.setSubtitle("generation 1");
+                    return true;
+                }
+
+                @Override
+                public void onDestroyActionMode(ActionMode mode) {
+                    // Here you can make any necessary updates to the activity when
+                    // the CAB is removed. By default, selected items are deselected/unchecked.
+                    ifd("onDestroyActionMode");
+                }
+
+                @Override
+                public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+                    // Here you can perform updates to the CAB due to
+                    // an invalidate() request
+                    ifd("onPrepareActionMode");
+                    return false;
+                }
+            };
 }

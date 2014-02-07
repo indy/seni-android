@@ -26,6 +26,8 @@ import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
 
+import java.util.List;
+
 import io.indy.seni.AppConfig;
 import io.indy.seni.lang.AstHolder;
 import io.indy.seni.lang.Genotype;
@@ -50,16 +52,59 @@ public class EvolveAdapter extends BaseAdapter {
 
     private ImageGenerator mImageGenerator;
 
+    private List<Genotype> mBreedingGenotypes;
+
     private AstHolder mAstHolder;
     private Genotype[] mGenotypes;
-    private int mNumFucks;
+    private int mPopulation;
 
     public void setScript(String script) {
         mAstHolder = new AstHolder(script);
-        mNumFucks = 150;
-        mGenotypes = new Genotype[mNumFucks];
-        for (int i = 0; i < mNumFucks; i++) {
-            mGenotypes[i] = mAstHolder.getGenotype().mutate();
+    }
+
+    public void setBreedingGenotypes(List<Genotype> genotypes) {
+
+        ifd("has genotypes: " + genotypes.size());
+
+        mBreedingGenotypes = genotypes;
+    }
+
+    public void breed(int desiredPopulation) {
+
+        int i;
+        mPopulation = desiredPopulation;
+        mGenotypes = new Genotype[mPopulation];
+
+        // no breeding genotypes, everything is a mutation
+        if(mBreedingGenotypes == null) {
+            for (i = 0; i < mPopulation; i++) {
+                mGenotypes[i] = mAstHolder.getGenotype().mutate();
+            }
+            return;
+        }
+
+        int breedSize = mBreedingGenotypes.size();
+        int size = breedSize > mPopulation ? mPopulation : breedSize;
+
+        // clone the breeding genotypes into this generation
+        ifd("size = " + size);
+        for(i=0;i<size;i++) {
+            ifd("i " + i);
+            mGenotypes[i] = mBreedingGenotypes.get(i);
+        }
+
+        // generate the rest from the breeding population
+        int geneLength = mBreedingGenotypes.get(0).getAlterable().size();
+
+        for (i = size; i < mPopulation; i++) {
+            int crossoverIndex = (int) (Math.random() * (double) geneLength);
+            int a = (int)(Math.random() * (double)breedSize);
+            int b = (int)(Math.random() * (double)breedSize);
+
+            ifd("" + i + " breeding a(" + a + ") b(" + b + ") crossoverIndex(" + crossoverIndex + ")");
+
+            mGenotypes[i] = Genotype.crossover(mBreedingGenotypes.get(a),mBreedingGenotypes.get(b),
+                    crossoverIndex);
         }
     }
 
@@ -68,6 +113,9 @@ public class EvolveAdapter extends BaseAdapter {
 
         // The ImageGenerator takes care of loading images into our ImageView children asynchronously
         mImageGenerator = imageGenerator;
+
+        mPopulation = 50;
+        mBreedingGenotypes = null;
 
         mContext = context;
         mImageViewLayoutParams = new GridView.LayoutParams(
@@ -91,6 +139,10 @@ public class EvolveAdapter extends BaseAdapter {
         // Size + number of columns for top empty row
 //            return Images.imageThumbUrls.length + mNumColumns;
         return mGenotypes.length + mNumColumns;
+    }
+
+    public Genotype getItemFromId(long itemId) {
+        return mGenotypes[(int)itemId];
     }
 
     @Override
@@ -137,8 +189,10 @@ public class EvolveAdapter extends BaseAdapter {
         ImageView imageView;
         if (convertView == null) { // if it's not recycled, instantiate and initialize
             imageView = new RecyclingImageView(mContext);
+
             imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
             imageView.setLayoutParams(mImageViewLayoutParams);
+
         } else { // Otherwise re-use the converted view
             imageView = (ImageView) convertView;
         }
@@ -151,6 +205,7 @@ public class EvolveAdapter extends BaseAdapter {
         // Finally load the image asynchronously into the ImageView, this also takes care of
         // setting a placeholder image while the background thread runs
         mImageGenerator.loadImage(mGenotypes[position - mNumColumns], imageView);
+
         return imageView;
     }
 

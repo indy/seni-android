@@ -17,19 +17,36 @@
 package io.indy.seni.ui;
 
 import android.content.Context;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffColorFilter;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
 import android.util.AttributeSet;
+import android.util.Log;
+import android.widget.Checkable;
 import android.widget.ImageView;
+
+import io.indy.seni.AppConfig;
+import io.indy.seni.R;
 
 /**
  * Sub-class of ImageView which automatically notifies the drawable when it is
  * being displayed.
  */
-public class RecyclingImageView extends ImageView {
+public class RecyclingImageView extends ImageView implements Checkable {
+
+    private static final String TAG = "RecyclingImageView";
+    private static final boolean D = true;
+
+    static void ifd(final String message) {
+        if (AppConfig.DEBUG && D) Log.d(TAG, message);
+    }
+
+    private boolean mChecked;
 
     public RecyclingImageView(Context context) {
         super(context);
+        mChecked = false;
     }
 
     public RecyclingImageView(Context context, AttributeSet attrs) {
@@ -79,6 +96,30 @@ public class RecyclingImageView extends ImageView {
                 notifyDrawable(layerDrawable.getDrawable(i), isDisplayed);
             }
         }
+    }
+
+
+    //PorterDuffColorFilter mCheckedFilter = new PorterDuffColorFilter(R.color.red, PorterDuff.Mode.SRC_ATOP);
+    //PorterDuffColorFilter mUncheckedFilter = new PorterDuffColorFilter(R.color.red, PorterDuff.Mode.DST);
+
+    public void setChecked(boolean checked) {
+        mChecked = checked;
+
+        if(mChecked) {
+            setAlpha(0.3f);
+//            this.setColorFilter(mCheckedFilter);
+        } else {
+//            this.setColorFilter(mUncheckedFilter);
+            setAlpha(1.0f);
+        }
+    }
+
+    public boolean isChecked() {
+        return mChecked;
+    }
+
+    public void toggle() {
+        setChecked(!mChecked);
     }
 
 }

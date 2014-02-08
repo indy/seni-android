@@ -17,12 +17,11 @@
 package io.indy.seni;
 
 import dagger.Module;
-import io.indy.seni.dummy.DummyModule;
 import io.indy.seni.ui.UiModule;
 
 @Module(
         includes = {
-                DummyModule.class,
+//                DummyModule.class,
                 UiModule.class
 //        DataModule.class
         },

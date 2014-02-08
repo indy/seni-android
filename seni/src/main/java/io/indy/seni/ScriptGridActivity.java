@@ -23,7 +23,6 @@ import android.view.ViewGroup;
 
 import javax.inject.Inject;
 
-import io.indy.seni.dummy.Monkey;
 import io.indy.seni.ui.AppContainer;
 
 public class ScriptGridActivity extends Activity {
@@ -35,9 +34,6 @@ public class ScriptGridActivity extends Activity {
     static void ifd(final String message) {
         if (AppConfig.DEBUG && D) Log.d(TAG, message);
     }
-
-    @Inject
-    Monkey mMonkey;
 
     @Inject
     AppContainer mAppContainer;

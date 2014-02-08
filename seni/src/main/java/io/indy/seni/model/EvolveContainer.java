@@ -83,6 +83,12 @@ public class EvolveContainer {
             mGenotypes[i] = Genotype.crossover(mBreedingGenotypes.get(a),mBreedingGenotypes.get(b),
                     crossoverIndex);
         }
+
+        // overwrite the last 10% of the population with mutations
+        int numMutants = (int)((float)mPopulation * 0.1f);
+        for(i=mPopulation - numMutants;i<mPopulation;i++) {
+            mGenotypes[i] = mGenotypes[0].mutate();
+        }
     }
 
 }

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.indy.seni;
+package io.indy.seni.ui;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -23,6 +23,9 @@ import android.view.ViewGroup;
 
 import javax.inject.Inject;
 
+import io.indy.seni.AppConfig;
+import io.indy.seni.R;
+import io.indy.seni.SeniApp;
 import io.indy.seni.ui.AppContainer;
 
 public class ScriptGridActivity extends Activity {

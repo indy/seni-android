@@ -20,8 +20,6 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
-import io.indy.seni.EvolveActivity;
-import io.indy.seni.ScriptGridActivity;
 
 @Module(
         injects = {

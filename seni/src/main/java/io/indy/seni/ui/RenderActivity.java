@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.indy.seni;
+package io.indy.seni.ui;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -24,6 +24,8 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
+import io.indy.seni.AppConfig;
+import io.indy.seni.R;
 import io.indy.seni.lang.AstHolder;
 import io.indy.seni.lang.Genotype;
 import io.indy.seni.view.SeniView;

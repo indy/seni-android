@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.indy.seni;
+package io.indy.seni.ui;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -25,7 +25,8 @@ import android.view.ViewGroup;
 
 import javax.inject.Inject;
 
-import io.indy.seni.ui.AppContainer;
+import io.indy.seni.R;
+import io.indy.seni.SeniApp;
 
 public class EvolveActivity extends Activity {
 

@@ -1,6 +1,6 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
       xmlns:tools="http://schemas.android.com/tools"
-      tools:context="io.indy.seni.RenderActivity">
+      tools:context="io.indy.seni.ui.RenderActivity">
 
     <!-- temporary activity for working with lists of scripts -->
     <item

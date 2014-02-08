@@ -34,8 +34,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.indy.seni.AppConfig;
-import io.indy.seni.EvolveActivity;
-import io.indy.seni.EvolveGridFragment;
+import io.indy.seni.ui.EvolveActivity;
+import io.indy.seni.ui.EvolveGridFragment;
 import io.indy.seni.R;
 import io.indy.seni.lang.AstHolder;
 import io.indy.seni.lang.Node;

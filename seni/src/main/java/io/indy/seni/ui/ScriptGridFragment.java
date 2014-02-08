@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.indy.seni;
+package io.indy.seni.ui;
 
 import android.app.Activity;
 import android.app.Fragment;
@@ -25,6 +25,7 @@ import android.view.ViewGroup;
 import android.widget.GridView;
 import android.widget.ListView;
 
+import io.indy.seni.R;
 import io.indy.seni.adapter.ScriptAdapter;
 
 

@@ -14,10 +14,9 @@
  * limitations under the License.
  */
 
-package io.indy.seni;
+package io.indy.seni.ui;
 
 import android.annotation.TargetApi;
-import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.os.Build;
@@ -39,9 +38,12 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.indy.seni.AppConfig;
+import io.indy.seni.BuildConfig;
+import io.indy.seni.R;
+import io.indy.seni.SeniApp;
 import io.indy.seni.adapter.EvolveAdapter;
 import io.indy.seni.lang.Genotype;
-import io.indy.seni.lang.NodeMutate;
 import io.indy.seni.model.EvolveContainer;
 import io.indy.seni.util.ImageCache;
 import io.indy.seni.util.ImageGenerator;

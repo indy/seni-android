@@ -42,6 +42,7 @@ import java.util.List;
 import io.indy.seni.adapter.EvolveAdapter;
 import io.indy.seni.lang.Genotype;
 import io.indy.seni.lang.NodeMutate;
+import io.indy.seni.model.EvolveContainer;
 import io.indy.seni.util.ImageCache;
 import io.indy.seni.util.ImageGenerator;
 
@@ -61,7 +62,10 @@ public class EvolveGridFragment extends Fragment implements AdapterView.OnItemCl
 
     private int mImageThumbSize;
     private int mImageThumbSpacing;
+
+
     private EvolveAdapter mAdapter;
+    private EvolveContainer mEvolveContainer;
     private ImageGenerator mImageGenerator;
 
     private GridView mGridView;
@@ -90,21 +94,23 @@ public class EvolveGridFragment extends Fragment implements AdapterView.OnItemCl
         mImageGenerator.setLoadingImage(R.drawable.empty_genotype);
         mImageGenerator.addImageCache(getActivity().getFragmentManager(), cacheParams);
 
-        mAdapter = new EvolveAdapter(getActivity(), mImageGenerator);
+        mEvolveContainer = new EvolveContainer();
 
         if (getArguments().containsKey(GENESIS_SCRIPT)) {
             mGenesisScript = getArguments().getString(EvolveGridFragment.GENESIS_SCRIPT);
-            mAdapter.setScript(mGenesisScript);
+            mEvolveContainer.setScript(mGenesisScript);
         }
 
         if (getArguments().containsKey(HAS_GENOTYPES)) {
             if(getArguments().getBoolean(HAS_GENOTYPES)) {
                 SeniApp app = (SeniApp)(getActivity().getApplication());
-                mAdapter.setBreedingGenotypes(app.getBreedingGenotypes());
+                mEvolveContainer.setBreedingGenotypes(app.getBreedingGenotypes());
             }
         }
 
-        mAdapter.breed(50);
+        mEvolveContainer.breed(50);
+
+        mAdapter = new EvolveAdapter(getActivity(), mImageGenerator, mEvolveContainer);
     }
 
     @Override
@@ -256,18 +262,11 @@ public class EvolveGridFragment extends Fragment implements AdapterView.OnItemCl
                             // launch a new EvolveGridFragment with the chosen genotypes
                             List<Genotype> genotypes = new ArrayList<>();
                             long[] ids = mGridView.getCheckedItemIds();
+                            int pos, i;
 
-                            int numColumns = mAdapter.getNumColumns();
-
-                            for(int i=0;i<ids.length;i++) {
-
-                                int pos = (int)ids[i];
-                                Genotype genotype = mAdapter.getItemFromId(pos);
-
-                                List<NodeMutate> l = genotype.getAlterable();
-                                for(NodeMutate n : l) {
-                                    ifd(n.toString());
-                                }
+                            for(i=0;i<ids.length;i++) {
+                                pos = (int)ids[i];
+                                Genotype genotype = mEvolveContainer.getGenotype(pos);
                                 genotypes.add(genotype);
                             }
 
@@ -283,7 +282,6 @@ public class EvolveGridFragment extends Fragment implements AdapterView.OnItemCl
                                 arguments.putBoolean(HAS_GENOTYPES, false);
                             }
                             arguments.putString(GENESIS_SCRIPT, mGenesisScript);
-
 
                             mode.finish(); // Action picked, so close the CAB
 

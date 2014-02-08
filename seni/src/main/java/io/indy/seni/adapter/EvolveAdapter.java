@@ -87,10 +87,6 @@ public class EvolveAdapter extends BaseAdapter {
         return mEvolveContainer.getPopulation() + mNumColumns;
     }
 
-    public Genotype getItemFromId(long itemId) {
-        return mEvolveContainer.getGenotype((int)itemId);
-    }
-
     @Override
     public Object getItem(int position) {
         return position < mNumColumns ? null : mEvolveContainer.getGenotype(position - mNumColumns);

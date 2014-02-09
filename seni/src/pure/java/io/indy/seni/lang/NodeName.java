@@ -65,6 +65,10 @@ public class NodeName extends NodeMutate {
         return kloneWithValue(mName);
     }
 
+    public NodeMutate deviate(String val) {
+        return kloneWithValue(val);
+    }
+
     private NodeName kloneWithValue(String val) {
         NodeName n = new NodeName(val, mAlterable);
 

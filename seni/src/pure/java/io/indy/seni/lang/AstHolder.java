@@ -50,7 +50,7 @@ public class AstHolder {
     private Node mConfigurationNode; // for scribing
     private Map<String, Node> mConfiguration;
 
-    // list of alterable nodes and their values for this instance
+    // the canonical genotype constructed from parsing the script
     private Genotype mGenotype;
 
     private int mGenSymStart; // the starting int for SymbolGenerator

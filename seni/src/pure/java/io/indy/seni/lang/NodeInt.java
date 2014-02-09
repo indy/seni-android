@@ -50,6 +50,11 @@ public class NodeInt extends NodeMutate {
         return kloneWithValue(mInteger);
     }
 
+    public NodeMutate deviate(String val) {
+        int v = Integer.parseInt(val);
+        return kloneWithValue(v);
+    }
+
     private NodeInt kloneWithValue(int val) {
         NodeInt n = new NodeInt(val, mAlterable);
 

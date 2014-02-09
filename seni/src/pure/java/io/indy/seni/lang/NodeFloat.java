@@ -50,6 +50,11 @@ public class NodeFloat extends NodeMutate {
         return kloneWithValue(mFloat);
     }
 
+    public NodeMutate deviate(String val) {
+        float v = (float) Double.parseDouble(val);
+        return kloneWithValue(v);
+    }
+
     private NodeFloat kloneWithValue(float val) {
         NodeFloat n = new NodeFloat(val, mAlterable);
 

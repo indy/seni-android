@@ -36,13 +36,28 @@ public abstract class NodeMutate extends Node {
         mAlterable = alterable;
 
         if (mAlterable) {
-            mParameterAst = new ArrayList<Node>();
+            mParameterAst = new ArrayList<>();
         }
     }
 
+    /**
+     *
+     * @return a mutated version of this node
+     */
     abstract public NodeMutate mutate();
 
+    /**
+     *
+     * @return a clone of this node
+     */
     abstract public NodeMutate klone();
+
+    /**
+     *
+     * @param val a string containing the unparsed value
+     * @return a clone of this node but with a value of val
+     */
+    abstract public NodeMutate deviate(String val);
 
     public void setGenSym(String genSym) {
         mGenSym = genSym;

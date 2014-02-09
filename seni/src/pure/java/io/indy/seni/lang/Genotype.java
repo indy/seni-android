@@ -27,6 +27,12 @@ public class Genotype {
         return "genoId-" + Integer.toString(sIdCount++);
     }
 
+    public class GenotypeMismatchException extends Exception {
+        public GenotypeMismatchException(String message) {
+            super(message);
+        }
+    }
+
     private String mId;
     private AstHolder mAstHolder;
 
@@ -37,6 +43,29 @@ public class Genotype {
         mAstHolder = astHolder;
         mAlterable = new ArrayList<>();
         mId = Genotype.createId();
+    }
+
+    /**
+     *
+     * @param vals a list of strings containing unparsed values
+     * @return a copy of this genotype but with the alterable list made up parsed vals
+     */
+    public Genotype deviate(List<String> vals) throws GenotypeMismatchException {
+
+        if(vals.size() != mAlterable.size()) {
+            throw new GenotypeMismatchException("vals size of " +
+                    vals.size() + " expected " + mAlterable.size());
+        }
+
+        Genotype res = new Genotype(mAstHolder);
+        int i = 0;
+        NodeMutate nm;
+        for(String val : vals) {
+            nm = mAlterable.get(i++);
+            res.add(nm.deviate(val));
+        }
+
+        return res;
     }
 
     public List<NodeMutate> getAlterable() {

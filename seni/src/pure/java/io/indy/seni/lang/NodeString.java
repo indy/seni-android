@@ -39,6 +39,10 @@ public class NodeString extends NodeMutate {
         return kloneWithValue(mString);
     }
 
+    public NodeMutate deviate(String val) {
+        return kloneWithValue(val);
+    }
+
     private NodeString kloneWithValue(String val) {
         NodeString n = new NodeString(val, mAlterable);
 

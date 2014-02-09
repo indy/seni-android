@@ -41,6 +41,11 @@ public class NodeBoolean extends NodeMutate {
         return kloneWithValue(mBoolean);
     }
 
+    public NodeMutate deviate(String val) {
+        boolean v = val.equals("true");
+        return kloneWithValue(v);
+    }
+
     private NodeBoolean kloneWithValue(boolean val) {
         NodeBoolean n = new NodeBoolean(val, mAlterable);
 

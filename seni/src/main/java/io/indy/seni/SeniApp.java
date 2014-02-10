@@ -70,24 +70,4 @@ public class SeniApp extends Application {
     public static SeniApp get(Context context) {
         return (SeniApp) context.getApplicationContext();
     }
-
-
-    private List<Genotype> mBreedingGenotypes;
-    private String mGenesisScript;
-
-    public void setBreedingGenotypes(List<Genotype> genotypes) {
-        mBreedingGenotypes = genotypes;
-    }
-
-    public List<Genotype> getBreedingGenotypes() {
-        return mBreedingGenotypes;
-    }
-
-    public void setGenesisScript(String script) {
-        mGenesisScript = script;
-    }
-
-    public String getGenesisScript() {
-        return mGenesisScript;
-    }
 }

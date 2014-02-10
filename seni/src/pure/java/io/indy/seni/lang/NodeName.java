@@ -69,6 +69,11 @@ public class NodeName extends NodeMutate {
         return kloneWithValue(val);
     }
 
+    public String asSerialisableString() {
+        return mName;
+    }
+
+
     private NodeName kloneWithValue(String val) {
         NodeName n = new NodeName(val, mAlterable);
 
@@ -128,7 +133,7 @@ public class NodeName extends NodeMutate {
 
     @Override
     protected String scribeValue() throws ScribeException {
-        String ret = mName;
+        String ret = asSerialisableString();
         if(mHasParameterSet) {
             ret += " (" + IN_SET + " ";
             for(String s : mParameterSet) {

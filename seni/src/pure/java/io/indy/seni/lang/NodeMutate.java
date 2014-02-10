@@ -59,6 +59,13 @@ public abstract class NodeMutate extends Node {
      */
     abstract public NodeMutate deviate(String val);
 
+    /**
+     *
+     * @return a string value that can be given to another NodeMutate's deviate method
+     */
+    abstract public String asSerialisableString();
+
+
     public void setGenSym(String genSym) {
         mGenSym = genSym;
     }

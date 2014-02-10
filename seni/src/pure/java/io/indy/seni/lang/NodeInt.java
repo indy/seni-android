@@ -55,6 +55,10 @@ public class NodeInt extends NodeMutate {
         return kloneWithValue(v);
     }
 
+    public String asSerialisableString() {
+        return Integer.toString(mInteger);
+    }
+
     private NodeInt kloneWithValue(int val) {
         NodeInt n = new NodeInt(val, mAlterable);
 
@@ -105,7 +109,7 @@ public class NodeInt extends NodeMutate {
 
     @Override
     protected String scribeValue() throws ScribeException {
-        String ret = Integer.toString(mInteger);
+        String ret = asSerialisableString();
         if(mHasSpecifiedRange) {
             ret += " (" + NodeMutate.IN_RANGE +
                     " " + Integer.toString(mMinRange) +

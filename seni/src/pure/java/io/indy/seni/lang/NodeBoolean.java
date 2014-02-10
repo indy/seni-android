@@ -46,6 +46,10 @@ public class NodeBoolean extends NodeMutate {
         return kloneWithValue(v);
     }
 
+    public String asSerialisableString() {
+        return mBoolean ? "true" : "false";
+    }
+
     private NodeBoolean kloneWithValue(boolean val) {
         NodeBoolean n = new NodeBoolean(val, mAlterable);
 
@@ -68,10 +72,10 @@ public class NodeBoolean extends NodeMutate {
 
     @Override
     protected String scribeValue() throws ScribeException {
-        return mBoolean ? "true" : "false";
+        return asSerialisableString();
     }
 
     public String toString() {
-        return "" + getType() + ": " + (mBoolean ? "true" : "false");
+        return "" + getType() + ": " + asSerialisableString();
     }
 }

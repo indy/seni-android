@@ -43,6 +43,10 @@ public class NodeString extends NodeMutate {
         return kloneWithValue(val);
     }
 
+    public String asSerialisableString() {
+        return mString;
+    }
+
     private NodeString kloneWithValue(String val) {
         NodeString n = new NodeString(val, mAlterable);
 
@@ -64,7 +68,7 @@ public class NodeString extends NodeMutate {
 
     @Override
     protected String scribeValue() throws ScribeException {
-        return "\"" + mString + "\"";
+        return "\"" + asSerialisableString() + "\"";
     }
 
     public String toString() {

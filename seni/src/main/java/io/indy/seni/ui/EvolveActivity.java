@@ -66,10 +66,7 @@ public class EvolveActivity extends Activity {
 
             String script = getIntent().getStringExtra(EvolveGridFragment.GENESIS_SCRIPT);
 
-            app.setGenesisScript(script);
-
             Bundle arguments = new Bundle();
-            arguments.putBoolean(EvolveGridFragment.HAS_GENOTYPES, false);
             arguments.putString(EvolveGridFragment.GENESIS_SCRIPT, script);
             EvolveGridFragment fragment = new EvolveGridFragment();
             fragment.setArguments(arguments);

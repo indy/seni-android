@@ -35,6 +35,9 @@ import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.Toast;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -58,13 +61,12 @@ public class EvolveGridFragment extends Fragment implements AdapterView.OnItemCl
     }
 
     public static final String GENESIS_SCRIPT = "GENESIS_SCRIPT";
-    public static final String HAS_GENOTYPES = "HAS_GENOTYPES";
+    public static final String EVOLVE_CONTAINER = "EVOLVE_CONTAINER";
 
     private String mGenesisScript;
 
     private int mImageThumbSize;
     private int mImageThumbSpacing;
-
 
     private EvolveAdapter mAdapter;
     private EvolveContainer mEvolveContainer;
@@ -96,21 +98,24 @@ public class EvolveGridFragment extends Fragment implements AdapterView.OnItemCl
         mImageGenerator.setLoadingImage(R.drawable.empty_genotype);
         mImageGenerator.addImageCache(getActivity().getFragmentManager(), cacheParams);
 
-        mEvolveContainer = new EvolveContainer();
 
         if (getArguments().containsKey(GENESIS_SCRIPT)) {
+            // first time call
+            mEvolveContainer = new EvolveContainer();
             mGenesisScript = getArguments().getString(EvolveGridFragment.GENESIS_SCRIPT);
             mEvolveContainer.setScript(mGenesisScript);
-        }
-
-        if (getArguments().containsKey(HAS_GENOTYPES)) {
-            if(getArguments().getBoolean(HAS_GENOTYPES)) {
-                SeniApp app = (SeniApp)(getActivity().getApplication());
-                mEvolveContainer.setBreedingGenotypes(app.getBreedingGenotypes());
+            mEvolveContainer.mutatePopulation(50);
+        } else {
+            //
+            if(getArguments().containsKey(EVOLVE_CONTAINER)) {
+                String json = getArguments().getString(EVOLVE_CONTAINER);
+                mEvolveContainer = EvolveContainer.fromJsonString(json);
+            } else {
+                ifd("expected an EVOLVE_CONTAINER value");
             }
+            // create 50 genotypes from the latest breeding population
+            mEvolveContainer.breedPopulation(50);
         }
-
-        mEvolveContainer.breed(50);
 
         mAdapter = new EvolveAdapter(getActivity(), mImageGenerator, mEvolveContainer);
     }
@@ -272,18 +277,10 @@ public class EvolveGridFragment extends Fragment implements AdapterView.OnItemCl
                                 genotypes.add(genotype);
                             }
 
-                            SeniApp app = (SeniApp)(getActivity().getApplication());
-                            app.setGenesisScript(mGenesisScript);
-
                             Bundle arguments = new Bundle();
 
-                            if(ids.length > 0) {
-                                arguments.putBoolean(HAS_GENOTYPES, true);
-                                app.setBreedingGenotypes(genotypes);
-                            } else {
-                                arguments.putBoolean(HAS_GENOTYPES, false);
-                            }
-                            arguments.putString(GENESIS_SCRIPT, mGenesisScript);
+                            mEvolveContainer.newGeneration(genotypes);
+                            arguments.putString(EVOLVE_CONTAINER, mEvolveContainer.toJsonString());
 
                             mode.finish(); // Action picked, so close the CAB
 

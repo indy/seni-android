@@ -2,11 +2,19 @@ package io.indy.seni.model;
 
 import android.util.Log;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import io.indy.seni.AppConfig;
 import io.indy.seni.lang.AstHolder;
 import io.indy.seni.lang.Genotype;
+import io.indy.seni.lang.Node;
+import io.indy.seni.lang.NodeMutate;
 
 /**
  * Holds the model used by EvolveAdapter
@@ -20,14 +28,34 @@ public class EvolveContainer {
         if (AppConfig.DEBUG && D) Log.d(TAG, message);
     }
 
-    private List<Genotype> mBreedingGenotypes;
+    private static final String GENESIS_SCRIPT = "script";
+    private static final String GENESIS_SEED = "seed";
+    private static final String POPULATION = "population";
+    private static final String GENERATIONS = "generations";
+
+    // the seed used to create the initial population of mutations
+    private int mGenesisSeed;
+    private List<Generation> mGenerations;
     private AstHolder mAstHolder;
-    private Genotype[] mGenotypes;
+
     private int mPopulation;
+    private Genotype[] mGenotypes;
 
     public EvolveContainer() {
         mPopulation = 50;
-        mBreedingGenotypes = null;
+        mGenerations = new ArrayList<>();
+    }
+
+    public void setScript(String script) {
+        mAstHolder = new AstHolder(script);
+    }
+
+    public void setGenesisSeed(int seed) {
+        mGenesisSeed = seed;
+    }
+
+    public void setPopulation(int population) {
+        mPopulation = population;
     }
 
     public int getPopulation() {
@@ -38,57 +66,102 @@ public class EvolveContainer {
         return mGenotypes[index];
     }
 
-    public void setScript(String script) {
-        mAstHolder = new AstHolder(script);
-    }
-
-    public void setBreedingGenotypes(List<Genotype> genotypes) {
-        mBreedingGenotypes = genotypes;
-    }
-
-    public void breed(int desiredPopulation) {
-
+    public void mutatePopulation(int desiredPopulation) {
+        Genotype proto = mAstHolder.getGenotype();
+        mGenotypes = new Genotype[desiredPopulation];
         int i;
-        mPopulation = desiredPopulation;
-        mGenotypes = new Genotype[mPopulation];
 
-        // no breeding genotypes, everything is a mutation
-        if(mBreedingGenotypes == null) {
-            for (i = 0; i < mPopulation; i++) {
-                mGenotypes[i] = mAstHolder.getGenotype().mutate();
-            }
-            return;
-        }
+        mGenesisSeed = 42; // todo: pass this into mutate
 
-        int breedSize = mBreedingGenotypes.size();
-        int size = breedSize > mPopulation ? mPopulation : breedSize;
-
-        // clone the breeding genotypes into this generation
-        ifd("size = " + size);
-        for(i=0;i<size;i++) {
-            mGenotypes[i] = mBreedingGenotypes.get(i);
-        }
-
-        // generate the rest from the breeding population
-        int geneLength = mBreedingGenotypes.get(0).getAlterable().size();
-        ifd("geneLength = " + geneLength);
-
-        for (i = size; i < mPopulation; i++) {
-            int crossoverIndex = (int) (Math.random() * (double) geneLength);
-            int a = (int)(Math.random() * (double)breedSize);
-            int b = (int)(Math.random() * (double)breedSize);
-
-            ifd("" + i + " breeding a(" + a + ") b(" + b + ") crossoverIndex(" + crossoverIndex + ")");
-
-            mGenotypes[i] = Genotype.crossover(mBreedingGenotypes.get(a),mBreedingGenotypes.get(b),
-                    crossoverIndex);
-        }
-
-        // overwrite the last 10% of the population with mutations
-        int numMutants = (int)((float)mPopulation * 0.1f);
-        for(i=mPopulation - numMutants;i<mPopulation;i++) {
-            mGenotypes[i] = mGenotypes[0].mutate();
+        // everything is a mutation of proto
+        for (i = 0; i < desiredPopulation; i++) {
+            mGenotypes[i] = proto.mutate();
         }
     }
 
+    public void newGeneration(List<Genotype> breedingGenotypes) {
+        mGenerations.add(new Generation(breedingGenotypes, 43));
+    }
+
+    public void breedPopulation(int desiredPopulation) {
+
+        int numGenerations = mGenerations.size();
+
+        Generation latestGen = mGenerations.get(numGenerations - 1);
+        mGenotypes = latestGen.breed(desiredPopulation);
+
+        JSONObject jsonObject = latestGen.toJson();
+        ifd("jsonObject is: " + jsonObject.toString());
+
+//        JSONObject jsonObject = GenotypeSerializer.genotypeToJson(mGenotypes[0]);
+//        ifd("jsonObject is: " + jsonObject.toString());
+    }
+
+    public String toJsonString() {
+        return toJson().toString();
+    }
+
+    public JSONObject toJson() {
+        JSONObject res = new JSONObject();
+
+        try {
+            res.put(GENESIS_SCRIPT, mAstHolder.scribe());
+            res.put(GENESIS_SEED, mGenesisSeed);
+            res.put(POPULATION, mPopulation);
+
+            JSONArray jsonArray = new JSONArray();
+            for(Generation generation : mGenerations) {
+                jsonArray.put(generation.toJson());
+            }
+            res.put(GENERATIONS, jsonArray);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        } catch (Node.ScribeException se) {
+            ifd("node scribe exception");
+            se.printStackTrace();
+        }
+
+        return res;
+    }
+
+    static public EvolveContainer fromJsonString(String json) {
+        try {
+            return fromJson(new JSONObject(json));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    static public EvolveContainer fromJson(JSONObject jsonObject) {
+        try {
+
+            EvolveContainer ec = new EvolveContainer();
+
+            String script = jsonObject.getString(GENESIS_SCRIPT);
+            ec.setScript(script);
+
+            int population = jsonObject.getInt(POPULATION);
+            ec.setPopulation(population);
+
+            int seed = jsonObject.getInt(GENESIS_SEED);
+            ec.setGenesisSeed(seed);
+
+            Genotype template = ec.mAstHolder.getGenotype();
+
+            JSONArray jsonArray = jsonObject.getJSONArray(GENERATIONS);
+            for(int i=0;i<jsonArray.length();i++) {
+                Generation g = Generation.fromJson(jsonArray.getJSONObject(i), template);
+                ec.mGenerations.add(g);
+            }
+
+            return ec;
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
 }

@@ -55,6 +55,11 @@ public class NodeFloat extends NodeMutate {
         return kloneWithValue(v);
     }
 
+    public String asSerialisableString() {
+        return String.valueOf(mFloat);
+    }
+
+
     private NodeFloat kloneWithValue(float val) {
         NodeFloat n = new NodeFloat(val, mAlterable);
 
@@ -105,7 +110,7 @@ public class NodeFloat extends NodeMutate {
 
     @Override
     protected String scribeValue() throws ScribeException {
-        String ret = String.valueOf(mFloat);
+        String ret = asSerialisableString();
         if(mHasSpecifiedRange) {
             ret += " (" + NodeMutate.IN_RANGE +
                     " " + String.valueOf(mMinRange) +

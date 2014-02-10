@@ -1,3 +1,9 @@
+(metadata
+  title "art1405c"
+  description "a more volatile version of earlier scripts"
+  author "indy"
+  created "2014-02-04")
+
 (define squ
   (lambda (angle colour box-radius)
     (begin (set-colour colour)

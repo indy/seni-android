@@ -34,6 +34,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.indy.seni.AppConfig;
+import io.indy.seni.lang.LangException;
 import io.indy.seni.ui.EvolveActivity;
 import io.indy.seni.ui.EvolveGridFragment;
 import io.indy.seni.R;
@@ -137,9 +138,9 @@ public class ScriptAdapter extends BaseAdapter {
 
         if (convertView == null) {
             if (numColumns > 1) {
-                view = mInflater.inflate(R.layout.cell_templist, parent, false);
+                view = mInflater.inflate(R.layout.cell_script, parent, false);
             } else {
-                view = mInflater.inflate(R.layout.row_templist, parent, false);
+                view = mInflater.inflate(R.layout.row_script, parent, false);
             }
         } else {
             view = convertView;
@@ -148,15 +149,14 @@ public class ScriptAdapter extends BaseAdapter {
         view.setTag(R.string.tag_position, position);
 
         SeniView seniView = (SeniView) view.findViewById(R.id.seniView);
-        seniView.setAstHolder(mAstHolders.get(position));
+        AstHolder astHolder = mAstHolders.get(position);
+        seniView.setAstHolder(astHolder);
 
-        if (numColumns > 1) {
-            text = (TextView) view.findViewById(R.id.bar);
-            text.setText("shabba " + position);
-        } else {
-            text = (TextView) view.findViewById(R.id.foo);
-            text.setText("" + position);
-        }
+        TextView title = (TextView) view.findViewById(R.id.title);
+        title.setText(astHolder.getMetadataString("title", "unknown"));
+
+        TextView description = (TextView) view.findViewById(R.id.description);
+        description.setText(astHolder.getMetadataString("description", "no description"));
 
         view.setOnClickListener(mOnClickListener);
 

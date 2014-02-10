@@ -1,3 +1,9 @@
+(metadata
+  title "art1405"
+  description "a simple square"
+  author "indy"
+  created "2014-02-02")
+
 (let ((primary (colour [0.1] [0.6] [0.8] 1.0))
       (box-radius (/ canvas-width [3.0 (in-range 2.0 8.0)]))
       (focal-x (/ canvas-width 2.0))

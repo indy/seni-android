@@ -77,6 +77,20 @@ public class AstHolder {
         // create a copu of configuration
     }
 
+    public String getMetadataString(String key, String defaultValue) {
+        if(!mMetadata.containsKey(key)) {
+            return defaultValue;
+        }
+        try {
+            return Node.asStringValue(getMetadata(key));
+        } catch (LangException e) {
+            e.printStackTrace();
+        }
+
+        // should never get here
+        return "";
+    }
+
     public Node getMetadata(String key) {
         return mMetadata.get(key);
     }

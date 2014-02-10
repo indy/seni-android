@@ -1,3 +1,10 @@
+(metadata
+  title "art1405b"
+  description "early tri-shape with some variation"
+  author "indy"
+  created "2014-02-03")
+
+
 (define squ 
   (lambda (angle colour box-radius)
     (begin (set-colour colour)

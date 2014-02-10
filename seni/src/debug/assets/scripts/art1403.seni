@@ -1,3 +1,9 @@
+(metadata
+  title "art1403"
+  description "a grid of rectangles"
+  author "indy"
+  created "2014-01-30")
+
 (define piece
   (lambda (primary secondary box-radius interp-fn)
     (let ((comp-primary (complementary primary))

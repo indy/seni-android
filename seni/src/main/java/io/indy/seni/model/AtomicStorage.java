@@ -14,13 +14,6 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-/*
-    When the app starts there's a noticeable delay as data from Google Drive is fetched
-    over the network, worse if there's no network access then nothing will be displayed
-
-    AtomicStorage acts as a persistent cache which is used to populate the TaskLists at
-    startup time.
- */
 public class AtomicStorage {
 
     private static final String TAG = "AtomicStorage";

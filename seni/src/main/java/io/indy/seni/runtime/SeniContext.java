@@ -18,6 +18,7 @@ package io.indy.seni.runtime;
 
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.graphics.Path;
 import android.util.Log;
 
 import io.indy.seni.AppConfig;
@@ -33,11 +34,14 @@ public class SeniContext {
 
     private Canvas mCanvas;
     private Paint mPaint;
+    private Path mPath;
 
     public SeniContext(Canvas canvas) {
         mCanvas = canvas;
         mPaint = new Paint();
         mPaint.setAntiAlias(true);
+
+        mPath = new Path();
     }
 
     public Canvas getCanvas() {
@@ -47,4 +51,6 @@ public class SeniContext {
     public Paint getPaint() {
         return mPaint;
     }
+
+    public Path getPath() { return mPath; }
 }

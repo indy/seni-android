@@ -16,6 +16,9 @@
 
 package io.indy.seni.runtime.bind;
 
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.Path;
 import android.util.Log;
 
 import java.util.Iterator;
@@ -149,6 +152,36 @@ public class Platform extends Binder {
                 float r = Node.asFloatValue(params.get(2));
 
                 mSeniContext.getCanvas().drawCircle(x, y, r, mSeniContext.getPaint());
+
+                return Interpreter.NODE_NULL;
+            }
+        });
+
+        e.addBinding(new NodeSeniContext("triangle", sc) {
+            public Node execute(Env env, List<Node> params)
+                    throws LangException {
+
+                Binder.checkArity(params, 6, keyword());
+
+                float p1x = Node.asFloatValue(params.get(0));
+                float p1y = Node.asFloatValue(params.get(1));
+                float p2x = Node.asFloatValue(params.get(2));
+                float p2y = Node.asFloatValue(params.get(3));
+                float p3x = Node.asFloatValue(params.get(4));
+                float p3y = Node.asFloatValue(params.get(5));
+
+                Canvas canvas = mSeniContext.getCanvas();
+                Paint paint = mSeniContext.getPaint();
+                Path path = mSeniContext.getPath();
+
+                path.reset();
+                path.setFillType(Path.FillType.EVEN_ODD);
+                path.moveTo(p1x, p1y);
+                path.lineTo(p2x, p2y);
+                path.lineTo(p3x, p3y);
+                path.close();
+
+                canvas.drawPath(path, paint);
 
                 return Interpreter.NODE_NULL;
             }

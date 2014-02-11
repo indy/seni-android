@@ -108,6 +108,7 @@ public class NodeName extends NodeMutate {
             String name = Node.asNameValue(nodeList.getChild(0));
             if (name.equals(IN_SET)) {
 
+                mHasParameterSet = true;
                 mParameterSet = new HashSet<String>();
 
                 List<Node> children = nodeList.getChildren();

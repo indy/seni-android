@@ -4,20 +4,20 @@
         Base application theme for API 11+. This theme completely replaces
         AppBaseTheme from res/values/styles.xml on API 11+ devices.
     -->
-    <style name="AppBaseTheme" parent="android:Theme.Holo">
+    <style name="AppBaseTheme" parent="android:Theme.Holo.Light">
         <!-- API 11 theme customizations can go here. -->
     </style>
 
-    <style name="AppTheme" parent="@android:style/Theme.Holo">
+    <style name="AppTheme" parent="AppBaseTheme">
         <item name="android:windowActionBarOverlay">true</item>
-        <item name="android:windowBackground">@android:color/black</item>
-        <item name="android:actionBarStyle">@style/TranslucentDarkActionBar</item>
+        <item name="android:windowBackground">@android:color/white</item>
+        <item name="android:actionBarStyle">@style/TranslucentLightActionBar</item>
     </style>
 
     <style name="AppTheme.FullScreen" />
 
-    <style name="TranslucentDarkActionBar" parent="@android:style/Widget.Holo.ActionBar">
-        <item name="android:background">#99000000</item>
+    <style name="TranslucentLightActionBar" parent="@android:style/Widget.Holo.ActionBar">
+        <item name="android:background">#99ffffff</item>
     </style>
 
     <style name="PhenoGridLayout">

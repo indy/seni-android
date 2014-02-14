@@ -1,0 +1,229 @@
+(metadata
+  title "art1407b"
+  description "interesting colour variations"
+  author "indy"
+  created "2014-02-12")
+
+
+(define a
+  (lambda (primary secondary)
+    (begin
+      (set-colour primary)
+      (triangle 0.0 0.0
+                1.0 0.0
+                0.0 2.0)
+      (set-colour secondary)
+      (triangle 1.0 0.0
+                1.0 2.0
+                0.0 2.0))))
+
+(define b
+  (lambda (primary secondary)
+    (begin
+      (set-colour primary)
+      (rect 0.0 0.0
+            1.0 2.0)
+      (set-colour secondary)
+      (circle 0.5 0.5 0.4))))
+
+(define c
+  (lambda (primary secondary)
+    (begin
+      (set-colour secondary)
+      (rect 0.0 0.0
+            1.0 2.0)
+      (set-colour primary)
+      (circle 0.5 0.5 0.4))))
+
+(define d
+  (lambda (primary secondary)
+    (begin
+      (set-colour primary)
+      (triangle 0.0 0.0
+                1.0 0.0
+                1.0 2.0)
+      (set-colour secondary)
+      (triangle 0.0 0.0
+                1.0 2.0
+                0.0 2.0))))
+
+(define e
+  (lambda (primary secondary)
+    (begin
+      (set-colour primary)
+      (rect 0.0 0.0
+            1.0 2.0)
+      (set-colour secondary)
+      (circle 0.5 1.5 0.4))))
+
+(define f
+  (lambda (primary secondary)
+    (begin
+      (set-colour secondary)
+      (rect 0.0 0.0
+            1.0 2.0)
+      (set-colour primary)
+      (circle 0.5 1.5 0.4))))
+
+
+(define g
+  (lambda (primary secondary)
+    (begin
+      (set-colour primary)
+      (rect 0.0 0.0
+            1.0 2.0)
+      (set-colour secondary)
+      (circle 0.5 0.5 0.4)
+      (rect 0.0 1.0 1.0 2.0))))
+
+(define h
+  (lambda (primary secondary)
+    (begin
+      (set-colour secondary)
+      (rect 0.0 0.0
+            1.0 2.0)
+      (set-colour primary)
+      (rect 0.0 1.0 1.0 2.0)
+      (circle 0.5 0.5 0.4))))
+
+(define i
+  (lambda (primary secondary)
+    (begin
+      (set-colour primary)
+      (rect 0.0 0.0
+            1.0 2.0)
+      (set-colour secondary)
+      (circle 0.5 1.5 0.4)
+      (rect 0.0 0.0 1.0 1.0))))
+
+(define j
+  (lambda (primary secondary)
+    (begin
+      (set-colour secondary)
+      (rect 0.0 0.0
+            1.0 2.0)
+      (set-colour primary)
+      (rect 0.0 0.0 1.0 1.0)
+      (circle 0.5 1.5 0.4))))
+
+
+(define k
+  (lambda (primary secondary)
+    (begin
+      (set-colour primary)
+      (rect 0.0 0.0
+            1.0 2.0)
+      (set-colour secondary)
+      (triangle 0.0 0.0
+                1.0 1.0
+                0.0 2.0))))
+
+(define l
+  (lambda (primary secondary)
+    (begin
+      (set-colour primary)
+      (rect 0.0 0.0
+            1.0 2.0)
+      (set-colour secondary)
+      (triangle 1.0 0.0
+                1.0 2.0
+                0.0 1.0))))
+
+(define m
+  (lambda (primary secondary)
+    (begin
+      (set-colour secondary)
+      (rect 0.0 0.0
+            1.0 2.0)
+      (set-colour primary)
+      (triangle 0.0 0.0
+                1.0 1.0
+                0.0 2.0))))
+
+(define n
+  (lambda (primary secondary)
+    (begin
+      (set-colour secondary)
+      (rect 0.0 0.0
+            1.0 2.0)
+      (set-colour primary)
+      (triangle 1.0 0.0
+                1.0 2.0
+                0.0 1.0))))
+
+(let ((primary (colour [0.1] [0.6] [0.8] 1.0))
+      (colour-scheme ([triad (in-set triad analagous split-complementary)] primary))
+      (c0 (nth colour-scheme 0))
+      (c1 (nth colour-scheme 1))
+      (c2 (nth colour-scheme 2))
+      (x-scale (/ canvas-width 8.0))
+      (y-scale (/ canvas-height 8.0)))
+  (begin (scale x-scale y-scale)
+         (translate 0.0 0.0)
+         ([a (in-set a b c d e f g h i j k l m n)] [c0 (in-set c0 c1 c2)] [c1 (in-set c0 c1 c2)])
+         (translate 1.0 0.0)
+         ([a (in-set a b c d e f g h i j k l m n)] [c0 (in-set c0 c1 c2)] [c1 (in-set c0 c1 c2)])
+         (translate 1.0 0.0)
+         ([a (in-set a b c d e f g h i j k l m n)] [c0 (in-set c0 c1 c2)] [c1 (in-set c0 c1 c2)])
+         (translate 1.0 0.0)
+         ([a (in-set a b c d e f g h i j k l m n)] [c0 (in-set c0 c1 c2)] [c1 (in-set c0 c1 c2)])
+         (translate 1.0 0.0)
+         ([a (in-set a b c d e f g h i j k l m n)] [c0 (in-set c0 c1 c2)] [c1 (in-set c0 c1 c2)])
+         (translate 1.0 0.0)
+         ([a (in-set a b c d e f g h i j k l m n)] [c0 (in-set c0 c1 c2)] [c1 (in-set c0 c1 c2)])
+         (translate 1.0 0.0)
+         ([a (in-set a b c d e f g h i j k l m n)] [c0 (in-set c0 c1 c2)] [c1 (in-set c0 c1 c2)])
+         (translate 1.0 0.0)
+         ([a (in-set a b c d e f g h i j k l m n)] [c0 (in-set c0 c1 c2)] [c1 (in-set c0 c1 c2)])
+
+         (translate -7.0 2.0)
+         ([a (in-set a b c d e f g h i j k l m n)] [c0 (in-set c0 c1 c2)] [c1 (in-set c0 c1 c2)])
+         (translate 1.0 0.0)
+         ([a (in-set a b c d e f g h i j k l m n)] [c0 (in-set c0 c1 c2)] [c1 (in-set c0 c1 c2)])
+         (translate 1.0 0.0)
+         ([a (in-set a b c d e f g h i j k l m n)] [c0 (in-set c0 c1 c2)] [c1 (in-set c0 c1 c2)])
+         (translate 1.0 0.0)
+         ([a (in-set a b c d e f g h i j k l m n)] [c0 (in-set c0 c1 c2)] [c1 (in-set c0 c1 c2)])
+         (translate 1.0 0.0)
+         ([a (in-set a b c d e f g h i j k l m n)] [c0 (in-set c0 c1 c2)] [c1 (in-set c0 c1 c2)])
+         (translate 1.0 0.0)
+         ([a (in-set a b c d e f g h i j k l m n)] [c0 (in-set c0 c1 c2)] [c1 (in-set c0 c1 c2)])
+         (translate 1.0 0.0)
+         ([a (in-set a b c d e f g h i j k l m n)] [c0 (in-set c0 c1 c2)] [c1 (in-set c0 c1 c2)])
+         (translate 1.0 0.0)
+         ([a (in-set a b c d e f g h i j k l m n)] [c0 (in-set c0 c1 c2)] [c1 (in-set c0 c1 c2)])
+
+         (translate -7.0 2.0)
+         ([a (in-set a b c d e f g h i j k l m n)] [c0 (in-set c0 c1 c2)] [c1 (in-set c0 c1 c2)])
+         (translate 1.0 0.0)
+         ([a (in-set a b c d e f g h i j k l m n)] [c0 (in-set c0 c1 c2)] [c1 (in-set c0 c1 c2)])
+         (translate 1.0 0.0)
+         ([a (in-set a b c d e f g h i j k l m n)] [c0 (in-set c0 c1 c2)] [c1 (in-set c0 c1 c2)])
+         (translate 1.0 0.0)
+         ([a (in-set a b c d e f g h i j k l m n)] [c0 (in-set c0 c1 c2)] [c1 (in-set c0 c1 c2)])
+         (translate 1.0 0.0)
+         ([a (in-set a b c d e f g h i j k l m n)] [c0 (in-set c0 c1 c2)] [c1 (in-set c0 c1 c2)])
+         (translate 1.0 0.0)
+         ([a (in-set a b c d e f g h i j k l m n)] [c0 (in-set c0 c1 c2)] [c1 (in-set c0 c1 c2)])
+         (translate 1.0 0.0)
+         ([a (in-set a b c d e f g h i j k l m n)] [c0 (in-set c0 c1 c2)] [c1 (in-set c0 c1 c2)])
+         (translate 1.0 0.0)
+         ([a (in-set a b c d e f g h i j k l m n)] [c0 (in-set c0 c1 c2)] [c1 (in-set c0 c1 c2)])
+
+         (translate -7.0 2.0)
+         ([a (in-set a b c d e f g h i j k l m n)] [c0 (in-set c0 c1 c2)] [c1 (in-set c0 c1 c2)])
+         (translate 1.0 0.0)
+         ([a (in-set a b c d e f g h i j k l m n)] [c0 (in-set c0 c1 c2)] [c1 (in-set c0 c1 c2)])
+         (translate 1.0 0.0)
+         ([a (in-set a b c d e f g h i j k l m n)] [c0 (in-set c0 c1 c2)] [c1 (in-set c0 c1 c2)])
+         (translate 1.0 0.0)
+         ([a (in-set a b c d e f g h i j k l m n)] [c0 (in-set c0 c1 c2)] [c1 (in-set c0 c1 c2)])
+         (translate 1.0 0.0)
+         ([a (in-set a b c d e f g h i j k l m n)] [c0 (in-set c0 c1 c2)] [c1 (in-set c0 c1 c2)])
+         (translate 1.0 0.0)
+         ([a (in-set a b c d e f g h i j k l m n)] [c0 (in-set c0 c1 c2)] [c1 (in-set c0 c1 c2)])
+         (translate 1.0 0.0)
+         ([a (in-set a b c d e f g h i j k l m n)] [c0 (in-set c0 c1 c2)] [c1 (in-set c0 c1 c2)])
+         (translate 1.0 0.0)
+         ([a (in-set a b c d e f g h i j k l m n)] [c0 (in-set c0 c1 c2)] [c1 (in-set c0 c1 c2)])
+))

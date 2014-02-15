@@ -66,6 +66,10 @@ public class EvolveContainer {
         return mGenotypes[index];
     }
 
+    public int getGenerationCount() {
+        return mGenerations.size() + 1;
+    }
+
     public void mutatePopulation(int desiredPopulation) {
         Genotype proto = mAstHolder.getGenotype();
         mGenotypes = new Genotype[desiredPopulation];

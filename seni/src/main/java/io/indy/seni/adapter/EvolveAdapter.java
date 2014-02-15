@@ -76,6 +76,10 @@ public class EvolveAdapter extends BaseAdapter {
         }
     }
 
+    public int getGenerationCount() {
+        return mEvolveContainer.getGenerationCount();
+    }
+
     @Override
     public int getCount() {
         // If columns have yet to be determined, return no items

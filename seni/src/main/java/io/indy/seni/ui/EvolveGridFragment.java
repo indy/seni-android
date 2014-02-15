@@ -305,7 +305,7 @@ public class EvolveGridFragment extends Fragment implements AdapterView.OnItemCl
                     inflater.inflate(R.menu.context_evolve, menu);
 
                     mode.setTitle("Choose the best");
-                    mode.setSubtitle("generation 1");
+                    mode.setSubtitle("generation " + mAdapter.getGenerationCount());
                     return true;
                 }
 

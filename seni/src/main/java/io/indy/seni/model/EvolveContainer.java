@@ -42,7 +42,7 @@ public class EvolveContainer {
     private Genotype[] mGenotypes;
 
     public EvolveContainer() {
-        mPopulation = 50;
+        mPopulation = 60;
         mGenerations = new ArrayList<>();
     }
 
@@ -70,15 +70,15 @@ public class EvolveContainer {
         return mGenerations.size() + 1;
     }
 
-    public void mutatePopulation(int desiredPopulation) {
+    public void mutatePopulation() {
         Genotype proto = mAstHolder.getGenotype();
-        mGenotypes = new Genotype[desiredPopulation];
+        mGenotypes = new Genotype[mPopulation];
         int i;
 
         mGenesisSeed = 42; // todo: pass this into mutate
 
         // everything is a mutation of proto
-        for (i = 0; i < desiredPopulation; i++) {
+        for (i = 0; i < mPopulation; i++) {
             mGenotypes[i] = proto.mutate();
         }
     }
@@ -87,12 +87,12 @@ public class EvolveContainer {
         mGenerations.add(new Generation(breedingGenotypes, 43));
     }
 
-    public void breedPopulation(int desiredPopulation) {
+    public void breedPopulation() {
 
         int numGenerations = mGenerations.size();
 
         Generation latestGen = mGenerations.get(numGenerations - 1);
-        mGenotypes = latestGen.breed(desiredPopulation);
+        mGenotypes = latestGen.breed(mPopulation);
 
         JSONObject jsonObject = latestGen.toJson();
         ifd("jsonObject is: " + jsonObject.toString());

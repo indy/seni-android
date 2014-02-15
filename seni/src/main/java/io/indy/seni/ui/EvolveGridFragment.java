@@ -104,7 +104,7 @@ public class EvolveGridFragment extends Fragment implements AdapterView.OnItemCl
             mEvolveContainer = new EvolveContainer();
             mGenesisScript = getArguments().getString(EvolveGridFragment.GENESIS_SCRIPT);
             mEvolveContainer.setScript(mGenesisScript);
-            mEvolveContainer.mutatePopulation(50);
+            mEvolveContainer.mutatePopulation();
         } else {
             //
             if(getArguments().containsKey(EVOLVE_CONTAINER)) {
@@ -114,7 +114,7 @@ public class EvolveGridFragment extends Fragment implements AdapterView.OnItemCl
                 ifd("expected an EVOLVE_CONTAINER value");
             }
             // create 50 genotypes from the latest breeding population
-            mEvolveContainer.breedPopulation(50);
+            mEvolveContainer.breedPopulation();
         }
 
         mAdapter = new EvolveAdapter(getActivity(), mImageGenerator, mEvolveContainer);

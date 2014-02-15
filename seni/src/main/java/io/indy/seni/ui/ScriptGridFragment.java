@@ -19,17 +19,31 @@ package io.indy.seni.ui;
 import android.app.Activity;
 import android.app.Fragment;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
+import android.widget.AbsListView;
 import android.widget.GridView;
 import android.widget.ListView;
 
+import io.indy.seni.AppConfig;
+import io.indy.seni.BuildConfig;
 import io.indy.seni.R;
 import io.indy.seni.adapter.ScriptAdapter;
+import io.indy.seni.util.ImageCache;
+import io.indy.seni.util.ImageGenerator;
 
 
 public class ScriptGridFragment extends Fragment {
+
+    private static final String TAG = "ScriptGridFragment";
+    private static final boolean D = true;
+
+    static void ifd(final String message) {
+        if (AppConfig.DEBUG && D) Log.d(TAG, message);
+    }
 
     /**
      * The serialization (saved instance state) Bundle key representing the
@@ -49,6 +63,10 @@ public class ScriptGridFragment extends Fragment {
     private int mActivatedPosition = ListView.INVALID_POSITION;
 
     private ScriptAdapter mScriptAdapter;
+    private ImageGenerator mImageGenerator;
+
+    private int mImageThumbSize;
+    private int mImageThumbSpacing;
 
     /**
      * A callback interface that all activities containing this fragment must
@@ -83,7 +101,7 @@ public class ScriptGridFragment extends Fragment {
     public void onAttach(Activity activity) {
         super.onAttach(activity);
 
-        mScriptAdapter = new ScriptAdapter(activity);
+
 
 /*
         // Activities containing this fragment must implement its callbacks.
@@ -99,20 +117,48 @@ public class ScriptGridFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        /*
-        // TODO: replace with a real list adapter.
-        setListAdapter(new ArrayAdapter<DummyContent.DummyItem>(
-                getActivity(),
-                android.R.layout.simple_list_item_activated_1,
-                android.R.id.text1,
-                DummyContent.ITEMS));
-        */
-    }
+        mImageThumbSize = getResources().getDimensionPixelSize(R.dimen.pheno_thumbnail_size);
+        mImageThumbSpacing = getResources().getDimensionPixelSize(R.dimen.pheno_thumbnail_spacing);
+
+        ImageCache.ImageCacheParams cacheParams = new ImageCache.ImageCacheParams();
+
+        cacheParams.setMemCacheSizePercent(0.25f); // Set memory cache to 25% of app memory
+
+        // The ImageGenerator takes care of loading images into our ImageView children asynchronously
+        mImageGenerator = new ImageGenerator(getActivity(), mImageThumbSize);
+        mImageGenerator.setLoadingImage(R.drawable.empty_genotype);
+        mImageGenerator.addImageCache(getActivity().getFragmentManager(), cacheParams);
+
+
+        mScriptAdapter = new ScriptAdapter(getActivity(), mImageGenerator);
+   }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_script_grid, container, false);
+
+        View v = inflater.inflate(R.layout.fragment_script_grid, container, false);
+
+        final GridView gridView = (GridView)(v.findViewById(R.id.grid));
+
+        gridView.setOnScrollListener(new AbsListView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(AbsListView absListView, int scrollState) {
+                // Pause fetcher to ensure smoother scrolling when flinging
+                if (scrollState == AbsListView.OnScrollListener.SCROLL_STATE_FLING) {
+
+                } else {
+                    mImageGenerator.setPauseWork(false);
+                }
+            }
+
+            @Override
+            public void onScroll(AbsListView absListView, int firstVisibleItem,
+                                 int visibleItemCount, int totalItemCount) {
+            }
+        });
+
+        return v;
     }
 
     @Override
@@ -127,6 +173,8 @@ public class ScriptGridFragment extends Fragment {
 
         GridView gridView = (GridView) view.findViewById(R.id.grid);
         gridView.setAdapter(mScriptAdapter);
+        int numColumns = getResources().getInteger(R.integer.num_columns);
+        mScriptAdapter.setNumColumns(numColumns);
     }
 
 
@@ -156,6 +204,21 @@ public class ScriptGridFragment extends Fragment {
             outState.putInt(STATE_ACTIVATED_POSITION, mActivatedPosition);
         }
     }
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mImageGenerator.setExitTasksEarly(false);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        mImageGenerator.setPauseWork(false);
+        mImageGenerator.setExitTasksEarly(true);
+    }
+
 
     /**
      * Turns on activate-on-click mode. When this mode is on, list items will be

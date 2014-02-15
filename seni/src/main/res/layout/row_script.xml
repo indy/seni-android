@@ -7,12 +7,12 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent">
 
-    <io.indy.seni.view.SeniView
-            android:focusable="false"
-            android:id="@+id/seniView"
+    <ImageView
+            android:id="@+id/pheno_view"
             android:layout_margin="@dimen/default_spacing_minor"
             android:layout_width="96dp"
-            android:layout_height="96dp"/>
+            android:layout_height="96dp"
+            android:focusable="false" />
 
     <LinearLayout
             android:layout_width="wrap_content"

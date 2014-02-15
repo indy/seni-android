@@ -25,6 +25,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.BaseAdapter;
+import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.io.BufferedReader;
@@ -42,6 +44,7 @@ import io.indy.seni.ui.EvolveGridFragment;
 import io.indy.seni.R;
 import io.indy.seni.lang.AstHolder;
 import io.indy.seni.lang.Node;
+import io.indy.seni.util.ImageGenerator;
 import io.indy.seni.view.SeniView;
 
 public class ScriptAdapter extends BaseAdapter {
@@ -58,13 +61,21 @@ public class ScriptAdapter extends BaseAdapter {
     private LayoutInflater mInflater;
     private Context mContext;
 
+    private int mNumColumns = 0;
+
     private int mActionBarHeight = 0;
 
-    public ScriptAdapter(Context context) {
+    private ImageGenerator mImageGenerator;
+
+
+    public ScriptAdapter(Context context, ImageGenerator imageGenerator) {
         mContext = context;
         mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
+
         mAstHolders = parseScripts(context, "scripts");
+
+        mImageGenerator = imageGenerator;
 
         // Calculate ActionBar height
         TypedValue tv = new TypedValue();
@@ -72,40 +83,63 @@ public class ScriptAdapter extends BaseAdapter {
                 android.R.attr.actionBarSize, tv, true)) {
             mActionBarHeight = TypedValue.complexToDimensionPixelSize(
                     tv.data, context.getResources().getDisplayMetrics());
+            ifd("mActionBarHeight = " + mActionBarHeight);
         }
     }
 
     @Override
     public int getCount() {
-        return mAstHolders.size() + 1;
+        if (getNumColumns() == 0) {
+            return 0;
+        }
+
+        ifd("getCount = " + (mAstHolders.size() + mNumColumns));
+
+        return mAstHolders.size() + mNumColumns;
     }
 
     @Override
     public Object getItem(int position) {
-        return position == 0 ? null : mAstHolders.get(position - 1);
+        if (position < mNumColumns) {
+            ifd("getItem: null");
+        } else {
+            ifd("getItem: " + mAstHolders.get(position - mNumColumns));
+        }
+        return position < mNumColumns ? null : mAstHolders.get(position - mNumColumns);
     }
 
     @Override
     public long getItemId(int position) {
-        return position == 0 ? 0 : position - 1;
+        if(position < mNumColumns) {
+            ifd("getItemId: " + 0);
+        } else {
+            ifd("getItemId: " + (position - mNumColumns));
+        }
+        return position < mNumColumns ? 0 : position - mNumColumns;
     }
 
     @Override
     public int getViewTypeCount() {
+        ifd("getViewTypeCount");
         return 2;
     }
 
     @Override
     public int getItemViewType(int position) {
-        return position == 0 ? 1 : 0;
+        ifd("getItemViewType");
+        return (position < mNumColumns) ? 1 : 0;
+    }
+
+    @Override
+    public boolean hasStableIds() {
+        return true;
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         View view;
-        TextView text;
 
-        if(position == 0) {
+        if(position < mNumColumns) {
             if (convertView == null) {
                 convertView = new View(mContext);
             }
@@ -127,11 +161,12 @@ public class ScriptAdapter extends BaseAdapter {
             view = convertView;
         }
 
-        view.setTag(R.string.tag_position, position - 1);
+        view.setTag(R.string.tag_position, position - mNumColumns);
 
-        SeniView seniView = (SeniView) view.findViewById(R.id.seniView);
-        AstHolder astHolder = mAstHolders.get(position - 1);
-        seniView.setAstHolder(astHolder);
+        AstHolder astHolder = mAstHolders.get(position - mNumColumns);
+
+        ImageView phenoView = (ImageView) view.findViewById(R.id.pheno_view);
+        mImageGenerator.loadImage(astHolder.getGenotype(), phenoView);
 
         TextView title = (TextView) view.findViewById(R.id.title);
         title.setText(astHolder.getMetadataString("title", "unknown"));
@@ -142,6 +177,16 @@ public class ScriptAdapter extends BaseAdapter {
         view.setOnClickListener(mOnClickListener);
 
         return view;
+    }
+
+
+    public void setNumColumns(int numColumns) {
+        ifd("setNumColumns " + numColumns);
+        mNumColumns = numColumns;
+    }
+
+    public int getNumColumns() {
+        return mNumColumns;
     }
 
     private View.OnClickListener mOnClickListener = new View.OnClickListener() {
@@ -166,7 +211,6 @@ public class ScriptAdapter extends BaseAdapter {
         }
     };
 
-
     private List<AstHolder> parseScripts(Context context, String assetFolder) {
         List<AstHolder> asts = new ArrayList<>();
 
@@ -174,7 +218,6 @@ public class ScriptAdapter extends BaseAdapter {
             String[] dir = context.getAssets().list(assetFolder);
             for(String s : dir) {
                 String path = new File(assetFolder, s).toString();
-                ifd("path = " + path);
                 String script = readStringFromAsset(context, path);
                 AstHolder astHolder = new AstHolder(script); // todo: check if correctly parsed
                 asts.add(astHolder);

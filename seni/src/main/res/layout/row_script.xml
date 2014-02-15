@@ -2,6 +2,7 @@
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:orientation="horizontal"
+              android:background="@color/off_white"
               android:focusable="false"
               android:layout_width="match_parent"
               android:layout_height="match_parent">
@@ -9,21 +10,26 @@
     <io.indy.seni.view.SeniView
             android:focusable="false"
             android:id="@+id/seniView"
-            android:layout_margin="8dp"
+            android:layout_margin="@dimen/default_spacing_minor"
             android:layout_width="96dp"
             android:layout_height="96dp"/>
 
-    <TextView android:id="@+id/title"
-              android:focusable="false"
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:textAppearance="?android:attr/textAppearanceListItemSmall"
-            />
+    <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-    <TextView android:id="@+id/description"
-              android:focusable="false"
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:textAppearance="?android:attr/textAppearanceListItemSmall"
-            />
+        <TextView android:id="@+id/title"
+                  android:focusable="false"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:textAppearance="?android:attr/textAppearanceListItemSmall"/>
+
+        <TextView android:id="@+id/description"
+                  android:focusable="false"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:textAppearance="?android:attr/textAppearanceListItemSmall"/>
+
+    </LinearLayout>
 </LinearLayout>

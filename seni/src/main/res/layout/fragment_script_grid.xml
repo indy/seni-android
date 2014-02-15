@@ -3,7 +3,8 @@
           android:id="@+id/grid"
           android:layout_width="match_parent"
           android:layout_height="match_parent"
-          android:verticalSpacing="40dip"
-          android:horizontalSpacing="5dip"
+          android:verticalSpacing="@dimen/default_spacing_minor"
+          android:horizontalSpacing="@dimen/default_spacing_minor"
+          android:scrollbars="none"
           android:numColumns="@integer/num_columns"
           android:gravity="center"/>

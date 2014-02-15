@@ -19,9 +19,11 @@ package io.indy.seni.adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
@@ -56,12 +58,114 @@ public class ScriptAdapter extends BaseAdapter {
     private LayoutInflater mInflater;
     private Context mContext;
 
+    private int mActionBarHeight = 0;
+
     public ScriptAdapter(Context context) {
         mContext = context;
         mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         mAstHolders = parseScripts(context, "scripts");
+
+        // Calculate ActionBar height
+        TypedValue tv = new TypedValue();
+        if (context.getTheme().resolveAttribute(
+                android.R.attr.actionBarSize, tv, true)) {
+            mActionBarHeight = TypedValue.complexToDimensionPixelSize(
+                    tv.data, context.getResources().getDisplayMetrics());
+        }
     }
+
+    @Override
+    public int getCount() {
+        return mAstHolders.size() + 1;
+    }
+
+    @Override
+    public Object getItem(int position) {
+        return position == 0 ? null : mAstHolders.get(position - 1);
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return position == 0 ? 0 : position - 1;
+    }
+
+    @Override
+    public int getViewTypeCount() {
+        return 2;
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        return position == 0 ? 1 : 0;
+    }
+
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
+        View view;
+        TextView text;
+
+        if(position == 0) {
+            if (convertView == null) {
+                convertView = new View(mContext);
+            }
+            // Set empty view with height of ActionBar
+            convertView.setLayoutParams(new AbsListView.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT, mActionBarHeight));
+            return convertView;
+        }
+
+        int numColumns = mContext.getResources().getInteger(R.integer.num_columns);
+
+        if (convertView == null) {
+            if (numColumns > 1) {
+                view = mInflater.inflate(R.layout.cell_script, parent, false);
+            } else {
+                view = mInflater.inflate(R.layout.row_script, parent, false);
+            }
+        } else {
+            view = convertView;
+        }
+
+        view.setTag(R.string.tag_position, position - 1);
+
+        SeniView seniView = (SeniView) view.findViewById(R.id.seniView);
+        AstHolder astHolder = mAstHolders.get(position - 1);
+        seniView.setAstHolder(astHolder);
+
+        TextView title = (TextView) view.findViewById(R.id.title);
+        title.setText(astHolder.getMetadataString("title", "unknown"));
+
+        TextView description = (TextView) view.findViewById(R.id.description);
+        description.setText(astHolder.getMetadataString("description", "no description"));
+
+        view.setOnClickListener(mOnClickListener);
+
+        return view;
+    }
+
+    private View.OnClickListener mOnClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            ifd("clicked");
+
+            int position = (int) v.getTag(R.string.tag_position);
+            Intent intent = new Intent(mContext, EvolveActivity.class);
+
+            String script = "";
+
+            try {
+                script = mAstHolders.get(position).scribe();
+            } catch (Node.ScribeException e) {
+                e.printStackTrace();
+            }
+
+            intent.putExtra(EvolveGridFragment.GENESIS_SCRIPT, script);
+
+            mContext.startActivity(intent);
+        }
+    };
+
 
     private List<AstHolder> parseScripts(Context context, String assetFolder) {
         List<AstHolder> asts = new ArrayList<>();
@@ -103,85 +207,4 @@ public class ScriptAdapter extends BaseAdapter {
 
         return res;
     }
-
-    @Override
-    public int getCount() {
-        return mAstHolders.size();
-    }
-
-    @Override
-    public Object getItem(int position) {
-        return mAstHolders.get(position);
-    }
-
-    @Override
-    public long getItemId(int position) {
-        return position;
-    }
-
-    @Override
-    public int getViewTypeCount() {
-        return 1;
-    }
-
-    @Override
-    public int getItemViewType(int position) {
-        return 0;
-    }
-
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        View view;
-        TextView text;
-
-        int numColumns = mContext.getResources().getInteger(R.integer.num_columns);
-
-        if (convertView == null) {
-            if (numColumns > 1) {
-                view = mInflater.inflate(R.layout.cell_script, parent, false);
-            } else {
-                view = mInflater.inflate(R.layout.row_script, parent, false);
-            }
-        } else {
-            view = convertView;
-        }
-
-        view.setTag(R.string.tag_position, position);
-
-        SeniView seniView = (SeniView) view.findViewById(R.id.seniView);
-        AstHolder astHolder = mAstHolders.get(position);
-        seniView.setAstHolder(astHolder);
-
-        TextView title = (TextView) view.findViewById(R.id.title);
-        title.setText(astHolder.getMetadataString("title", "unknown"));
-
-        TextView description = (TextView) view.findViewById(R.id.description);
-        description.setText(astHolder.getMetadataString("description", "no description"));
-
-        view.setOnClickListener(mOnClickListener);
-
-        return view;
-    }
-
-    private View.OnClickListener mOnClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            ifd("clicked");
-
-            int position = (int) v.getTag(R.string.tag_position);
-            Intent intent = new Intent(mContext, EvolveActivity.class);
-
-            String script = "";
-
-            try {
-                script = mAstHolders.get(position).scribe();
-            } catch (Node.ScribeException e) {
-                e.printStackTrace();
-            }
-
-            intent.putExtra(EvolveGridFragment.GENESIS_SCRIPT, script);
-
-            mContext.startActivity(intent);
-        }
-    };
 }

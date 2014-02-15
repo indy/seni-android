@@ -17,6 +17,7 @@
 
 <resources>
     <color name="red">#ffff0000</color>
+    <color name="off_white">#e9e5dc</color>
 
     <color name="grid_state_pressed">#BB7dbcd3</color>
     <color name="grid_state_focused">#777dbcd3</color>

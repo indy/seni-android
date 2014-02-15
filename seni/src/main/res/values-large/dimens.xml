@@ -16,11 +16,6 @@
 -->
 
 <resources>
-
-    <dimen name="image_thumbnail_size">148dp</dimen>
-    <dimen name="image_thumbnail_spacing">2dp</dimen>
-
     <dimen name="pheno_thumbnail_size">148dp</dimen>
     <dimen name="pheno_thumbnail_spacing">2dp</dimen>
-
 </resources>

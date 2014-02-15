@@ -86,8 +86,8 @@ public class EvolveGridFragment extends Fragment implements AdapterView.OnItemCl
 
         ifd("onCreate");
 
-        mImageThumbSize = getResources().getDimensionPixelSize(R.dimen.image_thumbnail_size);
-        mImageThumbSpacing = getResources().getDimensionPixelSize(R.dimen.image_thumbnail_spacing);
+        mImageThumbSize = getResources().getDimensionPixelSize(R.dimen.pheno_thumbnail_size);
+        mImageThumbSpacing = getResources().getDimensionPixelSize(R.dimen.pheno_thumbnail_spacing);
 
         ImageCache.ImageCacheParams cacheParams = new ImageCache.ImageCacheParams();
 

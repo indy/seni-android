@@ -35,6 +35,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import io.indy.seni.AppConfig;
@@ -222,9 +224,19 @@ public class ScriptAdapter extends BaseAdapter {
                 AstHolder astHolder = new AstHolder(script); // todo: check if correctly parsed
                 asts.add(astHolder);
             }
+
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        Collections.sort(asts, new Comparator<AstHolder>() {
+            @Override
+            public int compare(AstHolder lhs, AstHolder rhs) {
+                String titlelhs = lhs.getMetadataString("title", "unknown");
+                String titlerhs = rhs.getMetadataString("title", "unknown");
+                return titlerhs.compareTo(titlelhs);
+            }
+        });
 
         return asts;
     }

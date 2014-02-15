@@ -23,13 +23,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 import android.widget.AbsListView;
 import android.widget.GridView;
 import android.widget.ListView;
 
 import io.indy.seni.AppConfig;
-import io.indy.seni.BuildConfig;
 import io.indy.seni.R;
 import io.indy.seni.adapter.ScriptAdapter;
 import io.indy.seni.util.ImageCache;
@@ -62,11 +60,8 @@ public class ScriptGridFragment extends Fragment {
      */
     private int mActivatedPosition = ListView.INVALID_POSITION;
 
-    private ScriptAdapter mScriptAdapter;
+    private ScriptAdapter mAdapter;
     private ImageGenerator mImageGenerator;
-
-    private int mImageThumbSize;
-    private int mImageThumbSpacing;
 
     /**
      * A callback interface that all activities containing this fragment must
@@ -117,20 +112,19 @@ public class ScriptGridFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mImageThumbSize = getResources().getDimensionPixelSize(R.dimen.pheno_thumbnail_size);
-        mImageThumbSpacing = getResources().getDimensionPixelSize(R.dimen.pheno_thumbnail_spacing);
+        int imageThumbSize = getResources().getDimensionPixelSize(R.dimen.pheno_thumbnail_size);
 
         ImageCache.ImageCacheParams cacheParams = new ImageCache.ImageCacheParams();
 
-        cacheParams.setMemCacheSizePercent(0.25f); // Set memory cache to 25% of app memory
+        cacheParams.setMemCacheSizePercent(0.05f); // Set memory cache to 5% of app memory
 
         // The ImageGenerator takes care of loading images into our ImageView children asynchronously
-        mImageGenerator = new ImageGenerator(getActivity(), mImageThumbSize);
+        mImageGenerator = new ImageGenerator(getActivity(), imageThumbSize);
         mImageGenerator.setLoadingImage(R.drawable.empty_genotype);
         mImageGenerator.addImageCache(getActivity().getFragmentManager(), cacheParams);
 
 
-        mScriptAdapter = new ScriptAdapter(getActivity(), mImageGenerator);
+        mAdapter = new ScriptAdapter(getActivity(), mImageGenerator);
    }
 
     @Override
@@ -172,9 +166,9 @@ public class ScriptGridFragment extends Fragment {
         }
 
         GridView gridView = (GridView) view.findViewById(R.id.grid);
-        gridView.setAdapter(mScriptAdapter);
+        gridView.setAdapter(mAdapter);
         int numColumns = getResources().getInteger(R.integer.num_columns);
-        mScriptAdapter.setNumColumns(numColumns);
+        mAdapter.setNumColumns(numColumns);
     }
 
 

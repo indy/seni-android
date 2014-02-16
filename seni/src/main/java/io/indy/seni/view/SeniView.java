@@ -74,8 +74,9 @@ public class SeniView extends View {
         super.onDraw(canvas);
         canvas.drawBitmap(mBitmap, 0, 0, null);
 
+
         Paint paint = new Paint();
-        paint.setARGB(255, 0, 0, 0);
+        paint.setARGB(255, 255, 255, 255);
         mCanvas.drawRect(0, 0, mCanvas.getWidth(), mCanvas.getHeight(), paint);
 
         SeniRuntime.render(mCanvas, mAstHolder, mGenotype);

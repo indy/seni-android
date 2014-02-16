@@ -17,8 +17,10 @@
 package io.indy.seni.ui;
 
 import android.annotation.TargetApi;
+import android.app.ActivityOptions;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -46,7 +48,9 @@ import io.indy.seni.BuildConfig;
 import io.indy.seni.R;
 import io.indy.seni.SeniApp;
 import io.indy.seni.adapter.EvolveAdapter;
+import io.indy.seni.lang.AstHolder;
 import io.indy.seni.lang.Genotype;
+import io.indy.seni.lang.Node;
 import io.indy.seni.model.EvolveContainer;
 import io.indy.seni.util.ImageCache;
 import io.indy.seni.util.ImageGenerator;
@@ -202,22 +206,35 @@ public class EvolveGridFragment extends Fragment implements AdapterView.OnItemCl
         super.onDestroy();
     }
 
-    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
+//    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     @Override
     public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-        /*final Intent i = new Intent(getActivity(), ImageDetailActivity.class);
-        i.putExtra(ImageDetailActivity.EXTRA_IMAGE, (int) id);
-        if (Utils.hasJellyBean()) {
-            // makeThumbnailScaleUpAnimation() looks kind of ugly here as the loading spinner may
-            // show plus the thumbnail image in GridView is cropped. so using
-            // makeScaleUpAnimation() instead.
-            ActivityOptions options =
-                    ActivityOptions.makeScaleUpAnimation(v, 0, 0, v.getWidth(), v.getHeight());
-            getActivity().startActivity(i, options.toBundle());
-        } else {
-            startActivity(i);
+
+        Genotype genotype = mEvolveContainer.getGenotype((int)id);
+        AstHolder astHolder = genotype.getAstHolder();
+
+        try {
+            String script = astHolder.scribe(genotype);
+
+            Intent intent = new Intent(getActivity(), RenderActivity.class);
+            intent.putExtra(GENESIS_SCRIPT, script);
+//            startActivity(intent);
+
+            if (AppConfig.hasJellyBean()) {
+                // makeThumbnailScaleUpAnimation() looks kind of ugly here as the loading spinner may
+                // show plus the thumbnail image in GridView is cropped. so using
+                // makeScaleUpAnimation() instead.
+                ActivityOptions options =
+                        ActivityOptions.makeScaleUpAnimation(v, 0, 0, v.getWidth(), v.getHeight());
+                getActivity().startActivity(intent, options.toBundle());
+            } else {
+                startActivity(intent);
+            }
+
+
+        } catch (Node.ScribeException e) {
+            e.printStackTrace();
         }
-        */
     }
 
     @Override

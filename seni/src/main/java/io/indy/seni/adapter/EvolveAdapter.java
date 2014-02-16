@@ -93,7 +93,7 @@ public class EvolveAdapter extends BaseAdapter {
 
     @Override
     public Object getItem(int position) {
-        return position < mNumColumns ? null : mEvolveContainer.getGenotype(position - mNumColumns);
+        return position < mNumColumns ? null : mEvolveContainer.getGenotype((int)getItemId(position));
     }
 
     @Override
@@ -149,7 +149,7 @@ public class EvolveAdapter extends BaseAdapter {
 
         // Finally load the image asynchronously into the ImageView, this also takes care of
         // setting a placeholder image while the background thread runs
-        Genotype genotype = mEvolveContainer.getGenotype(position - mNumColumns);
+        Genotype genotype = mEvolveContainer.getGenotype((int)getItemId(position));
         mImageGenerator.loadImage(genotype, imageView);
 
         return imageView;

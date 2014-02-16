@@ -40,8 +40,6 @@ public class RenderActivity extends Activity {
         if (AppConfig.DEBUG && D) Log.d(TAG, message);
     }
 
-    public static final String SCRIPT_NAME = "script_name";
-
     /**
      * A handle to the View in which the game is running.
      */
@@ -103,7 +101,7 @@ public class RenderActivity extends Activity {
         mSeniView = (SeniView) findViewById(R.id.lunar);
 
         if (savedInstanceState == null) {
-            String script = getIntent().getStringExtra(SCRIPT_NAME);
+            String script = getIntent().getStringExtra(EvolveGridFragment.GENESIS_SCRIPT);
             AstHolder astHolder = new AstHolder(script);
             Genotype genotype = astHolder.getGenotype();
             mSeniView.setAstHolder(astHolder);

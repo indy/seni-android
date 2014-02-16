@@ -9,6 +9,11 @@
         android:columnCount="2"
         tools:ignore="UselessParent">
     <LinearLayout
+            android:id="@+id/debug_header_spacer"
+            android:layout_columnSpan="2"
+            android:orientation="horizontal"
+            />
+    <LinearLayout
             android:layout_columnSpan="2"
             android:layout_gravity="start|end"
             android:orientation="horizontal"
@@ -26,6 +31,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/launcher_name"
                     style="@android:style/TextAppearance.Holo.Widget.ActionBar.Title"
+
                     />
             <TextView
                     android:layout_width="wrap_content"

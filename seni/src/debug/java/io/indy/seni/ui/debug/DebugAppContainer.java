@@ -20,8 +20,13 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.Build;
 import android.util.DisplayMetrics;
+import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
+import android.widget.GridLayout;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.text.DateFormat;
@@ -35,6 +40,7 @@ import javax.inject.Singleton;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import io.indy.seni.AppConfig;
 import io.indy.seni.BuildConfig;
 import io.indy.seni.R;
 import io.indy.seni.SeniApp;
@@ -42,6 +48,14 @@ import io.indy.seni.ui.AppContainer;
 
 @Singleton
 public class DebugAppContainer implements AppContainer {
+
+
+    private static final String TAG = "DebugAppContainer";
+    private static final boolean D = true;
+
+    static void ifd(final String message) {
+        if (AppConfig.DEBUG && D) Log.d(TAG, message);
+    }
 
     private static final DateFormat DATE_DISPLAY_FORMAT = new SimpleDateFormat("yyyy-MM-dd hh:mm a");
 
@@ -81,6 +95,18 @@ public class DebugAppContainer implements AppContainer {
         // Manually find the debug drawer and inflate the drawer layout inside of it.
         ViewGroup drawer = (ViewGroup)(activity.findViewById(R.id.debug_drawer));
         LayoutInflater.from(mDrawerContext).inflate(R.layout.debug_drawer_content, drawer);
+
+
+        int actionBarHeight = 0;
+        TypedValue tv = new TypedValue();
+        if (activity.getTheme().resolveAttribute(android.R.attr.actionBarSize, tv, true)) {
+            actionBarHeight = TypedValue.complexToDimensionPixelSize(
+                    tv.data, activity.getResources().getDisplayMetrics());
+        }
+        LinearLayout ll = (LinearLayout) drawer.findViewById(R.id.debug_header_spacer);
+        ll.setLayoutParams(new GridLayout.LayoutParams(
+                new ViewGroup.LayoutParams(1, actionBarHeight)));
+
 
         // Inject after inflating the drawer layout so its views are available to inject.
         ButterKnife.inject(this, activity);

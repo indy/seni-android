@@ -24,7 +24,8 @@ import dagger.Provides;
 @Module(
         injects = {
                 ScriptGridActivity.class,
-                EvolveActivity.class
+                EvolveActivity.class,
+                RenderActivity.class
         },
         complete = false,
         library = true
